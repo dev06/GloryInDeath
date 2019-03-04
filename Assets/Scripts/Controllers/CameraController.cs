@@ -9,6 +9,15 @@ public class CameraController : MonoBehaviour {
 	private Transform playerTransform;
 
 	private Vector3 defaultPosition;
+
+	void OnEnable()
+	{
+		EventManager.OnStateChange += OnStateChange;
+	}
+	void OnDisable()
+	{
+		EventManager.OnStateChange -= OnStateChange;
+	}
 	void Awake()
 	{
 		if (Instance == null)
@@ -27,14 +36,24 @@ public class CameraController : MonoBehaviour {
 		defaultPosition = transform.position;
 	}
 
+	void OnStateChange(State s)
+	{
+		if (s == State.GAME)
+		{
+			//	transform.LookAt(playerTransform.position);
+		}
+	}
+
 	void Start ()
 	{
 		Init();
 	}
-
+	public float defaultFOV = 50f;
 	// Update is called once per frame
 	void Update ()
 	{
+
+		if (GameController.state != State.GAME) return;
 		transform.position = defaultPosition + playerTransform.position;
 	}
 

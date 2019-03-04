@@ -17,6 +17,7 @@ public enum ButtonID
 public struct Interact
 {
 	public bool bubble;
+	public bool press;
 }
 public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
@@ -29,6 +30,11 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 		if (EventManager.OnButtonClick != null)
 		{
 			EventManager.OnButtonClick(buttonID);
+		}
+
+		if (interact.press)
+		{
+			GetComponent<Animation>().Play();
 		}
 	}
 

@@ -155,11 +155,24 @@ public class PlayerController : MonoBehaviour {
 
 	void OnButtonClick(ButtonID id)
 	{
-		if (id == ButtonID.ATTACK)
+		switch (id)
 		{
-			if (withinEnemyRange && contactingEnemy != null)
+			case ButtonID.ATTACK:
 			{
-				contactingEnemy.TakeDamage(3);
+				if (withinEnemyRange && contactingEnemy != null)
+				{
+					contactingEnemy.TakeDamage(3);
+				}
+				break;
+			}
+
+			case ButtonID.ABILITY:
+			{
+				if (withinEnemyRange && contactingEnemy != null)
+				{
+					contactingEnemy.TakeDamage(6);
+				}
+				break;
 			}
 		}
 	}

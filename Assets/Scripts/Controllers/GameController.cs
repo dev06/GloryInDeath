@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour {
 	public static GameController Instance;
 	public static State state = State.CHARACTER_SELECT;
 
+	public bool DeleteSave;
+
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -25,6 +27,21 @@ public class GameController : MonoBehaviour {
 		{
 			Destroy(gameObject);
 		}
+
+		SetState(State.CHARACTER_SELECT);
+	}
+
+	void OnValidate()
+	{
+		if (DeleteSave)
+		{
+			PlayerPrefs.DeleteAll();
+		}
+	}
+
+	void Start()
+	{
+		Load();
 	}
 
 	public void SetState(State s)
@@ -52,5 +69,21 @@ public class GameController : MonoBehaviour {
 		}
 
 		return v;
+	}
+
+	private void Save()
+	{
+		PlayerPrefs.SetInt("WAVE_COMPLETED", WaveController.Instance.wave);
+	}
+
+	private void Load()
+	{
+		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 0;
+	}
+
+	public void Reload()
+	{
+		Save();
+		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 	}
 }

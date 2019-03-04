@@ -5,6 +5,9 @@ using UnityEngine;
 public enum EventID
 {
 	NONE,
+	ENEMY_KILLED,
+	WAVE_START,
+	WAVE_END,
 }
 public class EventManager : MonoBehaviour {
 

@@ -46,9 +46,9 @@ public class EnemyAttributes
 
 		this.difficulty = attributes.difficulty;
 		this.type = attributes.type;
-		this.health = attributes.health * difficulty;
+		this.health = attributes.health;
 		this.speed = attributes.speed;
-		this.damage = attributes.damage * difficulty;
+		this.damage = attributes.damage;
 	}
 }
 
@@ -62,6 +62,8 @@ public class Enemy: MonoBehaviour
 
 
 	public Transform quad;
+	private Transform healthBar;
+	private ParticleSystem hurtParticles;
 
 	private PlayerController player;
 
@@ -77,7 +79,8 @@ public class Enemy: MonoBehaviour
 
 	public virtual void Init()
 	{
-		//defaultAttributes = new EnemyAttributes(type, health, speed, damage, difficulty);
+		healthBar = quad.transform.GetChild(1).transform;
+		hurtParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
 		attributes = new EnemyAttributes();
 		attributes.SetAttributes(defaultAttributes);
 
@@ -85,6 +88,7 @@ public class Enemy: MonoBehaviour
 
 	public void Move()
 	{
+		ToggleSkin(true);
 		attributes.SetAttributes(defaultAttributes);
 		UpdateHealthBar();
 		move = true;
@@ -96,39 +100,61 @@ public class Enemy: MonoBehaviour
 		agent.speed = attributes.speed;
 		agent.SetDestination(player.transform.position);
 
-		// quad.transform.rotation = Quaternion.LookRotation(Camera.main.transform.position, Vector3.up);
-		// quad.transform.LookAt(Camera.main.transform.position);
-		// quad.transform.rotation *= Quaternion.Euler(0, 180, 0);
-
+		healthBar.localScale = Vector3.Lerp(healthBar.localScale, new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f), Time.deltaTime * 10f);
 	}
 
 
 	public void TakeDamage(float damage)
 	{
-		attributes.health -= damage;
-
-		UpdateHealthBar();
-
 		if (isDead())
 		{
+
+			hurtParticles.Play();
 			Reset();
+			return;
 		}
+		attributes.health -= damage;
+		hurtParticles.Play();
+		UpdateHealthBar();
+
+
 	}
 
 	private void UpdateHealthBar()
 	{
-		quad.transform.GetChild(1).transform.localScale = new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f);
+		//healthBar.localScale = new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f);
+	}
+
+	private void ToggleSkin(bool b)
+	{
+		GetComponent<MeshRenderer>().enabled = b;
 	}
 
 	public void Reset()
 	{
 		move = false;
+		WaveController.Instance.ResetEnemyParent(this);
 		transform.gameObject.SetActive(false);
 	}
 
 	public bool isDead()
 	{
 		attributes.health = Mathf.Clamp(attributes.health, 0f, attributes.health);
-		return attributes.health <= 0;
+
+		bool dead = attributes.health <= 0;
+
+		if (dead)
+		{
+			if (EventManager.OnGameEvent != null)
+			{
+				EventManager.OnGameEvent(EventID.ENEMY_KILLED);
+			}
+		}
+		return dead;
+	}
+
+	public bool IsMoving
+	{
+		get { return move; }
 	}
 }
