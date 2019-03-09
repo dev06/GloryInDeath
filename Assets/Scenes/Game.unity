@@ -11352,7 +11352,11 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_AnchoredPosition: {x: -326, y: -244.3}
+=======
+  m_AnchoredPosition: {x: -351.00098, y: -253.4}
+>>>>>>> parent of db9ea01... Character New Upgrades
 =======
   m_AnchoredPosition: {x: -351.00098, y: -253.4}
 >>>>>>> parent of db9ea01... Character New Upgrades
@@ -27251,7 +27255,11 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_AnchoredPosition: {x: -325.99902, y: -213.1}
+=======
+  m_AnchoredPosition: {x: -351, y: -217.5}
+>>>>>>> parent of db9ea01... Character New Upgrades
 =======
   m_AnchoredPosition: {x: -351, y: -217.5}
 >>>>>>> parent of db9ea01... Character New Upgrades
@@ -33908,7 +33916,11 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_AnchoredPosition: {x: -325.996, y: -151.7}
+=======
+  m_AnchoredPosition: {x: -350.99698, y: -148.2}
+>>>>>>> parent of db9ea01... Character New Upgrades
 =======
   m_AnchoredPosition: {x: -350.99698, y: -148.2}
 >>>>>>> parent of db9ea01... Character New Upgrades
