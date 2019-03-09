@@ -13,6 +13,9 @@ public enum ButtonID
 	CHAR_FREYA,
 	SELECT_CHARACTER,
 	PERK_ADD_HEALTH,
+	PERK_ADD_SPEED,
+	PERK_ADD_DAMAGE,
+	PERK_ADD_ARMOR,
 }
 
 [System.Serializable]
