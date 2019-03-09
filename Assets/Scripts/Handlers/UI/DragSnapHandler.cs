@@ -45,7 +45,7 @@ public class DragSnapHandler : MonoBehaviour {
 
 	void Update()
 	{
-		if (GameController.state != State.CHARACTER_SELECT) return;
+		if (GameController.state != State.CHARACTER_SELECT) { return; }
 
 
 		if (Input.GetMouseButton(0))

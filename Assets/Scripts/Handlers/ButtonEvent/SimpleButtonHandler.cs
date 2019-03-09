@@ -12,6 +12,7 @@ public enum ButtonID
 	CHAR_HALFRED,
 	CHAR_FREYA,
 	SELECT_CHARACTER,
+	PERK_ADD_HEALTH,
 }
 
 [System.Serializable]

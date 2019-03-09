@@ -22,6 +22,9 @@ public class CharacterSelectUI : MonoBehaviour {
 	private PlayerController player;
 
 	public InfoText characterInfoText;
+
+	private CSStatHandler csstatHandler;
+
 	void OnEnable()
 	{
 		EventManager.OnStateChange += OnStateChange;
@@ -54,42 +57,64 @@ public class CharacterSelectUI : MonoBehaviour {
 
 	private void OnCharacterModelHover(CharacterModel m)
 	{
+		if (csstatHandler == null)
+		{
+			csstatHandler = FindObjectOfType<CSStatHandler>();
+		}
+
+		if (player == null)
+		{
+			player =  PlayerController.Instance;
+		}
+
+		characterInfoText.health.text = player.attributes.health.ToString();
+		characterInfoText.speed.text = player.attributes.speed.ToString();
+		characterInfoText.damage.text = player.attributes.damage.ToString();
+		characterInfoText.armor.text = player.attributes.armor.ToString();
+
 		switch (m.modelType)
 		{
-			case Character.CharacterType.AURA_BLACKSWORD:
+			case CharacterType.AURA_BLACKSWORD:
 			{
 				//characterInfoText.name.text = "Name: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.info.name;
-				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.health.ToString();
-				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.speed.ToString();
-				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.damage.ToString();
-				characterInfoText.armor.text = "Armor: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.armor.ToString();
 
 				break;
 			}
 
-			case Character.CharacterType.HALLFRED_THORALDSON:
-			{
+				// case CharacterType.HALLFRED_THORALDSON:
+				// {
 
-				//characterInfoText.name.text = "Name: " + CharacterLibrary.HALLFRED_THORALDSON.info.name;
-				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.health.ToString();
-				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.speed.ToString();
-				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.damage.ToString();
-				characterInfoText.armor.text = "Armor: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.armor.ToString();
+				// 	//characterInfoText.name.text = "Name: " + CharacterLibrary.HALLFRED_THORALDSON.info.name;
+				// 	characterInfoText.health.text = player.attributes.health.ToString();
+				// 	characterInfoText.speed.text = player.attributes.speed.ToString();
+				// 	characterInfoText.damage.text = player.attributes.damage.ToString();
+				// 	characterInfoText.armor.text = player.attributes.armor.ToString();
 
-				break;
-			}
+				// 	break;
+				// }
 
-			case Character.CharacterType.FREYA_SKAAR:
-			{
-				//	characterInfoText.name.text = "Name: " + CharacterLibrary.FREYA_SKAAR.info.name;
-				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_FREYA_SKAAR.health.ToString();
-				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_FREYA_SKAAR.speed.ToString();
-				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_FREYA_SKAAR.damage.ToString();
-				characterInfoText.armor.text = "Armor: " + CharacterLibrary.CHAR_FREYA_SKAAR.armor.ToString();
+				// case CharacterType.FREYA_SKAAR:
+				// {
+				// 	//	characterInfoText.name.text = "Name: " + CharacterLibrary.FREYA_SKAAR.info.name;
+				// 	characterInfoText.health.text =  player.attributes.health.ToString();
+				// 	characterInfoText.speed.text =  player.attributes.speed.ToString();
+				// 	characterInfoText.damage.text =  player.attributes.damage.ToString();
+				// 	characterInfoText.armor.text =  player.attributes.armor.ToString();
 
-				break;
-			}
+
+				// 	break;
+				// }
 		}
+		csstatHandler.UpdateValues(PlayerController.Instance.attributes);
+
+	}
+
+	public void UpdateCharacterSelectUI()
+	{
+		characterInfoText.health.text = PlayerController.Instance.attributes.health.ToString();
+		characterInfoText.speed.text = PlayerController.Instance.attributes.speed.ToString();
+		characterInfoText.damage.text = PlayerController.Instance.attributes.damage.ToString();
+		characterInfoText.armor.text = PlayerController.Instance.attributes.armor.ToString();
 	}
 
 	public void OnButtonEnter(ButtonID id)
@@ -108,27 +133,6 @@ public class CharacterSelectUI : MonoBehaviour {
 
 			case ButtonID.SELECT_CHARACTER:
 			{
-				GameController.Instance.SetState(State.GAME);
-				break;
-			}
-			case ButtonID.CHAR_AURA:
-			{
-				player.SetCharacter(Character.CharacterType.AURA_BLACKSWORD);
-				GameController.Instance.SetState(State.GAME);
-				break;
-			}
-
-			case ButtonID.CHAR_HALFRED:
-			{
-
-				player.SetCharacter(Character.CharacterType.HALLFRED_THORALDSON);
-				GameController.Instance.SetState(State.GAME);
-				break;
-			}
-
-			case ButtonID.CHAR_FREYA:
-			{
-				player.SetCharacter(Character.CharacterType.FREYA_SKAAR);
 				GameController.Instance.SetState(State.GAME);
 				break;
 			}

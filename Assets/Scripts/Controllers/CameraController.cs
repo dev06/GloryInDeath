@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour {
 
 	private Vector3 targetPosition;
 
+	private Canvas csCanvas;
+
 	public CameraGameTransform cameraGameTransform;
 
 	void OnEnable()
@@ -50,11 +52,23 @@ public class CameraController : MonoBehaviour {
 
 	void OnStateChange(State s)
 	{
+
+		if (csCanvas == null)
+		{
+			csCanvas = transform.GetChild(0).GetComponent<Canvas>();
+		}
+
 		if (s == State.GAME)
 		{
 			transform.position = cameraGameTransform.position;
 			defaultPosition = transform.position;
 			transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
+
+			csCanvas.enabled = false;
+		}
+		else if (s == State.CHARACTER_SELECT)
+		{
+			csCanvas.enabled = true;
 		}
 	}
 
@@ -67,7 +81,7 @@ public class CameraController : MonoBehaviour {
 	void Update ()
 	{
 
-		if (GameController.state != State.GAME) return;
+		if (GameController.state != State.GAME) { return; }
 
 		//	Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
 		transform.position = defaultPosition + playerTransform.position;

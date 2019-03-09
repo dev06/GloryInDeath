@@ -6,7 +6,7 @@ public class CharacterModel : MonoBehaviour
 {
 	public static CharacterModel SELECTED_MODEL;
 
-	public	Character.CharacterType modelType;
+	public CharacterType modelType;
 
 	void OnEnable()
 	{
@@ -60,7 +60,7 @@ public class CharacterModel : MonoBehaviour
 	IEnumerator IExpand()
 	{
 
-		Vector3 expandScale = new Vector3(1.5f, 1.5f, 1.5f);
+		Vector3 expandScale = new Vector3(1.2f, 1.2f, 1.2f);
 
 		while (transform.localScale != expandScale)
 		{
@@ -71,7 +71,7 @@ public class CharacterModel : MonoBehaviour
 
 	IEnumerator IShrink()
 	{
-		Vector3 target = Vector3.one * .5f;
+		Vector3 target = Vector3.one * .2f;
 		Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 90, 0));
 		while (transform.localScale != target || transform.rotation != targetRotation)
 		{
