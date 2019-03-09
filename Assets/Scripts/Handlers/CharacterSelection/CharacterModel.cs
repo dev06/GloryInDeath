@@ -17,16 +17,16 @@ public class CharacterModel : MonoBehaviour
 		EventManager.OnCharacterModelHover -= OnCharacterModelHover;
 	}
 
-	public void Hover()
+	public void Select()
 	{
 		SELECTED_MODEL = this;
-
-		PlayerController.Instance.SetCharacter(modelType);
 
 		if (EventManager.OnCharacterModelHover != null)
 		{
 			EventManager.OnCharacterModelHover(SELECTED_MODEL);
 		}
+
+		PlayerController.Instance.SetCharacter(modelType);
 	}
 
 	void Update()
@@ -46,17 +46,13 @@ public class CharacterModel : MonoBehaviour
 		if (this == m)
 		{
 			StopCoroutine("IShrink");
-
 			StopCoroutine("IExpand");
-
 			StartCoroutine("IExpand");
 		}
 		else
 		{
 			StopCoroutine("IExpand");
-
 			StopCoroutine("IShrink");
-
 			StartCoroutine("IShrink");
 		}
 	}

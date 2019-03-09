@@ -7,13 +7,7 @@ public class CharacterLibrary
 	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 5, 2, 3);
 	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2, 3, 4);
 	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
-}
 
-public class CharacterModifiedLibrary
-{
-	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 5, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2, 3, 4);
-	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
 }
 
 [System.Serializable]
@@ -41,39 +35,6 @@ public class CharacterAttributes
 		this.damage = attributes.damage;
 		this.armor = attributes.armor;
 		this.type = attributes.type;
-	}
-
-	public float Health
-	{
-		get {return health;}
-		set {
-			this.health = value;
-			this.health = Mathf.Clamp(health, 1f, 30f);
-		}
-	}
-	public float Speed
-	{
-		get {return speed;}
-		set {
-			this.speed = value;
-			this.speed = Mathf.Clamp(speed, 1f, 30f);
-		}
-	}
-	public float Damage
-	{
-		get {return damage;}
-		set {
-			this.damage = value;
-			this.damage = Mathf.Clamp(damage, 1f, 30f);
-		}
-	}
-	public float Armor
-	{
-		get {return armor;}
-		set {
-			this.armor = value;
-			this.armor = Mathf.Clamp(armor, 1f, 30f);
-		}
 	}
 
 	public CharacterAttributes GetAttributes()
@@ -135,19 +96,23 @@ public class PlayerController : MonoBehaviour {
 		{
 			case CharacterType.AURA_BLACKSWORD:
 			{
-				attributes.SetAttributes(CharacterModifiedLibrary.CHAR_AURA_BLACKSWORD.GetAttributes());
+
+				attributes.SetAttributes(CharacterLibrary.CHAR_AURA_BLACKSWORD.GetAttributes());
 				break;
 			}
 			case CharacterType.HALLFRED_THORALDSON:
 			{
-				attributes.SetAttributes(CharacterModifiedLibrary.CHAR_HALLFRED_THORALDSON.GetAttributes());
+
+				attributes.SetAttributes(CharacterLibrary.CHAR_HALLFRED_THORALDSON.GetAttributes());
 				break;
 			}
 			case CharacterType.FREYA_SKAAR:
 			{
-				attributes.SetAttributes(CharacterModifiedLibrary.CHAR_FREYA_SKAAR.GetAttributes());
+
+				attributes.SetAttributes(CharacterLibrary.CHAR_FREYA_SKAAR.GetAttributes());
 				break;
 			}
+
 		}
 	}
 

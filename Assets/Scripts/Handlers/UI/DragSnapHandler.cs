@@ -40,7 +40,7 @@ public class DragSnapHandler : MonoBehaviour {
 
 		transform.rotation = Quaternion.Euler(new Vector3(25, -90, 0));
 
-		characterModels.GetChild(0).GetComponent<CharacterModel>().Hover();
+		characterModels.GetChild(0).GetComponent<CharacterModel>().Select();
 	}
 
 	void Update()
@@ -73,7 +73,7 @@ public class DragSnapHandler : MonoBehaviour {
 
 			if (lastSelected != selectedIndex)
 			{
-				characterModels.GetChild(selectedIndex).GetComponent<CharacterModel>().Hover();
+				characterModels.GetChild(selectedIndex).GetComponent<CharacterModel>().Select();
 			}
 
 			StopCoroutine("ISnapPosition");
@@ -114,6 +114,10 @@ public class DragSnapHandler : MonoBehaviour {
 		float diff = (currentPosition.x - lastPosition.x);
 
 		rotationMovement = diff;
+
+
+
+		//Debug.Log(selectedIndex);
 
 		lastPosition = currentPosition;
 	}
