@@ -20,4 +20,7 @@ public class EventManager : MonoBehaviour {
 
 	public delegate void StateChange(State s);
 	public static StateChange OnStateChange;
+
+	public delegate void CharacterModelEvent(CharacterModel c);
+	public static CharacterModelEvent OnCharacterModelHover;
 }

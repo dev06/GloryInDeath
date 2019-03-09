@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct CameraGameTransform
+{
+	public Vector3 position;
+	public Vector3 rotation;
+}
+
 public class CameraController : MonoBehaviour {
 
 	public static CameraController Instance;
@@ -9,6 +16,10 @@ public class CameraController : MonoBehaviour {
 	private Transform playerTransform;
 
 	private Vector3 defaultPosition;
+
+	private Vector3 targetPosition;
+
+	public CameraGameTransform cameraGameTransform;
 
 	void OnEnable()
 	{
@@ -34,13 +45,16 @@ public class CameraController : MonoBehaviour {
 	{
 		playerTransform = FindObjectOfType<MovementHandler>().transform;
 		defaultPosition = transform.position;
+		targetPosition = transform.position;
 	}
 
 	void OnStateChange(State s)
 	{
 		if (s == State.GAME)
 		{
-			//	transform.LookAt(playerTransform.position);
+			transform.position = cameraGameTransform.position;
+			defaultPosition = transform.position;
+			transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
 		}
 	}
 
@@ -54,7 +68,14 @@ public class CameraController : MonoBehaviour {
 	{
 
 		if (GameController.state != State.GAME) return;
+
+		//	Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
 		transform.position = defaultPosition + playerTransform.position;
+	}
+
+	public void SetTargetPosition(Vector3 position)
+	{
+		this.targetPosition = position;
 	}
 
 	void FixedUpdate()

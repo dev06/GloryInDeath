@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DragSnapHandler : MonoBehaviour {
 
+	public Vector3 heightOffset;
 
 	public Transform characterModels;
 
@@ -11,32 +12,92 @@ public class DragSnapHandler : MonoBehaviour {
 
 	private Vector3 lastPosition;
 
-	private int selectedIndex;
+	private CameraController camera;
 
+	private int selectedIndex, lastSelected;
 
-	private float rot;
+	private float rotationMovement;
 
+	private Vector3 defaultPosition;
 
+	void OnEnable () {
+
+		EventManager.OnStateChange += OnStateChange;
+	}
+
+	void OnDisable ()
+	{
+
+		EventManager.OnStateChange -= OnStateChange;
+	}
 	void Start()
 	{
-		//transform.position = characterModels.position + new Vector3(5f, 0, 0);
+		defaultPosition = characterModels.parent.transform.position + heightOffset;
 
-		//transform.LookAt(characterModels.GetChild(0).transform.position);
+		transform.position = defaultPosition;
+
+		camera = CameraController.Instance;
+
+		transform.rotation = Quaternion.Euler(new Vector3(25, -90, 0));
+
+		characterModels.GetChild(0).GetComponent<CharacterModel>().Select();
 	}
 
 	void Update()
 	{
 		if (GameController.state != State.CHARACTER_SELECT) return;
 
+
 		if (Input.GetMouseButton(0))
 		{
 			Control();
 
-			Camera.main.transform.position += new Vector3(0, 0, rot * 3f);
+			Camera.main.transform.position += new Vector3(0, 0, -rotationMovement);
 		}
-		else
+		else if (Input.GetMouseButtonUp(0))
 		{
+			if (rotationMovement > 0)
+			{
+				selectedIndex--;
 
+			} else if (rotationMovement < 0)
+			{
+				selectedIndex++;
+			}
+
+			selectedIndex = Mathf.Clamp(selectedIndex, 0, characterModels.childCount - 1);
+
+			Vector3 pos = characterModels.GetChild(selectedIndex).transform.position;
+
+			pos.x = characterModels.GetChild(selectedIndex).transform.position.x + 8;
+
+			if (lastSelected != selectedIndex)
+			{
+				characterModels.GetChild(selectedIndex).GetComponent<CharacterModel>().Select();
+			}
+
+			StopCoroutine("ISnapPosition");
+
+			StartCoroutine("ISnapPosition", pos);
+
+			lastSelected = selectedIndex;
+		}
+	}
+
+	void OnStateChange(State s)
+	{
+		if (s != State.CHARACTER_SELECT)
+		{
+			StopCoroutine("ISnapPosition");
+		}
+	}
+
+	IEnumerator ISnapPosition(Vector3 target)
+	{
+		while (camera.transform.position != target)
+		{
+			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, target + heightOffset, Time.deltaTime * 10f);
+			yield return null;
 		}
 	}
 
@@ -50,20 +111,12 @@ public class DragSnapHandler : MonoBehaviour {
 			lastPosition = currentPosition;
 		}
 
-		float diff = (currentPosition.x - lastPosition.x) * 10;
+		float diff = (currentPosition.x - lastPosition.x);
 
-		if (diff > 0)
-		{
-			selectedIndex++;
-		}
-		else
-		{
-			selectedIndex--;
-		}
+		rotationMovement = diff;
 
 
 
-		selectedIndex = Mathf.Clamp(selectedIndex, 0, 2);
 		//Debug.Log(selectedIndex);
 
 		lastPosition = currentPosition;

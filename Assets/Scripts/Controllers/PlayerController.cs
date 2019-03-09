@@ -121,6 +121,17 @@ public struct CharacterInfo
 
 public class PlayerController : MonoBehaviour {
 
+
+	public static PlayerController Instance;
+
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+	}
+
 	void OnEnable()
 	{
 		EventManager.OnButtonClick += OnButtonClick;

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct InfoText
 {
+	public Text name;
 	public Text health;
 	public Text speed;
 	public Text damage;
@@ -26,12 +27,14 @@ public class CharacterSelectUI : MonoBehaviour {
 		EventManager.OnStateChange += OnStateChange;
 		EventManager.OnButtonClick += OnButtonClick;
 		EventManager.OnButtonEnter += OnButtonEnter;
+		EventManager.OnCharacterModelHover += OnCharacterModelHover;
 	}
 	void OnDisable()
 	{
 		EventManager.OnStateChange -= OnStateChange;
 		EventManager.OnButtonClick -= OnButtonClick;
 		EventManager.OnButtonEnter -= OnButtonEnter;
+		EventManager.OnCharacterModelHover -= OnCharacterModelHover;
 	}
 
 	void Start()
@@ -49,12 +52,13 @@ public class CharacterSelectUI : MonoBehaviour {
 
 	}
 
-	public void OnButtonEnter(ButtonID id)
+	private void OnCharacterModelHover(CharacterModel m)
 	{
-		switch (id)
+		switch (m.modelType)
 		{
-			case ButtonID.CHAR_AURA:
+			case Character.CharacterType.AURA_BLACKSWORD:
 			{
+				//characterInfoText.name.text = "Name: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.info.name;
 				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.health.ToString();
 				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.speed.ToString();
 				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_AURA_BLACKSWORD.damage.ToString();
@@ -63,9 +67,10 @@ public class CharacterSelectUI : MonoBehaviour {
 				break;
 			}
 
-			case ButtonID.CHAR_HALFRED:
+			case Character.CharacterType.HALLFRED_THORALDSON:
 			{
 
+				//characterInfoText.name.text = "Name: " + CharacterLibrary.HALLFRED_THORALDSON.info.name;
 				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.health.ToString();
 				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.speed.ToString();
 				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_HALLFRED_THORALDSON.damage.ToString();
@@ -74,8 +79,9 @@ public class CharacterSelectUI : MonoBehaviour {
 				break;
 			}
 
-			case ButtonID.CHAR_FREYA:
+			case Character.CharacterType.FREYA_SKAAR:
 			{
+				//	characterInfoText.name.text = "Name: " + CharacterLibrary.FREYA_SKAAR.info.name;
 				characterInfoText.health.text = "Health: " + CharacterLibrary.CHAR_FREYA_SKAAR.health.ToString();
 				characterInfoText.speed.text = "Speed: " + CharacterLibrary.CHAR_FREYA_SKAAR.speed.ToString();
 				characterInfoText.damage.text = "Damage: " + CharacterLibrary.CHAR_FREYA_SKAAR.damage.ToString();
@@ -86,10 +92,25 @@ public class CharacterSelectUI : MonoBehaviour {
 		}
 	}
 
+	public void OnButtonEnter(ButtonID id)
+	{
+		switch (id)
+		{
+
+		}
+	}
+
 	public void OnButtonClick(ButtonID id)
 	{
 		switch (id)
 		{
+
+
+			case ButtonID.SELECT_CHARACTER:
+			{
+				GameController.Instance.SetState(State.GAME);
+				break;
+			}
 			case ButtonID.CHAR_AURA:
 			{
 				player.SetCharacter(Character.CharacterType.AURA_BLACKSWORD);

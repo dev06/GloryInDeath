@@ -10,12 +10,19 @@ public class GameUI : MonoBehaviour {
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
 		EventManager.OnButtonClick += OnButtonClick;
+		EventManager.OnStateChange += OnStateChange;
 	}
 
 	void OnDisable ()
 	{
 		EventManager.OnGameEvent -= OnGameEvent;
 		EventManager.OnButtonClick -= OnButtonClick;
+		EventManager.OnStateChange -= OnStateChange;
+	}
+
+	void Start()
+	{
+		Toggle(false);
 	}
 
 	void OnGameEvent(EventID id)
@@ -33,6 +40,18 @@ public class GameUI : MonoBehaviour {
 			{
 				StopCoroutine("IShowWaveEndHUD");
 				StartCoroutine("IShowWaveEndHUD");
+				break;
+			}
+		}
+	}
+
+	void OnStateChange(State s)
+	{
+		switch (s)
+		{
+			case State.GAME:
+			{
+				Toggle(true);
 				break;
 			}
 		}
@@ -90,5 +109,15 @@ public class GameUI : MonoBehaviour {
 		yield return new WaitForSeconds(1);
 
 		GameController.Instance.Reload();
+	}
+
+	private void Toggle(bool b)
+	{
+
+		CanvasGroup cg = GetComponent<CanvasGroup>();
+
+		cg.alpha = b ? 1 : 0;
+
+		cg.blocksRaycasts = b;
 	}
 }

@@ -11,6 +11,7 @@ public enum ButtonID
 	CHAR_AURA,
 	CHAR_HALFRED,
 	CHAR_FREYA,
+	SELECT_CHARACTER,
 }
 
 [System.Serializable]
