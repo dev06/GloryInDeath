@@ -90,13 +90,13 @@ public class Enemy: MonoBehaviour
 	{
 		ToggleSkin(true);
 		attributes.SetAttributes(defaultAttributes);
-		UpdateHealthBar();
+
 		move = true;
 	}
 	void Update()
 	{
-		if (GameController.state != State.GAME) return;
-		if (!move) return;
+		if (GameController.state != State.GAME) { return; }
+		if (!move) { return; }
 		agent.speed = attributes.speed;
 		agent.SetDestination(player.transform.position);
 
@@ -106,6 +106,7 @@ public class Enemy: MonoBehaviour
 
 	public void TakeDamage(float damage)
 	{
+		attributes.health -= damage;
 		if (isDead())
 		{
 
@@ -113,16 +114,11 @@ public class Enemy: MonoBehaviour
 			Reset();
 			return;
 		}
-		attributes.health -= damage;
+
 		hurtParticles.Play();
-		UpdateHealthBar();
 
 
-	}
 
-	private void UpdateHealthBar()
-	{
-		//healthBar.localScale = new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f);
 	}
 
 	private void ToggleSkin(bool b)

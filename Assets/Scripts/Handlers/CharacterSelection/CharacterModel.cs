@@ -17,16 +17,17 @@ public class CharacterModel : MonoBehaviour
 		EventManager.OnCharacterModelHover -= OnCharacterModelHover;
 	}
 
-	public void Select()
+	public void Hover()
 	{
 		SELECTED_MODEL = this;
+
+		PlayerController.Instance.SetCharacter(modelType);
 
 		if (EventManager.OnCharacterModelHover != null)
 		{
 			EventManager.OnCharacterModelHover(SELECTED_MODEL);
 		}
 
-		PlayerController.Instance.SetCharacter(modelType);
 	}
 
 	void Update()
