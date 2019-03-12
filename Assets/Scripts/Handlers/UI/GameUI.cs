@@ -7,6 +7,10 @@ public class GameUI : MonoBehaviour {
 
 	public CanvasGroup waveHUD, waveEndHUD;
 
+	public Image healthForeground, healthBackground;
+
+	public Animation hurtOverlay;
+
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
 		EventManager.OnButtonClick += OnButtonClick;
@@ -23,6 +27,7 @@ public class GameUI : MonoBehaviour {
 	void Start()
 	{
 		Toggle(false);
+		healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
 	}
 
 	void OnGameEvent(EventID id)
@@ -42,7 +47,19 @@ public class GameUI : MonoBehaviour {
 				StartCoroutine("IShowWaveEndHUD");
 				break;
 			}
+
+			case EventID.PLAYER_HURT:
+			{
+				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
+				hurtOverlay.Play();
+				break;
+			}
 		}
+	}
+
+	void Update()
+	{
+		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
 	}
 
 	void OnStateChange(State s)

@@ -50,6 +50,10 @@ public class DragSnapHandler : MonoBehaviour {
 
 		if (Input.GetMouseButton(0))
 		{
+			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+			{
+				return;
+			}
 			Control();
 
 			Camera.main.transform.position += new Vector3(0, 0, -rotationMovement);

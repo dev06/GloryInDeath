@@ -26,6 +26,11 @@ public class CharacterAttributes
 	public float armor;
 	public float damage;
 
+	public CharacterAttributes()
+	{
+
+	}
+
 	public CharacterAttributes(CharacterType type, float health, float speed, float armor, float damage)
 	{
 		this.health = health;
@@ -103,6 +108,13 @@ public class PlayerController : MonoBehaviour {
 	public bool withinEnemyRange;
 	private Enemy contactingEnemy;
 
+	private CharacterAttributes defaultAttriubtes;
+	[HideInInspector]
+	public bool lockMovement;
+
+	private bool damageTaken;
+	private float damageTakenCoolDown;
+
 	void Awake()
 	{
 		if (Instance == null)
@@ -124,10 +136,22 @@ public class PlayerController : MonoBehaviour {
 
 	void Start ()
 	{
+		defaultAttriubtes = new CharacterAttributes();
 	}
 
 	void Update () {
 
+		if (GameController.state != State.GAME) return;
+
+		if (damageTaken)
+		{
+			damageTakenCoolDown += Time.deltaTime;
+			if (damageTakenCoolDown > 1.5f)
+			{
+				damageTaken = false;
+				damageTakenCoolDown = 0;
+			}
+		}
 	}
 
 
@@ -155,6 +179,13 @@ public class PlayerController : MonoBehaviour {
 			}
 
 		}
+
+		if (defaultAttriubtes == null)
+		{
+			defaultAttriubtes = new CharacterAttributes();
+		}
+
+		defaultAttriubtes.SetAttributes(attributes);
 	}
 
 
@@ -183,6 +214,37 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
+
+
+	void OnCollisionEnter(Collision col)
+	{
+
+	}
+
+	public void TakeDamage(float damage)
+	{
+		attributes.health -= damage;
+
+		if (attributes.health <= 0)
+		{
+			LockMovement = true;
+			StopCoroutine("IOnDeath");
+			StartCoroutine("IOnDeath");
+		}
+
+		if (EventManager.OnGameEvent != null)
+		{
+			EventManager.OnGameEvent(EventID.PLAYER_HURT);
+		}
+	}
+
+
+	IEnumerator IOnDeath()
+	{
+		GetComponent<MeshRenderer>().enabled = false;
+		yield return new WaitForSeconds(1f);
+		GameController.Instance.Reload();
+	}
 	public float Speed
 	{
 		get { return attributes.speed;}
@@ -195,8 +257,32 @@ public class PlayerController : MonoBehaviour {
 		{
 			withinEnemyRange = true;
 			contactingEnemy = col.gameObject.transform.GetComponent<Enemy>();
+
+			if (!damageTaken)
+			{
+				TakeDamage(.5f);
+				damageTaken = true;
+			}
 		}
 
+
+	}
+
+	public bool LockMovement
+	{
+		get {
+			return lockMovement;
+		}
+
+		set { this.lockMovement = value; }
+	}
+
+	public float HealthRatio
+	{
+		get {
+
+			return attributes.health / defaultAttriubtes.health;
+		}
 	}
 
 	void OnCollisionExit(Collision col)

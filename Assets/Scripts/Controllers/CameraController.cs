@@ -15,13 +15,19 @@ public class CameraController : MonoBehaviour {
 
 	public Light directionalLight;
 
+	public float distanceOffset = 0;
+
 	private Transform playerTransform;
 
 	private Vector3 defaultPosition;
 
 	private Vector3 targetPosition;
 
+	private Quaternion targetRotation;
+
 	public CameraGameTransform cameraGameTransform;
+
+	private bool unlockControls;
 
 	void OnEnable()
 	{
@@ -58,14 +64,20 @@ public class CameraController : MonoBehaviour {
 
 		if (s == State.GAME)
 		{
-
-			transform.position = cameraGameTransform.position;
-
-			defaultPosition = transform.position;
+			GetComponent<Animation>().Play();
 
 			transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
-
 		}
+	}
+
+	public void OnCameraIntroFinished()
+	{
+		targetPosition = cameraGameTransform.position;
+		targetRotation = Quaternion.Euler(cameraGameTransform.rotation);
+
+		defaultPosition = transform.position;
+
+		unlockControls = true;
 	}
 
 	void Start ()
@@ -79,13 +91,18 @@ public class CameraController : MonoBehaviour {
 
 		if (GameController.state != State.GAME) { return; }
 
-		Vector3 raw =  defaultPosition + playerTransform.position;
+		if (!unlockControls) return;
 
+		Vector3 raw =  defaultPosition + new Vector3(playerTransform.position.x, 0, playerTransform.position.z) + new Vector3(0, 0, distanceOffset);
 		raw.z = Mathf.Clamp(raw.z, -17f, raw.z);
+		targetPosition = raw;
 
-		transform.position = raw;
+		Vector3 relativePos = playerTransform.position - transform.position;
+		Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+		targetRotation = rotation;
 
-		transform.LookAt(playerTransform.position);
+		transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 5f);
+		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{

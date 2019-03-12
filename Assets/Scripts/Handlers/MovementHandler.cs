@@ -17,6 +17,8 @@ public class MovementHandler : MonoBehaviour {
 	void FixedUpdate ()
 	{
 
+		if (playerController.LockMovement) return;
+
 		if (leftController.GetLastTouchVector.magnitude != 0)
 		{
 			transform.forward = new Vector3(leftController.GetLastTouchVector.x, 0 , leftController.GetLastTouchVector.y);
