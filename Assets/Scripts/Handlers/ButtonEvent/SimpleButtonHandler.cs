@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 public enum ButtonID
 {
 	NONE,
@@ -24,7 +24,7 @@ public struct Interact
 	public bool bubble;
 	public bool press;
 }
-public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler {
 
 	public ButtonID buttonID;
 
@@ -41,6 +41,12 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 		{
 			GetComponent<Animation>().Play();
 		}
+	}
+
+	IEnumerator IReset()
+	{
+		yield return new WaitForEndOfFrame();
+		GetComponent<Shadow>().enabled = true;
 	}
 
 	public virtual void OnPointerEnter(PointerEventData data)
@@ -65,6 +71,12 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 			StopCoroutine("ILerp");
 			StartCoroutine("ILerp", Vector3.one);
 		}
+	}
+
+
+	public virtual void OnPointerUp(PointerEventData data)
+	{
+
 	}
 
 	IEnumerator ILerp(Vector3 targetScale)

@@ -60,11 +60,14 @@ public class DragSnapHandler : MonoBehaviour {
 		}
 		else if (Input.GetMouseButtonUp(0))
 		{
-			if (rotationMovement > 0)
+			float threshold = .05f;
+			float adjustedMovement = rotationMovement * 10f;
+
+			if (adjustedMovement > threshold)
 			{
 				selectedIndex--;
 
-			} else if (rotationMovement < 0)
+			} else if (adjustedMovement < -threshold)
 			{
 				selectedIndex++;
 			}
@@ -79,6 +82,8 @@ public class DragSnapHandler : MonoBehaviour {
 			{
 				characterModels.GetChild(selectedIndex).GetComponent<CharacterModel>().Hover();
 			}
+
+			rotationMovement = 0;
 
 			StopCoroutine("ISnapPosition");
 

@@ -9,7 +9,7 @@ public class GameUI : MonoBehaviour {
 
 	public Image healthForeground, healthBackground;
 
-	public Animation hurtOverlay;
+	public Animation hurtOverlay, fade;
 
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
@@ -69,6 +69,7 @@ public class GameUI : MonoBehaviour {
 			case State.GAME:
 			{
 				Toggle(true);
+				fade.Play();
 				break;
 			}
 		}

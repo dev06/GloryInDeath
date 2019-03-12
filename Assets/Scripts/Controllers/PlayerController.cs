@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 
-		if (GameController.state != State.GAME) return;
+		if (GameController.state != State.GAME) { return; }
 
 		if (damageTaken)
 		{
