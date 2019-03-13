@@ -24,7 +24,11 @@ public class WaveController : MonoBehaviour {
 
 	private int currentEnemyIndex;
 
+	private int goldCollected;
+
 	private bool waveEnded;
+
+	private int enemySpawnDelay = 2;
 
 	void OnEnable()
 	{
@@ -58,6 +62,7 @@ public class WaveController : MonoBehaviour {
 	private IEnumerator IStartNextWave()
 	{
 		yield return new WaitForSeconds(.5f);
+
 		wave++;
 
 		InitializeWave();
@@ -79,7 +84,7 @@ public class WaveController : MonoBehaviour {
 
 			SpawnNextEnemy();
 
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(enemySpawnDelay);
 
 			if (currentEnemyIndex == enemyList.Count - 1)
 			{
@@ -133,10 +138,13 @@ public class WaveController : MonoBehaviour {
 		if (enemyList[currentEnemyIndex].IsMoving) return;
 
 		enemyList[currentEnemyIndex].transform.position = GetSpawnLocation();
+
 		enemyList[currentEnemyIndex].Move();
+
 		enemyList[currentEnemyIndex].transform.gameObject.SetActive(true);
 
 		currentEnemyIndex++;
+
 		if (currentEnemyIndex > enemyList.Count - 1)
 		{
 			currentEnemyIndex = enemyList.Count - 1;
@@ -174,6 +182,7 @@ public class WaveController : MonoBehaviour {
 						EventManager.OnGameEvent(EventID.WAVE_END);
 					}
 				}
+
 				break;
 			}
 		}
@@ -216,20 +225,18 @@ public class WaveController : MonoBehaviour {
 		}
 	}
 
+	public int GoldCollected
+	{
+		get
+		{
+			return goldCollected;
+		}
+
+		set { this.goldCollected = value; }
+	}
 
 	IEnumerator IResetEnemyParent()
 	{
-
-
-		// while (enemyWaveTransform.childCount > 0)
-		// {
-		// 	enemyWaveTransform.GetChild(0).transform.SetParent(GetParentTransform(enemyWaveTransform.GetChild(0).GetComponent<Enemy>().defaultAttributes.type));
-
-		// 	yield return null;
-		// }
-
-
 		yield return new WaitForSeconds(2);
-		//InitializeWave();
 	}
 }

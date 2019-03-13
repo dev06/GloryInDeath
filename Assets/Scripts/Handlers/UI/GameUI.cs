@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class GameUI : MonoBehaviour {
 
 
@@ -9,7 +10,10 @@ public class GameUI : MonoBehaviour {
 
 	public Image healthForeground, healthBackground;
 
-	public Animation hurtOverlay, fade;
+	public Animation hurtOverlay, fade, goldCollectedAnimation;
+
+	public TextMeshProUGUI goldCollected;
+
 
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
@@ -28,6 +32,7 @@ public class GameUI : MonoBehaviour {
 	{
 		Toggle(false);
 		healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
+		goldCollected.text = 0 + "";
 	}
 
 	void OnGameEvent(EventID id)
@@ -52,6 +57,14 @@ public class GameUI : MonoBehaviour {
 			{
 				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
 				hurtOverlay.Play();
+				break;
+			}
+
+			case EventID.ENEMY_KILLED:
+			{
+				WaveController.Instance.GoldCollected += 5;
+				goldCollected.text = WaveController.Instance.GoldCollected + "";
+				goldCollectedAnimation.Play();
 				break;
 			}
 		}

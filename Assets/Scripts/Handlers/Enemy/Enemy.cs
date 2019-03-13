@@ -107,23 +107,23 @@ public class Enemy: MonoBehaviour
 	public void TakeDamage(float damage)
 	{
 		attributes.health -= damage;
+
 		if (isDead())
 		{
-
 			hurtParticles.Play();
+
 			Reset();
+
 			return;
 		}
 
 		hurtParticles.Play();
-
-
-
 	}
 
 	private void ToggleSkin(bool b)
 	{
 		GetComponent<MeshRenderer>().enabled = b;
+		GetComponent<BoxCollider>().enabled = b;
 	}
 
 	public void Reset()
@@ -131,6 +131,11 @@ public class Enemy: MonoBehaviour
 		move = false;
 		WaveController.Instance.ResetEnemyParent(this);
 		transform.gameObject.SetActive(false);
+	}
+
+	public EnemyAttributes Attributes
+	{
+		get {return attributes;}
 	}
 
 	public bool isDead()

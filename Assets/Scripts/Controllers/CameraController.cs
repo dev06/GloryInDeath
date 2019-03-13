@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour {
 
 	public CameraGameTransform cameraGameTransform;
 
+	private Canvas csCanvas;
+
 	private bool unlockControls;
 
 	void OnEnable()
@@ -52,16 +54,18 @@ public class CameraController : MonoBehaviour {
 	public void Init()
 	{
 		playerTransform = FindObjectOfType<MovementHandler>().transform;
+
+		if (csCanvas == null)
+		{
+			csCanvas = transform.GetChild(0).GetComponent<Canvas>();
+		}
+
+		csCanvas.enabled = false;
+
 	}
 
 	void OnStateChange(State s)
 	{
-
-		// if (csCanvas == null)
-		// {
-		// 	csCanvas = transform.GetChild(0).GetComponent<Canvas>();
-		// }
-
 		if (s == State.GAME)
 		{
 			GetComponent<Animation>().Play();

@@ -146,6 +146,7 @@ public class PlayerController : MonoBehaviour {
 		if (damageTaken)
 		{
 			damageTakenCoolDown += Time.deltaTime;
+
 			if (damageTakenCoolDown > 1.5f)
 			{
 				damageTaken = false;
@@ -198,6 +199,10 @@ public class PlayerController : MonoBehaviour {
 				if (withinEnemyRange && contactingEnemy != null)
 				{
 					contactingEnemy.TakeDamage(attributes.Damage);
+					if (contactingEnemy.Attributes.health <= 0)
+					{
+						contactingEnemy = null;
+					}
 					CameraController.Instance.TriggerShake(.2f);
 				}
 				break;
@@ -209,6 +214,10 @@ public class PlayerController : MonoBehaviour {
 				{
 					contactingEnemy.TakeDamage(attributes.Damage * 2f);
 					CameraController.Instance.TriggerShake(.2f);
+					if (contactingEnemy.Attributes.health <= 0)
+					{
+						contactingEnemy = null;
+					}
 				}
 				break;
 			}
@@ -218,7 +227,11 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{
+		if (col.gameObject.tag == "Entity/Enemy")
+		{
+			contactingEnemy = col.gameObject.transform.GetComponent<Enemy>();
 
+		}
 	}
 
 	public void TakeDamage(float damage)
