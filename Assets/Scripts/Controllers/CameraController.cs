@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityStandardAssets.ImageEffects;
 [System.Serializable]
 public struct CameraGameTransform
 {
@@ -31,13 +31,19 @@ public class CameraController : MonoBehaviour {
 
 	private bool unlockControls;
 
+	private BlurOptimized blur;
+
+	private float endRotationVelocity;
+
 	void OnEnable()
 	{
 		EventManager.OnStateChange += OnStateChange;
+		EventManager.OnGameEvent += OnGameEvent;
 	}
 	void OnDisable()
 	{
 		EventManager.OnStateChange -= OnStateChange;
+		EventManager.OnGameEvent -= OnGameEvent;
 	}
 	void Awake()
 	{
@@ -60,8 +66,25 @@ public class CameraController : MonoBehaviour {
 			csCanvas = transform.GetChild(0).GetComponent<Canvas>();
 		}
 
+		blur = GetComponent<BlurOptimized>();
+
 		csCanvas.enabled = false;
 
+	}
+
+	bool waveEnded;
+
+	void OnGameEvent(EventID id)
+	{
+		switch (id)
+		{
+			case EventID.WAVE_END:
+			{
+				waveEnded = true;
+				endRotationVelocity = (Random.Range(0, 2) == 0 ? -5f : 5f);
+				break;
+			}
+		}
 	}
 
 	void OnStateChange(State s)
@@ -105,8 +128,15 @@ public class CameraController : MonoBehaviour {
 		Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
 		targetRotation = rotation;
 
-		transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 5f);
-		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+		if (!waveEnded)
+		{
+			transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 2f);
+			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
+		}
+		else
+		{
+			transform.RotateAround(playerTransform.position, Vector3.up, Time.deltaTime * endRotationVelocity);
+		}
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
@@ -134,6 +164,12 @@ public class CameraController : MonoBehaviour {
 
 		StopCoroutine("ITriggerJitter");
 	}
+
+	public void ToggleBlur(bool b)
+	{
+		blur.enabled = b;
+	}
+
 
 
 	public void SetTargetPosition(Vector3 position)

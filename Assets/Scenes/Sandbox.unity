@@ -112,7 +112,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 7bc051324fdb4c14c9e00c65b41699f5, type: 2}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +179,179 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &313623120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 313623124}
+  - component: {fileID: 313623123}
+  - component: {fileID: 313623122}
+  - component: {fileID: 313623121}
+  m_Layer: 0
+  m_Name: Easy Save 3 Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &313623121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 313623120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107aee0ced90422da95f0b31680501f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: ad052372-5838-43d6-8dd8-58370ef914a1
+  saveEvent: 1
+  loadEvent: 1
+  settings:
+    _location: 0
+    path: SaveData.es3
+    encryptionType: 0
+    encryptionPassword: password
+    directory: 0
+    format: 0
+    bufferSize: 2048
+    typeChecking: 1
+    safeReflection: 1
+    memberReferenceMode: 0
+    referenceMode: 2
+    assemblyNames:
+    - Assembly-CSharp
+    - Assembly-CSharp-firstpass
+    showAdvancedSettings: 0
+  autoSaves: []
+--- !u!114 &313623122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 313623120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a83408fcc9044c4fbc7e5d09a369ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openReferences: 0
+  openPrefabs: 0
+  idRef:
+    _Keys: 00a5c1cec02d697609688a011c8baa109489ca94a79ace7d82b3534b1e98e943b6a8ca60a64d466da2f25aada4903c7cd98adef3b4fd9f5bb68a635b4990be63097d5cc92f3b4c109eaa8c64b033e3260137183db1a67a199e4d03dc1d0b204eab4fdfbf1ff7664d74e9f40d50b929302ab05f26adc98344d10cea701c55a914207658be849d502f9f376328acbc621c85080d5210355a6892aae72184fc625bd3a9e7a547b1163a017cd002fcc93c6ff5f3f0aefbeccd41595d55b1f1ff2032549b0d7907d46718cb8177471458db6d4f895096c016196bc144d09f615e2a1746517944de954a635d98a29bd448d7121d998190617e5d6bab43003d092d312ddb215a867b6d69619549ead04a65f12ccdf2cf7a2ca6ae1ebb582861470e266625b2367f6bdc82217df800cf384b7d7ad246fbf2b5d66423cec8de658ee24125ddb8032e39d53852df7680c50e284668749f7c1d80bbdb4b72107d66eaa8a62ad87750fe5aa5c03abc9a6fd25620fe19a83217d70767804e1e7422c5856d6e19cee4cb1e81989871f64a05a8b473cb40d00d7750d2ec660fab6b333c2427a1496e4627002a8d1b68610a5fb79493e70f1e8df8c19196ba7c53114581c3268d711804b60221c8a63f1215a7efa52fab261921f7a2647abc20a3d449d2511cf15e1b755e833817bb45f6bd0579ed7c072d4d571dcfe27dc11323c2c14bbf35d206559ddced46bcd704ffc2391784e0204cc01b89ff80f58e7c2aca571dcd8aae0e3043f051d0f6510f0841343bc06df00a556e73284bfc5d15bce8dd387b8bc01f8a5b6268c7d94d031a0c862bfe19b840863ffa050539cf4f82ec14c7d9a2896eed19d020b7883577
+    _Values:
+    - {fileID: 1161061051}
+    - {fileID: 1602313824}
+    - {fileID: 1963143474}
+    - {fileID: 650061991}
+    - {fileID: 1481437246}
+    - {fileID: 688166573}
+    - {fileID: 1081662405}
+    - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 11500000, guid: af66233462ff98f4f996a1377bd8c685, type: 3}
+    - {fileID: 170076733}
+    - {fileID: 170076735}
+    - {fileID: 170076734}
+    - {fileID: 534669902}
+    - {fileID: 534669905}
+    - {fileID: 534669904}
+    - {fileID: 534669903}
+    - {fileID: 650061987}
+    - {fileID: 650061988}
+    - {fileID: 650061990}
+    - {fileID: 650061989}
+    - {fileID: 650061993}
+    - {fileID: 2035909350}
+    - {fileID: 688166570}
+    - {fileID: 688166574}
+    - {fileID: 688166572}
+    - {fileID: 688166571}
+    - {fileID: 1081662401}
+    - {fileID: 1081662402}
+    - {fileID: 1081662404}
+    - {fileID: 1081662403}
+    - {fileID: 1161061047}
+    - {fileID: 1161061048}
+    - {fileID: 1161061050}
+    - {fileID: 1161061049}
+    - {fileID: 1481437242}
+    - {fileID: 1481437243}
+    - {fileID: 1481437245}
+    - {fileID: 1481437244}
+    - {fileID: 1602313821}
+    - {fileID: 1602313825}
+    - {fileID: 1602313823}
+    - {fileID: 1602313822}
+    - {fileID: 1602313826}
+    - {fileID: 1963143470}
+    - {fileID: 1963143471}
+    - {fileID: 1963143473}
+    - {fileID: 1963143472}
+    - {fileID: 2035909349}
+    - {fileID: 6, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 11500000, guid: 8c0e62ed4bb92fb468e42dffc977664c, type: 3}
+    - {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 2100000, guid: 3874b703d36f0c6419d1c8661fdc0f64, type: 2}
+    - {fileID: 2100000, guid: 36ce9144ea14f26478131904b6853c13, type: 2}
+    - {fileID: 2100000, guid: a0c18ffad0478ad459c8ad91eab735d8, type: 2}
+    - {fileID: 2100000, guid: d8d3b96c68822a9448aead53b0cdddb1, type: 2}
+    - {fileID: 2100000, guid: e05baa53a03d68e4a9cf193cdda271cf, type: 2}
+    - {fileID: 2100000, guid: 0ee428b62f37dde41be8e3d0a5a79197, type: 2}
+    - {fileID: 2100000, guid: 77faf2b1524f91c49808db35b3b7db51, type: 2}
+    - {fileID: 2100000, guid: 6ebb259de31f2da4d8e26339f7eea9f1, type: 2}
+    - {fileID: 650061992}
+    - {fileID: 1081662406}
+    - {fileID: 1161061052}
+    - {fileID: 1481437247}
+    - {fileID: 1963143475}
+    - {fileID: 11500000, guid: 6e70a06fa964f1540b50e90871ca44fd, type: 3}
+    - {fileID: 11500000, guid: 9a83408fcc9044c4fbc7e5d09a369ab6, type: 3}
+    - {fileID: 11500000, guid: 8714d999c5ae749538494c1347e5a3ca, type: 3}
+    - {fileID: 11500000, guid: 9107aee0ced90422da95f0b31680501f, type: 3}
+    - {fileID: 1342608615}
+    - {fileID: 1342608619}
+    - {fileID: 1342608618}
+    - {fileID: 1342608617}
+    - {fileID: 1342608616}
+    - {fileID: 1081662407}
+    - {fileID: 11500000, guid: 7a070b396c7acf341b6070408fc714c6, type: 3}
+  prefabs: []
+--- !u!114 &313623123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 313623120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8714d999c5ae749538494c1347e5a3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: 'The Easy Save 3 Manager is required in any scenes which use Easy Save,
+    and is automatically added to your scene when you enter Play mode.
+
+
+    To stop this from automatically being added to your scene, go to ''Window > Easy
+    Save 3 > Settings'' and deselect the ''Auto Add Manager to Scene'' checkbox.'
+--- !u!4 &313623124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 313623120}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +440,8 @@ GameObject:
   - component: {fileID: 650061991}
   - component: {fileID: 650061990}
   - component: {fileID: 650061989}
+  - component: {fileID: 650061993}
+  - component: {fileID: 650061992}
   m_Layer: 0
   m_Name: EnemyChase
   m_TagString: Untagged
@@ -342,6 +517,40 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 650061987}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &650061992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 650061987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e70a06fa964f1540b50e90871ca44fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1602313825}
+  color: {fileID: 2100000, guid: 0ee428b62f37dde41be8e3d0a5a79197, type: 2}
+--- !u!195 &650061993
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 650061987}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &688166570
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +567,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!64 &688166571
 MeshCollider:
@@ -440,6 +649,8 @@ GameObject:
   - component: {fileID: 1081662405}
   - component: {fileID: 1081662404}
   - component: {fileID: 1081662403}
+  - component: {fileID: 1081662406}
+  - component: {fileID: 1081662407}
   m_Layer: 0
   m_Name: EnemyShoot
   m_TagString: Untagged
@@ -515,6 +726,40 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1081662401}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!195 &1081662406
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1081662401}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1081662407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1081662401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a070b396c7acf341b6070408fc714c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1602313825}
+  color: {fileID: 2100000, guid: 3874b703d36f0c6419d1c8661fdc0f64, type: 2}
 --- !u!1 &1161061047
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +771,7 @@ GameObject:
   - component: {fileID: 1161061051}
   - component: {fileID: 1161061050}
   - component: {fileID: 1161061049}
+  - component: {fileID: 1161061052}
   m_Layer: 0
   m_Name: EnemyPush
   m_TagString: Untagged
@@ -601,6 +847,181 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1161061047}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!195 &1161061052
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1161061047}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!1 &1342608615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1342608619}
+  - component: {fileID: 1342608618}
+  - component: {fileID: 1342608617}
+  - component: {fileID: 1342608616}
+  m_Layer: 0
+  m_Name: Easy Save 3 Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1342608616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342608615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107aee0ced90422da95f0b31680501f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 5eb1f8f0-4145-454e-9347-ddc55f4b67cb
+  saveEvent: 1
+  loadEvent: 1
+  settings:
+    _location: 0
+    path: SaveData.es3
+    encryptionType: 0
+    encryptionPassword: password
+    directory: 0
+    format: 0
+    bufferSize: 2048
+    typeChecking: 1
+    safeReflection: 1
+    memberReferenceMode: 0
+    referenceMode: 2
+    assemblyNames:
+    - Assembly-CSharp
+    - Assembly-CSharp-firstpass
+    showAdvancedSettings: 0
+  autoSaves: []
+--- !u!114 &1342608617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342608615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a83408fcc9044c4fbc7e5d09a369ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openReferences: 0
+  openPrefabs: 0
+  idRef:
+    _Keys: 7ff72da7f05b073ffb73fdb54e57b978b309b75597c04d731fd9bc3f1dbfb035c52481c8f1ac0f7b92a122a3adf1d44515cf70457a1bd148340825276a5b307fe25b93abaac7a46c0a171aaebacd5e2aa7b319f555550544432534460247d624ad39be5baba1a43ed743d47b3a83bc113aff0ddca617574351a512b1e4fc374940d7d93e92da6e4812e6fdce03e3637a8925a74cd32da3097a9535ea347eac71cf1182947f27524076e7355a43299f47e1571830cf4a094ea6ebc1265a959b526f1599a99f3ada42fa019afb0312ec2b3d21ab5bd8420c207e68d2d73973e534e136f53e2db1334a1bf7857371c741386c5954825c286c3acd9d4c9ef3d7f144e7a3768fa025ea0472fb50a461ca7244346f23d766bc2626e3674a42ada7ca16957f3be9d6f3552724e45f84c1b0130d451bab4fd6b5852fc70934750421a64ad66b45dd09c13026d6f7d3e81a8e5f12d1ab88dd5413424b572f5b07156c0801ba5658aacaa26c574900c6f96072ed7ba19c2ef4c8ecac284f107aa00972452dbe2b50ec102eff55b5daf4b623d0072ee14a8d746396bc1869d3a6226dc2a80b4c5e12e86a417c72bce3675489166b36a9a6fae7048385358950000766be2d42e0efb130b80f3d56a3e67a7c91399232
+    _Values:
+    - {fileID: 650061991}
+    - {fileID: 1161061051}
+    - {fileID: 1602313824}
+    - {fileID: 1481437246}
+    - {fileID: 1963143474}
+    - {fileID: 6, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 11500000, guid: af66233462ff98f4f996a1377bd8c685, type: 3}
+    - {fileID: 688166573}
+    - {fileID: 1081662405}
+    - {fileID: 534669904}
+    - {fileID: 650061990}
+    - {fileID: 650061989}
+    - {fileID: 2035909350}
+    - {fileID: 688166570}
+    - {fileID: 688166574}
+    - {fileID: 688166572}
+    - {fileID: 688166571}
+    - {fileID: 1081662401}
+    - {fileID: 1081662402}
+    - {fileID: 1081662404}
+    - {fileID: 1081662403}
+    - {fileID: 1161061047}
+    - {fileID: 1161061048}
+    - {fileID: 1161061050}
+    - {fileID: 1161061049}
+    - {fileID: 1481437242}
+    - {fileID: 1481437243}
+    - {fileID: 1481437245}
+    - {fileID: 1481437244}
+    - {fileID: 1602313821}
+    - {fileID: 1602313825}
+    - {fileID: 1602313823}
+    - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 1602313822}
+    - {fileID: 1602313826}
+    - {fileID: 1963143470}
+    - {fileID: 1963143471}
+    - {fileID: 1963143473}
+    - {fileID: 1963143472}
+    - {fileID: 2035909349}
+    - {fileID: 2100000, guid: 3874b703d36f0c6419d1c8661fdc0f64, type: 2}
+    - {fileID: 2100000, guid: 0ee428b62f37dde41be8e3d0a5a79197, type: 2}
+    - {fileID: 2100000, guid: e05baa53a03d68e4a9cf193cdda271cf, type: 2}
+    - {fileID: 534669903}
+    - {fileID: 650061987}
+    - {fileID: 650061988}
+    - {fileID: 170076733}
+    - {fileID: 170076735}
+    - {fileID: 170076734}
+    - {fileID: 534669902}
+    - {fileID: 534669905}
+    - {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+    - {fileID: 2100000, guid: d8d3b96c68822a9448aead53b0cdddb1, type: 2}
+    - {fileID: 2100000, guid: a0c18ffad0478ad459c8ad91eab735d8, type: 2}
+    - {fileID: 2100000, guid: 36ce9144ea14f26478131904b6853c13, type: 2}
+    - {fileID: 2100000, guid: 77faf2b1524f91c49808db35b3b7db51, type: 2}
+  prefabs: []
+--- !u!114 &1342608618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342608615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8714d999c5ae749538494c1347e5a3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: 'The Easy Save 3 Manager is required in any scenes which use Easy Save,
+    and is automatically added to your scene when you enter Play mode.
+
+
+    To stop this from automatically being added to your scene, go to ''Window > Easy
+    Save 3 > Settings'' and deselect the ''Auto Add Manager to Scene'' checkbox.'
+--- !u!4 &1342608619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342608615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1481437242
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,6 +1033,7 @@ GameObject:
   - component: {fileID: 1481437246}
   - component: {fileID: 1481437245}
   - component: {fileID: 1481437244}
+  - component: {fileID: 1481437247}
   m_Layer: 0
   m_Name: EnemyTrap
   m_TagString: Untagged
@@ -687,6 +1109,27 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1481437242}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!195 &1481437247
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1481437242}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1602313821
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +1210,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1602313821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 11.71, y: 0.5, z: 10.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -798,6 +1241,7 @@ GameObject:
   - component: {fileID: 1963143474}
   - component: {fileID: 1963143473}
   - component: {fileID: 1963143472}
+  - component: {fileID: 1963143475}
   m_Layer: 0
   m_Name: EnemyCaster
   m_TagString: Untagged
@@ -873,6 +1317,27 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1963143470}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!195 &1963143475
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1963143470}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2035909349
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using TMPro;
 public class GameUI : MonoBehaviour {
 
 
-	public CanvasGroup waveHUD, waveEndHUD;
+	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD;
 
 	public Image healthForeground, healthBackground;
 
@@ -50,6 +50,7 @@ public class GameUI : MonoBehaviour {
 			{
 				StopCoroutine("IShowWaveEndHUD");
 				StartCoroutine("IShowWaveEndHUD");
+
 				break;
 			}
 
@@ -82,7 +83,7 @@ public class GameUI : MonoBehaviour {
 			case State.GAME:
 			{
 				Toggle(true);
-				fade.Play();
+				fade.Play("fade_in");
 				break;
 			}
 		}
@@ -118,6 +119,12 @@ public class GameUI : MonoBehaviour {
 
 	IEnumerator IShowWaveEndHUD()
 	{
+		CameraController.Instance.ToggleBlur(true);
+
+		virtualJoyStickHUD.alpha = 0f;
+
+		virtualJoyStickHUD.blocksRaycasts = false;
+
 		waveEndHUD.alpha = 1f;
 
 		waveEndHUD.blocksRaycasts = true;
@@ -132,6 +139,8 @@ public class GameUI : MonoBehaviour {
 
 			yield return null;
 		}
+
+		fade.Play("fade_out");
 
 		waveEndHUD.alpha = 0f;
 
