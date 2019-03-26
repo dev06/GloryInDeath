@@ -1,0 +1,977 @@
+fileFormatVersion: 2
+guid: bfc1ce7d7c3fd4fe498e4849d4f594d8
+labels:
+- fantasy
+- monster
+- pack
+- charater
+- shield
+timeCreated: 1458206614
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Shield_3
+    100004: Shield_3 1
+    100006: Shield_3 Footsteps
+    100008: Shield_3 Head
+    100010: Shield_3 HeadNub
+    100012: Shield_3 L Calf
+    100014: Shield_3 L Clavicle
+    100016: Shield_3 L Finger0
+    100018: Shield_3 L Finger01
+    100020: Shield_3 L Finger02
+    100022: Shield_3 L Finger0Nub
+    100024: Shield_3 L Finger1
+    100026: Shield_3 L Finger11
+    100028: Shield_3 L Finger12
+    100030: Shield_3 L Finger1Nub
+    100032: Shield_3 L Finger2
+    100034: Shield_3 L Finger21
+    100036: Shield_3 L Finger22
+    100038: Shield_3 L Finger2Nub
+    100040: Shield_3 L Finger3
+    100042: Shield_3 L Finger31
+    100044: Shield_3 L Finger32
+    100046: Shield_3 L Finger3Nub
+    100048: Shield_3 L Finger4
+    100050: Shield_3 L Finger41
+    100052: Shield_3 L Finger42
+    100054: Shield_3 L Finger4Nub
+    100056: Shield_3 L Foot
+    100058: Shield_3 L Forearm
+    100060: Shield_3 L Hand
+    100062: Shield_3 L Thigh
+    100064: Shield_3 L Toe0
+    100066: Shield_3 L Toe01
+    100068: Shield_3 L Toe02
+    100070: Shield_3 L Toe0Nub
+    100072: Shield_3 L UpperArm
+    100074: Shield_3 Neck
+    100076: Shield_3 Pelvis
+    100078: Shield_3 R Calf
+    100080: Shield_3 R Clavicle
+    100082: Shield_3 R Finger0
+    100084: Shield_3 R Finger01
+    100086: Shield_3 R Finger02
+    100088: Shield_3 R Finger0Nub
+    100090: Shield_3 R Finger1
+    100092: Shield_3 R Finger11
+    100094: Shield_3 R Finger12
+    100096: Shield_3 R Finger1Nub
+    100098: Shield_3 R Finger2
+    100100: Shield_3 R Finger21
+    100102: Shield_3 R Finger22
+    100104: Shield_3 R Finger2Nub
+    100106: Shield_3 R Finger3
+    100108: Shield_3 R Finger31
+    100110: Shield_3 R Finger32
+    100112: Shield_3 R Finger3Nub
+    100114: Shield_3 R Finger4
+    100116: Shield_3 R Finger41
+    100118: Shield_3 R Finger42
+    100120: Shield_3 R Finger4Nub
+    100122: Shield_3 R Foot
+    100124: Shield_3 R Forearm
+    100126: Shield_3 R Hand
+    100128: Shield_3 R Thigh
+    100130: Shield_3 R Toe0
+    100132: Shield_3 R Toe01
+    100134: Shield_3 R Toe02
+    100136: Shield_3 R Toe0Nub
+    100138: Shield_3 R UpperArm
+    100140: Shield_3 Spine
+    400000: //RootNode
+    400002: Shield_3
+    400004: Shield_3 1
+    400006: Shield_3 Footsteps
+    400008: Shield_3 Head
+    400010: Shield_3 HeadNub
+    400012: Shield_3 L Calf
+    400014: Shield_3 L Clavicle
+    400016: Shield_3 L Finger0
+    400018: Shield_3 L Finger01
+    400020: Shield_3 L Finger02
+    400022: Shield_3 L Finger0Nub
+    400024: Shield_3 L Finger1
+    400026: Shield_3 L Finger11
+    400028: Shield_3 L Finger12
+    400030: Shield_3 L Finger1Nub
+    400032: Shield_3 L Finger2
+    400034: Shield_3 L Finger21
+    400036: Shield_3 L Finger22
+    400038: Shield_3 L Finger2Nub
+    400040: Shield_3 L Finger3
+    400042: Shield_3 L Finger31
+    400044: Shield_3 L Finger32
+    400046: Shield_3 L Finger3Nub
+    400048: Shield_3 L Finger4
+    400050: Shield_3 L Finger41
+    400052: Shield_3 L Finger42
+    400054: Shield_3 L Finger4Nub
+    400056: Shield_3 L Foot
+    400058: Shield_3 L Forearm
+    400060: Shield_3 L Hand
+    400062: Shield_3 L Thigh
+    400064: Shield_3 L Toe0
+    400066: Shield_3 L Toe01
+    400068: Shield_3 L Toe02
+    400070: Shield_3 L Toe0Nub
+    400072: Shield_3 L UpperArm
+    400074: Shield_3 Neck
+    400076: Shield_3 Pelvis
+    400078: Shield_3 R Calf
+    400080: Shield_3 R Clavicle
+    400082: Shield_3 R Finger0
+    400084: Shield_3 R Finger01
+    400086: Shield_3 R Finger02
+    400088: Shield_3 R Finger0Nub
+    400090: Shield_3 R Finger1
+    400092: Shield_3 R Finger11
+    400094: Shield_3 R Finger12
+    400096: Shield_3 R Finger1Nub
+    400098: Shield_3 R Finger2
+    400100: Shield_3 R Finger21
+    400102: Shield_3 R Finger22
+    400104: Shield_3 R Finger2Nub
+    400106: Shield_3 R Finger3
+    400108: Shield_3 R Finger31
+    400110: Shield_3 R Finger32
+    400112: Shield_3 R Finger3Nub
+    400114: Shield_3 R Finger4
+    400116: Shield_3 R Finger41
+    400118: Shield_3 R Finger42
+    400120: Shield_3 R Finger4Nub
+    400122: Shield_3 R Foot
+    400124: Shield_3 R Forearm
+    400126: Shield_3 R Hand
+    400128: Shield_3 R Thigh
+    400130: Shield_3 R Toe0
+    400132: Shield_3 R Toe01
+    400134: Shield_3 R Toe02
+    400136: Shield_3 R Toe0Nub
+    400138: Shield_3 R UpperArm
+    400140: Shield_3 Spine
+    4300000: Shield_3
+    9500000: //RootNode
+    13700000: Shield_3
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human:
+    - boneName: Shield_3 Pelvis
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Thigh
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Thigh
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Calf
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Calf
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Foot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Foot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Clavicle
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Clavicle
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L UpperArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R UpperArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Forearm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Forearm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Hand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Hand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Toe0
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Toe0
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger0
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger01
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger02
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger1
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger11
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger12
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger2
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger21
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger22
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger3
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger31
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger32
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger4
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger41
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 L Finger42
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger0
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger01
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger02
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger1
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger11
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger12
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger2
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger21
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger22
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger3
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger31
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger32
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger4
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger41
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shield_3 R Finger42
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: shield3_NoAnim(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3
+      position: {x: 0, y: 0, z: 0.24344005}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 1
+      position: {x: 0, y: 4.186534, z: -0.00000008}
+      rotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 Footsteps
+      position: {x: -0, y: 0, z: -4.1428776}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 Pelvis
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 Spine
+      position: {x: -0.23018707, y: -0.0039981217, z: 0.00000032476788}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Thigh
+      position: {x: 0.23018402, y: 0.0041772122, z: 1.5838733}
+      rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+      scale: {x: 1.0000002, y: 1, z: 1.0000002}
+      transformModified: 1
+    - name: Shield_3 L Calf
+      position: {x: -0.3927588, y: 0, z: -0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 L Foot
+      position: {x: -3.0760088, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999976, y: 0.99999976, z: 0.9999994}
+      transformModified: 1
+    - name: Shield_3 L Toe0
+      position: {x: -0.7199948, y: 1.6834259, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Toe01
+      position: {x: -0.09391243, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Toe02
+      position: {x: -0.09391243, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 1.0000001, z: 1.0000002}
+      transformModified: 1
+    - name: Shield_3 L Toe0Nub
+      position: {x: -0.09391235, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1, y: -1, z: -1}
+      transformModified: 1
+    - name: Shield_3 R Thigh
+      position: {x: 0.23018402, y: 0.0041859983, z: -1.5838733}
+      rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+      scale: {x: 1.0000001, y: 1.0000001, z: 0.9999998}
+      transformModified: 1
+    - name: Shield_3 R Calf
+      position: {x: -0.3927588, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 R Foot
+      position: {x: -3.0760086, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999995, y: 0.99999964, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Toe0
+      position: {x: -0.7199948, y: 1.6834259, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Toe01
+      position: {x: -0.09391243, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Toe02
+      position: {x: -0.09391243, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Toe0Nub
+      position: {x: -0.09391235, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 Neck
+      position: {x: -5.0212774, y: -0.000520314, z: -0.0000000014431453}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 Head
+      position: {x: -0.65343624, y: 0, z: 2.2737367e-15}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 HeadNub
+      position: {x: -3.5839124, y: -0.00000030517577, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Clavicle
+      position: {x: -0.00000061035155, y: 0.0005173921, z: 1.4573251}
+      rotation: {x: 0.7071068, y: -0.000000030908623, z: -0.7071068, w: 0.000000030908623}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.99999994}
+      transformModified: 1
+    - name: Shield_3 L UpperArm
+      position: {x: -1.7719029, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1.0000002}
+      transformModified: 1
+    - name: Shield_3 L Forearm
+      position: {x: -3.3485942, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999976, y: 0.9999995, z: 0.99999946}
+      transformModified: 1
+    - name: Shield_3 L Hand
+      position: {x: -2.3153267, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+      scale: {x: 1, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Finger2
+      position: {x: -1.448255, y: -0.0002444458, z: -0.3071762}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 0.99999994}
+      transformModified: 1
+    - name: Shield_3 L Finger21
+      position: {x: -0.5611171, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000005}
+      transformModified: 1
+    - name: Shield_3 L Finger22
+      position: {x: -0.5611171, y: -0.00000030517577, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.9999998}
+      transformModified: 1
+    - name: Shield_3 L Finger2Nub
+      position: {x: -0.5611171, y: 0.00000030517577, z: -0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Finger0
+      position: {x: -0.34480652, y: 0.09423248, z: -0.8957831}
+      rotation: {x: 0, y: 0.3826835, z: 0, w: -0.9238795}
+      scale: {x: 1.0000004, y: 1.0000004, z: 0.9999992}
+      transformModified: 1
+    - name: Shield_3 L Finger01
+      position: {x: -0.93347013, y: -0.000000076293944, z: -0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 0.99999994, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 L Finger02
+      position: {x: -0.9404799, y: 0, z: -0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 0.99999994}
+      transformModified: 1
+    - name: Shield_3 L Finger0Nub
+      position: {x: -0.19565079, y: 0, z: 0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Finger3
+      position: {x: -1.448255, y: 0.0001586914, z: 0.19893356}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999998, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 L Finger31
+      position: {x: -0.5518379, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 L Finger32
+      position: {x: -0.5518379, y: 0.00000030517577, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 0.9999998, z: 1.0000004}
+      transformModified: 1
+    - name: Shield_3 L Finger3Nub
+      position: {x: -0.5518379, y: -0.00000030517577, z: -0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Finger4
+      position: {x: -1.448255, y: 0.0005932617, z: 0.744796}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999998, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 L Finger41
+      position: {x: -0.49170652, y: 0.00000030517577, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 L Finger42
+      position: {x: -0.49170685, y: 0, z: -0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 0.9999998, z: 1.0000004}
+      transformModified: 1
+    - name: Shield_3 L Finger4Nub
+      position: {x: -0.4917067, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 L Finger1
+      position: {x: -1.448255, y: -0.0006619262, z: -0.83141094}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999998, z: 1.0000001}
+      transformModified: 1
+    - name: Shield_3 L Finger11
+      position: {x: -0.53246826, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 L Finger12
+      position: {x: -0.53246796, y: 0, z: -0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 0.9999998, z: 1.0000004}
+      transformModified: 1
+    - name: Shield_3 L Finger1Nub
+      position: {x: -0.53246826, y: 0, z: -0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Clavicle
+      position: {x: -0.00000061035155, y: 0.0005254757, z: -1.4573251}
+      rotation: {x: 0.7071068, y: -0.000000030908623, z: 0.7071068, w: -0.000000030908623}
+      scale: {x: 0.99999976, y: 0.99999994, z: 0.99999994}
+      transformModified: 1
+    - name: Shield_3 R UpperArm
+      position: {x: -1.7719029, y: -1.4551915e-13, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000004}
+      transformModified: 1
+    - name: Shield_3 R Forearm
+      position: {x: -3.3485956, y: 0, z: -0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999964, y: 0.99999994, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 R Hand
+      position: {x: -2.3153272, y: -0.00000015258789, z: 0.00000030517577}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+      scale: {x: 0.9999999, y: 1.0000001, z: 1.0000002}
+      transformModified: 1
+    - name: Shield_3 R Finger2
+      position: {x: -1.4482547, y: -0.0002444458, z: 0.30717605}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999998}
+      transformModified: 1
+    - name: Shield_3 R Finger21
+      position: {x: -0.5611171, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 0.99999994}
+      transformModified: 1
+    - name: Shield_3 R Finger22
+      position: {x: -0.5611171, y: -0.00000030517577, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999997, y: 0.99999976, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger2Nub
+      position: {x: -0.56111693, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1.0000001, y: -1.0000001, z: -1.0000001}
+      transformModified: 1
+    - name: Shield_3 R Finger0
+      position: {x: -0.34480652, y: 0.09423248, z: 0.89578307}
+      rotation: {x: 0, y: 0.38268346, z: 0, w: 0.9238795}
+      scale: {x: 1.0000001, y: 1.0000001, z: 0.9999993}
+      transformModified: 1
+    - name: Shield_3 R Finger01
+      position: {x: -0.93347013, y: -0.000000076293944, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 0.9999998, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger02
+      position: {x: -0.9404797, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger0Nub
+      position: {x: -0.19565079, y: 0, z: -0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1, y: -1, z: -1}
+      transformModified: 1
+    - name: Shield_3 R Finger3
+      position: {x: -1.4482547, y: 0.0001586914, z: -0.19893356}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999999, z: 0.9999997}
+      transformModified: 1
+    - name: Shield_3 R Finger31
+      position: {x: -0.5518379, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 R Finger32
+      position: {x: -0.55183774, y: 0.00000030517577, z: -0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger3Nub
+      position: {x: -0.55183804, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1.0000001, y: -1.0000001, z: -1.0000001}
+      transformModified: 1
+    - name: Shield_3 R Finger4
+      position: {x: -1.4482547, y: 0.0005932617, z: -0.744796}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999999, z: 0.9999997}
+      transformModified: 1
+    - name: Shield_3 R Finger41
+      position: {x: -0.49170652, y: 0.00000030517577, z: -0.00000030517577}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 R Finger42
+      position: {x: -0.49170685, y: 0, z: 0.00000015258789}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger4Nub
+      position: {x: -0.49170685, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1.0000001, y: -1.0000001, z: -1.0000001}
+      transformModified: 1
+    - name: Shield_3 R Finger1
+      position: {x: -1.4482547, y: -0.0006619262, z: 0.8314108}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 0.9999999, z: 0.9999997}
+      transformModified: 1
+    - name: Shield_3 R Finger11
+      position: {x: -0.53246826, y: 0, z: 0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 0.9999999}
+      transformModified: 1
+    - name: Shield_3 R Finger12
+      position: {x: -0.53246796, y: 0, z: 0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 1, z: 1}
+      transformModified: 1
+    - name: Shield_3 R Finger1Nub
+      position: {x: -0.53246856, y: 0, z: 0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: -1.0000001, y: -1.0000001, z: -1.0000001}
+      transformModified: 1
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

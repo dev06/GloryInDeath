@@ -12,7 +12,7 @@ public class GameUI : MonoBehaviour {
 
 	public Animation hurtOverlay, fade, goldCollectedAnimation;
 
-	public TextMeshProUGUI goldCollected;
+	public TextMeshProUGUI goldCollected, healthLeft;
 
 
 	void OnEnable () {
@@ -74,6 +74,7 @@ public class GameUI : MonoBehaviour {
 	void Update()
 	{
 		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
+		healthLeft.text = PlayerController.Instance.attributes.Health + " / " + PlayerController.Instance.defaultAttriubtes.Health;
 	}
 
 	void OnStateChange(State s)

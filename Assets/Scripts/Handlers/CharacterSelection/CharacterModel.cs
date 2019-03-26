@@ -34,7 +34,7 @@ public class CharacterModel : MonoBehaviour
 	{
 		if (this == SELECTED_MODEL)
 		{
-			transform.Rotate(Vector3.up, -Time.deltaTime * 30f);
+			//	transform.Rotate(Vector3.up, -Time.deltaTime * 30f);
 		}
 		else
 		{

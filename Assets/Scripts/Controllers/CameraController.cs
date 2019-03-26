@@ -102,7 +102,7 @@ public class CameraController : MonoBehaviour {
 		targetPosition = cameraGameTransform.position;
 		targetRotation = Quaternion.Euler(cameraGameTransform.rotation);
 
-		defaultPosition = transform.position;
+		defaultPosition = transform.position - new Vector3(0f, 3f, 0);
 
 		unlockControls = true;
 	}
@@ -121,7 +121,7 @@ public class CameraController : MonoBehaviour {
 		if (!unlockControls) return;
 
 		Vector3 raw =  defaultPosition + new Vector3(playerTransform.position.x, 0, playerTransform.position.z) + new Vector3(0, 0, distanceOffset);
-		raw.z = Mathf.Clamp(raw.z, -17f, raw.z);
+		raw.z = Mathf.Clamp(raw.z, -15f, raw.z);
 		targetPosition = raw;
 
 		Vector3 relativePos = playerTransform.position - transform.position;

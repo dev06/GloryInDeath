@@ -127,7 +127,6 @@ public class WaveController : MonoBehaviour {
 		{
 			if (!waveEnded)
 			{
-
 				waveEnded = true;
 			}
 		}

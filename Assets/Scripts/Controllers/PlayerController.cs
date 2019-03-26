@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CharacterLibrary
 {
-	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 5, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2, 3, 4);
-	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
+	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 2, 2, 3);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 2, 3, 4);
+	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 2, 4, 5);
 
 }
 
@@ -108,7 +108,8 @@ public class PlayerController : MonoBehaviour {
 	public bool withinEnemyRange;
 	private Enemy contactingEnemy;
 
-	private CharacterAttributes defaultAttriubtes;
+	[HideInInspector]
+	public CharacterAttributes defaultAttriubtes;
 	[HideInInspector]
 	public bool lockMovement;
 
@@ -248,6 +249,16 @@ public class PlayerController : MonoBehaviour {
 		if (EventManager.OnGameEvent != null)
 		{
 			EventManager.OnGameEvent(EventID.PLAYER_HURT);
+		}
+	}
+
+	public Vector3 GetBodypoint
+	{
+		get
+		{
+			Transform bodyPoints = transform.GetChild(1);
+			Vector3 point = bodyPoints.GetChild(Random.Range(0, bodyPoints.childCount)).transform.position;
+			return point;
 		}
 	}
 

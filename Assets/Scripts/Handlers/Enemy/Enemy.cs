@@ -56,31 +56,36 @@ public class Enemy: MonoBehaviour
 {
 
 	public EnemyAttributes defaultAttributes;
-
+	public bool walk;
 	[HideInInspector]
 	private EnemyAttributes attributes;
-
-
 	public Transform quad;
 	private Transform healthBar;
-	private ParticleSystem hurtParticles;
-
+	private ParticleSystem hurtParticles, goldParticles;
 	private PlayerController player;
-
 	private NavMeshAgent agent;
-
 	private bool move;
+	private bool dead;
+	private Animator animator;
+	private Vector3 playerDestinationLocation;
+	private Rigidbody rigidBody;
 	void Start()
 	{
 		Init();
 		player = FindObjectOfType<PlayerController>();
+
 		agent = GetComponent<NavMeshAgent>();
+		agent.updateRotation = false;
 	}
 
 	public virtual void Init()
 	{
 		healthBar = quad.transform.GetChild(1).transform;
-		hurtParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
+		hurtParticles = transform.GetChild(1).transform.GetComponent<ParticleSystem>();
+		goldParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
+
+		animator = GetComponent<Animator>();
+		rigidBody = GetComponent<Rigidbody>();
 		attributes = new EnemyAttributes();
 		attributes.SetAttributes(defaultAttributes);
 
@@ -96,41 +101,97 @@ public class Enemy: MonoBehaviour
 	void Update()
 	{
 		if (GameController.state != State.GAME) { return; }
-		if (!move) { return; }
-		agent.speed = attributes.speed;
-		agent.SetDestination(player.transform.position);
+
+		dead = attributes.health <= 0;
+
+		if (dead)
+		{
+			rigidBody.isKinematic = true;
+			attributes.health = 0;
+		}
 
 		healthBar.localScale = Vector3.Lerp(healthBar.localScale, new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f), Time.deltaTime * 10f);
+
+		if (!move)
+		{
+			if (animator != null)
+			{
+				animator.SetBool("Run", false);
+
+				animator.SetBool("Attack", false);
+			}
+
+			return;
+		}
+
+
+
+
+		agent.speed = attributes.speed;
+		playerDestinationLocation = player.GetBodypoint;
+		agent.SetDestination(playerDestinationLocation);
+		Vector3 lookrotation = agent.steeringTarget - transform.position;
+		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
+
+		if (animator != null)
+		{
+			animator.SetBool(walk ? "Walk" : "Run", agent.velocity.magnitude > 0);
+
+			animator.SetBool("Attack", agent.remainingDistance < 2f);
+
+		}
+
+
 	}
 
 
 	public void TakeDamage(float damage)
 	{
+		if (dead) return;
+
 		attributes.health -= damage;
 
 		if (isDead())
 		{
 			hurtParticles.Play();
 
-			Reset();
+			if (gameObject.activeSelf)
+			{
+				StopCoroutine("IReset");
+				StartCoroutine("IReset");
+			}
 
 			return;
 		}
+
+		goldParticles.Play();
 
 		hurtParticles.Play();
 	}
 
 	private void ToggleSkin(bool b)
 	{
-		GetComponent<MeshRenderer>().enabled = b;
+		GetComponentInChildren<MeshRenderer>().enabled = b;
 		GetComponent<BoxCollider>().enabled = b;
 	}
 
 	public void Reset()
 	{
-		move = false;
 		WaveController.Instance.ResetEnemyParent(this);
 		transform.gameObject.SetActive(false);
+	}
+
+	IEnumerator IReset()
+	{
+		if (animator != null)
+		{
+			move = false;
+			animator.SetTrigger("DeathTrigger");
+		}
+
+		yield return new WaitForSeconds(3f);
+
+		Reset();
 	}
 
 	public EnemyAttributes Attributes
@@ -144,8 +205,12 @@ public class Enemy: MonoBehaviour
 
 		bool dead = attributes.health <= 0;
 
+
 		if (dead)
 		{
+			GetComponent<BoxCollider>().enabled = false;
+			quad.gameObject.SetActive(false);
+
 			if (EventManager.OnGameEvent != null)
 			{
 				EventManager.OnGameEvent(EventID.ENEMY_KILLED);
