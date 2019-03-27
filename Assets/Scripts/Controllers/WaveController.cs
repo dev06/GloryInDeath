@@ -16,6 +16,8 @@ public class WaveController : MonoBehaviour {
 
 	public Transform enemyPool, enemyWaveTransform, spawnPoints;
 
+	public bool spawnEnemy;
+
 	public int wave = 0; // represents current wave;
 
 	public int waveDifficulty = 5;
@@ -67,9 +69,13 @@ public class WaveController : MonoBehaviour {
 
 		InitializeWave();
 
-		StopCoroutine("ISpawnEnemy");
+		if (spawnEnemy)
+		{
+			StopCoroutine("ISpawnEnemy");
 
-		StartCoroutine("ISpawnEnemy");
+			StartCoroutine("ISpawnEnemy");
+		}
+
 
 		if (EventManager.OnGameEvent != null)
 		{
@@ -132,7 +138,7 @@ public class WaveController : MonoBehaviour {
 
 	public void SpawnNextEnemy()
 	{
-		if (enemyList[currentEnemyIndex].IsMoving) return;
+		if (enemyList[currentEnemyIndex].IsMoving) { return; }
 
 		enemyList[currentEnemyIndex].transform.position = GetSpawnLocation();
 

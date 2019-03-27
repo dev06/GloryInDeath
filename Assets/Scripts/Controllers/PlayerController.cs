@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterLibrary
 {
 	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 2, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 2, 3, 4);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 2f, 3, 4);
 	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 2, 4, 5);
 
 }
@@ -13,7 +13,7 @@ public class CharacterLibrary
 public class CharacterModifiedLibrary
 {
 	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 5, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2, 3, 4);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2f, 3, 4);
 	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
 }
 
@@ -98,6 +98,13 @@ public enum CharacterType
 }
 
 
+public enum CharacterState
+{
+	IDLE,
+	ATTACK,
+	RUN,
+}
+
 public class PlayerController : MonoBehaviour {
 
 
@@ -107,6 +114,7 @@ public class PlayerController : MonoBehaviour {
 	public CharacterAttributes attributes;
 	public bool withinEnemyRange;
 	private Enemy contactingEnemy;
+	private Animator animator;
 
 	[HideInInspector]
 	public CharacterAttributes defaultAttriubtes;
@@ -115,7 +123,8 @@ public class PlayerController : MonoBehaviour {
 
 	private bool damageTaken;
 	private float damageTakenCoolDown;
-
+	private Rigidbody rigidbody;
+	public CharacterState characterState = CharacterState.IDLE;
 	void Awake()
 	{
 		if (Instance == null)
@@ -138,6 +147,8 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
 	{
 		defaultAttriubtes = new CharacterAttributes();
+		rigidbody = GetComponent<Rigidbody>();
+		animator = GetComponent<Animator>();
 	}
 
 	void Update () {
@@ -154,6 +165,25 @@ public class PlayerController : MonoBehaviour {
 				damageTakenCoolDown = 0;
 			}
 		}
+
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			SetState(CharacterState.ATTACK);
+		}
+	}
+
+	public void ToggleRunning(bool b)
+	{
+
+		animator.SetBool("Run", b);
+
+	}
+
+	public void SetState(CharacterState state)
+	{
+		characterState = state;
+
+		ToggleRunning(state == CharacterState.RUN);
 	}
 
 

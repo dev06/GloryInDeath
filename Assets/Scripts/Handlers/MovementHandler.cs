@@ -8,6 +8,7 @@ public class MovementHandler : MonoBehaviour {
 
 	public SimpleTouchController leftController;
 	private PlayerController playerController;
+
 	void Start ()
 	{
 		rigidbody = GetComponent<Rigidbody>();
@@ -17,14 +18,17 @@ public class MovementHandler : MonoBehaviour {
 	void FixedUpdate ()
 	{
 
-		if (playerController.LockMovement) return;
+		if (playerController.LockMovement) { return; }
 
 		if (leftController.GetLastTouchVector.magnitude != 0)
 		{
 			transform.forward = new Vector3(leftController.GetLastTouchVector.x, 0 , leftController.GetLastTouchVector.y);
 		}
+
 		transform.Translate(transform.forward * leftController.GetTouchPosition.magnitude * Time.deltaTime * playerController.Speed, Space.World);
 
+
+		playerController.SetState(leftController.GetTouchPosition.magnitude > 0 ? CharacterState.RUN : CharacterState.IDLE);
 
 #if UNITY_EDITOR
 
@@ -39,12 +43,18 @@ public class MovementHandler : MonoBehaviour {
 			if (movement.magnitude != 0)
 			{
 				transform.forward = movement;
+				transform.Translate(movement * Time.deltaTime * playerController.Speed, Space.World);
+				playerController.SetState(movement.magnitude > 0 ? CharacterState.RUN : CharacterState.IDLE);
 			}
 
-			transform.Translate(movement * Time.deltaTime * playerController.Speed, Space.World);
 		}
 #endif
+
+
+
 	}
+
+
 
 	private Vector2 GetPointerPosition(Vector2 rawPos)
 	{
