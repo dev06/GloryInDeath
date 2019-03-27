@@ -91,8 +91,6 @@ public class WaveController : MonoBehaviour {
 				StopCoroutine("ISpawnEnemy");
 			}
 		}
-
-		//StopCoroutine("ISpawnEnemy");
 	}
 
 
