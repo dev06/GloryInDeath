@@ -10,6 +10,8 @@ public struct WaveBuilder
 
 public class WaveController : MonoBehaviour {
 
+	public static int MAX_ENEMY_AT_TIME = 2;
+
 	public static WaveController Instance;
 
 	private List<Enemy> enemyList = new List<Enemy>();
@@ -87,14 +89,21 @@ public class WaveController : MonoBehaviour {
 	{
 		while (currentEnemyIndex < enemyList.Count)
 		{
+			int a = GetActiveEnemyCount();
 
-			SpawnNextEnemy();
+			Debug.Log(a);
+
+			if (a < MAX_ENEMY_AT_TIME)
+			{
+				SpawnNextEnemy();
+			}
 
 			yield return new WaitForSeconds(enemySpawnDelay);
 
-			if (currentEnemyIndex == enemyList.Count - 1)
+			if (currentEnemyIndex == enemyList.Count)
 			{
 				StopCoroutine("ISpawnEnemy");
+				Debug.Log("Stopped");
 			}
 		}
 	}
@@ -152,6 +161,22 @@ public class WaveController : MonoBehaviour {
 		{
 			currentEnemyIndex = enemyList.Count - 1;
 		}
+	}
+
+	public int GetActiveEnemyCount()
+	{
+		int alive = 0;
+
+		foreach (Transform t in enemyWaveTransform)
+		{
+			Enemy e = t.GetComponent<Enemy>();
+
+			if (!e.gameObject.activeSelf) continue;
+
+			alive++;
+		}
+
+		return alive;
 	}
 
 	public Transform GetParentTransform(EnemyType type)

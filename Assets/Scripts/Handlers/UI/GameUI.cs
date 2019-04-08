@@ -71,6 +71,8 @@ public class GameUI : MonoBehaviour {
 		}
 	}
 
+	private bool b;
+
 	void Update()
 	{
 		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);

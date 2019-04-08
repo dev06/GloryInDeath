@@ -140,8 +140,6 @@ public class Enemy: MonoBehaviour
 			animator.SetBool("Attack", agent.remainingDistance < 2f);
 
 		}
-
-
 	}
 
 
@@ -217,6 +215,11 @@ public class Enemy: MonoBehaviour
 			}
 		}
 		return dead;
+	}
+
+	public bool IsDead
+	{
+		get {return dead;}
 	}
 
 	public bool IsMoving

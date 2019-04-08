@@ -9,11 +9,11 @@ public class CharacterSelectUI : MonoBehaviour {
 
 
 
-
+	public Image leftArrow, rightArrow;
 	public State activeState;
 	private PlayerController player;
-
 	private CSStatHandler csstatHandler;
+	private DragSnapHandler dragSnap;
 
 	void OnEnable()
 	{
@@ -33,6 +33,7 @@ public class CharacterSelectUI : MonoBehaviour {
 	void Start()
 	{
 		player = FindObjectOfType<PlayerController>();
+		dragSnap = FindObjectOfType<DragSnapHandler>();
 		Toggle(GameController.state == activeState);
 	}
 
@@ -56,8 +57,6 @@ public class CharacterSelectUI : MonoBehaviour {
 		{
 			player =  PlayerController.Instance;
 		}
-
-
 	}
 
 
@@ -73,8 +72,6 @@ public class CharacterSelectUI : MonoBehaviour {
 	{
 		switch (id)
 		{
-
-
 			case ButtonID.SELECT_CHARACTER:
 			{
 				PlayerController.Instance.SetCharacter(CharacterModel.SELECTED_MODEL.modelType);
@@ -82,6 +79,12 @@ public class CharacterSelectUI : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	public void ToggleArrows(int currentIndex, int childCount)
+	{
+		leftArrow.enabled = (currentIndex > 0);
+		rightArrow.enabled = (currentIndex < childCount - 1);
 	}
 
 	private void Toggle(bool b)

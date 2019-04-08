@@ -15,6 +15,8 @@ public class MovementHandler : MonoBehaviour {
 		playerController = GetComponent<PlayerController>();
 	}
 
+
+
 	void FixedUpdate ()
 	{
 
@@ -25,10 +27,13 @@ public class MovementHandler : MonoBehaviour {
 			transform.forward = new Vector3(leftController.GetLastTouchVector.x, 0 , leftController.GetLastTouchVector.y);
 		}
 
-		transform.Translate(transform.forward * leftController.GetTouchPosition.magnitude * Time.deltaTime * playerController.Speed, Space.World);
 
+		if (!playerController.isPlaying("BaseLayer.Attack"))
+		{
+			transform.Translate(transform.forward * leftController.GetTouchPosition.magnitude * Time.deltaTime * playerController.Speed, Space.World);
+		}
 
-		playerController.SetState(leftController.GetTouchPosition.magnitude > 0 ? CharacterState.RUN : CharacterState.IDLE);
+		playerController.walking = leftController.GetTouchPosition.magnitude > 0;
 
 #if UNITY_EDITOR
 
@@ -43,13 +48,16 @@ public class MovementHandler : MonoBehaviour {
 			if (movement.magnitude != 0)
 			{
 				transform.forward = movement;
-				transform.Translate(movement * Time.deltaTime * playerController.Speed, Space.World);
-				playerController.SetState(movement.magnitude > 0 ? CharacterState.RUN : CharacterState.IDLE);
+				if (!playerController.isPlaying("BaseLayer.Attack"))
+				{
+					transform.Translate(movement * Time.deltaTime * playerController.Speed, Space.World);
+				}
+
+				playerController.walking = movement.magnitude > 0;
 			}
 
 		}
 #endif
-
 
 
 	}

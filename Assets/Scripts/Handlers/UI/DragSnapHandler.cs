@@ -20,6 +20,8 @@ public class DragSnapHandler : MonoBehaviour {
 
 	private Vector3 defaultPosition;
 
+	private CharacterSelectUI characterSelectUI;
+
 	void OnEnable () {
 
 		EventManager.OnStateChange += OnStateChange;
@@ -38,9 +40,14 @@ public class DragSnapHandler : MonoBehaviour {
 
 		camera = CameraController.Instance;
 
+		characterSelectUI = FindObjectOfType<CharacterSelectUI>();
+
 		transform.rotation = Quaternion.Euler(new Vector3(25, -90, 0));
 
 		characterModels.GetChild(0).GetComponent<CharacterModel>().Hover();
+
+		characterSelectUI.ToggleArrows(selectedIndex, characterModels.childCount);
+
 	}
 
 	void Update()
@@ -73,6 +80,8 @@ public class DragSnapHandler : MonoBehaviour {
 			}
 
 			selectedIndex = Mathf.Clamp(selectedIndex, 0, characterModels.childCount - 1);
+
+			characterSelectUI.ToggleArrows(selectedIndex, characterModels.childCount);
 
 			Vector3 pos = characterModels.GetChild(selectedIndex).transform.position;
 
@@ -129,5 +138,15 @@ public class DragSnapHandler : MonoBehaviour {
 		//Debug.Log(selectedIndex);
 
 		lastPosition = currentPosition;
+	}
+
+	public int SelectedIndex
+	{
+		get { return selectedIndex; }
+	}
+
+	public int MaxChildCount
+	{
+		get { return characterModels.childCount; }
 	}
 }

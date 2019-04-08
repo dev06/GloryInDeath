@@ -121,6 +121,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector]
 	public bool lockMovement;
 
+	public bool walking;
+
 	private bool damageTaken;
 	private float damageTakenCoolDown;
 	private Rigidbody rigidbody;
@@ -170,6 +172,29 @@ public class PlayerController : MonoBehaviour {
 		{
 			SetState(CharacterState.ATTACK);
 		}
+
+		UpdateAnimations();
+
+
+	}
+
+	public bool isPlaying(string stateName)
+	{
+		if (animator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
+		        animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+			return true;
+		else
+			return false;
+	}
+
+	public void UpdateAnimations()
+	{
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			animator.SetTrigger("AttackTrigger");
+		}
+
+		animator.SetBool("Run", walking);
 	}
 
 	public void ToggleRunning(bool b)
@@ -236,6 +261,7 @@ public class PlayerController : MonoBehaviour {
 					}
 					CameraController.Instance.TriggerShake(.2f);
 				}
+				animator.SetTrigger("AttackTrigger");
 				break;
 			}
 
@@ -250,6 +276,9 @@ public class PlayerController : MonoBehaviour {
 						contactingEnemy = null;
 					}
 				}
+
+				animator.SetTrigger("AttackTrigger");
+
 				break;
 			}
 		}
@@ -295,7 +324,7 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator IOnDeath()
 	{
-		GetComponent<MeshRenderer>().enabled = false;
+		GetComponentInChildren<MeshRenderer>().enabled = false;
 		yield return new WaitForSeconds(1f);
 		GameController.Instance.Reload();
 	}
