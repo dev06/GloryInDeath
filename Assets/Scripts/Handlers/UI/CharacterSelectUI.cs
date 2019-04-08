@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class CharacterSelectUI : MonoBehaviour {
 
 
-
+	public TextMeshProUGUI goldText;
 	public Image leftArrow, rightArrow;
 	public State activeState;
 	private PlayerController player;
@@ -21,6 +21,7 @@ public class CharacterSelectUI : MonoBehaviour {
 		EventManager.OnButtonClick += OnButtonClick;
 		EventManager.OnButtonEnter += OnButtonEnter;
 		EventManager.OnCharacterModelHover += OnCharacterModelHover;
+		EventManager.OnUpgradeStat += OnUpgradeStat;
 	}
 	void OnDisable()
 	{
@@ -28,6 +29,7 @@ public class CharacterSelectUI : MonoBehaviour {
 		EventManager.OnButtonClick -= OnButtonClick;
 		EventManager.OnButtonEnter -= OnButtonEnter;
 		EventManager.OnCharacterModelHover -= OnCharacterModelHover;
+		EventManager.OnUpgradeStat -= OnUpgradeStat;
 	}
 
 	void Start()
@@ -35,7 +37,9 @@ public class CharacterSelectUI : MonoBehaviour {
 		player = FindObjectOfType<PlayerController>();
 		dragSnap = FindObjectOfType<DragSnapHandler>();
 		Toggle(GameController.state == activeState);
+
 	}
+
 
 	public void OnStateChange(State s)
 	{
@@ -81,6 +85,11 @@ public class CharacterSelectUI : MonoBehaviour {
 		}
 	}
 
+	public void UpdateUI()
+	{
+		goldText.text = GameController.Instance.CurrentGold + "";
+	}
+
 	public void ToggleArrows(int currentIndex, int childCount)
 	{
 		leftArrow.enabled = (currentIndex > 0);
@@ -92,5 +101,14 @@ public class CharacterSelectUI : MonoBehaviour {
 		CanvasGroup cg = GetComponent<CanvasGroup>();
 		cg.alpha = b ? 1 : 0;
 		cg.blocksRaycasts = b;
+		if (b)
+		{
+			UpdateUI();
+		}
+	}
+
+	private void OnUpgradeStat(UpgradeStat.Type type)
+	{
+		UpdateUI();
 	}
 }

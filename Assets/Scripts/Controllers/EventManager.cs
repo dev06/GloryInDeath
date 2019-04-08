@@ -24,4 +24,7 @@ public class EventManager : MonoBehaviour {
 
 	public delegate void CharacterModelEvent(CharacterModel c);
 	public static CharacterModelEvent OnCharacterModelHover;
+
+	public delegate void UpgradeCharacterStat(UpgradeStat.Type type);
+	public static UpgradeCharacterStat OnUpgradeStat;
 }

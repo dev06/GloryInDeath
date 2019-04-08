@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour {
 
 	public bool DeleteSave;
 
+
+	private int currentGold = 500;
+
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -71,6 +74,13 @@ public class GameController : MonoBehaviour {
 		return v;
 	}
 
+
+	public int CurrentGold
+	{
+		get { return currentGold; }
+		set { this.currentGold = value; }
+	}
+
 	private void Save()
 	{
 		PlayerPrefs.SetInt("WAVE_COMPLETED", WaveController.Instance.wave);
@@ -85,5 +95,19 @@ public class GameController : MonoBehaviour {
 	{
 		Save();
 		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+	}
+
+
+	public void AddGold(int gold)
+	{
+		CurrentGold += gold;
+
+	}
+
+
+
+	public bool CanPurchase(int cost)
+	{
+		return CurrentGold >= cost;
 	}
 }
