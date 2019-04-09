@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CharacterLibrary
 {
-	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 2, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 2f, 3, 4);
-	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 2, 4, 5);
+	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 2, 5, 3);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 5f, 3, 4);
+	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
 
 }
 
@@ -110,6 +110,8 @@ public class PlayerController : MonoBehaviour {
 
 	public static PlayerController Instance;
 
+	public Transform[] characterSkins;
+
 	[HideInInspector]
 	public CharacterAttributes attributes;
 	public bool withinEnemyRange;
@@ -150,7 +152,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		defaultAttriubtes = new CharacterAttributes();
 		rigidbody = GetComponent<Rigidbody>();
-		animator = GetComponent<Animator>();
+		animator = characterSkins[0].GetComponent<Animator>();
 	}
 
 	void Update () {
@@ -181,10 +183,12 @@ public class PlayerController : MonoBehaviour {
 	public bool isPlaying(string stateName)
 	{
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
-		        animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+		        animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f) {
 			return true;
-		else
+		}
+		else {
 			return false;
+		}
 	}
 
 	public void UpdateAnimations()
@@ -192,6 +196,7 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.L))
 		{
 			animator.SetTrigger("AttackTrigger");
+
 		}
 
 		animator.SetBool("Run", walking);

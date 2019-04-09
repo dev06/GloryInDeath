@@ -91,8 +91,6 @@ public class WaveController : MonoBehaviour {
 		{
 			int a = GetActiveEnemyCount();
 
-			Debug.Log(a);
-
 			if (a < MAX_ENEMY_AT_TIME)
 			{
 				SpawnNextEnemy();
@@ -171,7 +169,7 @@ public class WaveController : MonoBehaviour {
 		{
 			Enemy e = t.GetComponent<Enemy>();
 
-			if (!e.gameObject.activeSelf) continue;
+			if (!e.gameObject.activeSelf) { continue; }
 
 			alive++;
 		}
