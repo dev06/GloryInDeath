@@ -8,7 +8,7 @@ using TMPro;
 public class CharacterSelectUI : MonoBehaviour {
 
 
-	public TextMeshProUGUI goldText;
+	public TextMeshProUGUI goldText, characterDescText;
 	public Image leftArrow, rightArrow;
 	public State activeState;
 	private PlayerController player;
@@ -61,7 +61,36 @@ public class CharacterSelectUI : MonoBehaviour {
 		{
 			player =  PlayerController.Instance;
 		}
+
+		UpdateCharacterDescription(m);
 	}
+
+	private void UpdateCharacterDescription(CharacterModel m)
+	{
+
+		switch (m.modelType)
+		{
+			case CharacterType.AURA_BLACKSWORD:
+			{
+				characterDescText.text = "Name: Aura Blacksword\nRace: Human\nGender: Female";
+
+				break;
+			}
+			case CharacterType.HALLFRED_THORALDSON:
+			{
+				characterDescText.text = "Name: Hallfred Thoraldson\nRace: Dwarf\nGender: Male";
+
+				break;
+			}
+			case CharacterType.FREYA_SKAAR:
+			{
+				characterDescText.text = "Name: Freya Skaar\nRace: - \nGender: Female";
+
+				break;
+			}
+		}
+	}
+
 
 
 	public void OnButtonEnter(ButtonID id)

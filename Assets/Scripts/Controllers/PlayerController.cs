@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterLibrary
 {
 	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 2, 5, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 5f, 3, 4);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 2, 4f, 3, 4);
 	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
 
 }
@@ -13,8 +13,8 @@ public class CharacterLibrary
 public class CharacterModifiedLibrary
 {
 	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 10, 5, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 5, 2f, 3, 4);
-	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 9, 5, 4, 5);
+	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 10, 3, 3, 4);
+	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 10, 3, 4, 5);
 }
 
 [System.Serializable]
@@ -140,11 +140,13 @@ public class PlayerController : MonoBehaviour {
 	void OnEnable()
 	{
 		EventManager.OnButtonClick += OnButtonClick;
+		EventManager.OnGameEvent += OnGameEvent;
 	}
 
 	void OnDisable()
 	{
 		EventManager.OnButtonClick -= OnButtonClick;
+		EventManager.OnGameEvent -= OnGameEvent;
 	}
 
 
@@ -152,7 +154,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		defaultAttriubtes = new CharacterAttributes();
 		rigidbody = GetComponent<Rigidbody>();
-		animator = characterSkins[0].GetComponent<Animator>();
+
 	}
 
 	void Update () {
@@ -178,6 +180,14 @@ public class PlayerController : MonoBehaviour {
 		UpdateAnimations();
 
 
+	}
+
+	void OnGameEvent(EventID id)
+	{
+		if (id == EventID.WAVE_START)
+		{
+
+		}
 	}
 
 	public bool isPlaying(string stateName)
@@ -225,12 +235,15 @@ public class PlayerController : MonoBehaviour {
 			{
 
 				attributes.SetAttributes(CharacterModifiedLibrary.CHAR_AURA_BLACKSWORD.GetAttributes());
+				ToggleSkin(0);
+
 				break;
 			}
 			case CharacterType.HALLFRED_THORALDSON:
 			{
 
 				attributes.SetAttributes(CharacterModifiedLibrary.CHAR_HALLFRED_THORALDSON.GetAttributes());
+				ToggleSkin(1);
 				break;
 			}
 			case CharacterType.FREYA_SKAAR:
@@ -248,6 +261,17 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		defaultAttriubtes.SetAttributes(attributes);
+	}
+
+
+	void ToggleSkin(int i)
+	{
+		for (int j = 0; j < characterSkins.Length; j++)
+		{
+			characterSkins[j].gameObject.SetActive(false);
+		}
+		animator = characterSkins[i].GetComponent<Animator>();
+		characterSkins[i].gameObject.SetActive(true);
 	}
 
 
