@@ -46,7 +46,7 @@ public class EnemyAttributes
 
 		this.difficulty = attributes.difficulty;
 		this.type = attributes.type;
-		this.health = attributes.health;
+		this.health = attributes.health ;
 		this.speed = attributes.speed;
 		this.damage = attributes.damage;
 	}
@@ -131,7 +131,11 @@ public class Enemy: MonoBehaviour
 		playerDestinationLocation = player.GetBodypoint;
 		agent.SetDestination(playerDestinationLocation);
 		Vector3 lookrotation = agent.steeringTarget - transform.position;
-		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
+
+		if (lookrotation != Vector3.zero)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
+		}
 
 		if (animator != null)
 		{
@@ -145,7 +149,7 @@ public class Enemy: MonoBehaviour
 
 	public void TakeDamage(float damage)
 	{
-		if (dead) return;
+		if (dead) { return; }
 
 		attributes.health -= damage;
 

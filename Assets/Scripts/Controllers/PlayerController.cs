@@ -178,8 +178,14 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		UpdateAnimations();
+	}
 
+	void LateUpdate()
+	{
 
+		Vector3 position = transform.position;
+		position.y = 0f;
+		transform.position = position;
 	}
 
 	void OnGameEvent(EventID id)

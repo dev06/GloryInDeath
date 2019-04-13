@@ -67,8 +67,6 @@ public class WaveController : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(.5f);
 
-		wave++;
-
 		InitializeWave();
 
 		if (spawnEnemy)
@@ -230,6 +228,7 @@ public class WaveController : MonoBehaviour {
 			{
 				EventManager.OnGameEvent(EventID.WAVE_END);
 			}
+			wave++;
 		}
 
 	}
