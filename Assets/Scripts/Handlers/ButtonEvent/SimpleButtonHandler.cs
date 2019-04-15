@@ -34,12 +34,12 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 	{
 		if (EventManager.OnButtonClick != null)
 		{
-			EventManager.OnButtonClick(buttonID);
+			EventManager.OnButtonClick(buttonID, this);
 		}
 
 		if (interact.press)
 		{
-			GetComponent<Animation>().Play();
+			//GetComponent<Animation>().Play();
 		}
 	}
 
@@ -53,7 +53,7 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 	{
 		if (EventManager.OnButtonEnter != null)
 		{
-			EventManager.OnButtonEnter(buttonID);
+			EventManager.OnButtonEnter(buttonID, this);
 		}
 
 		if (interact.bubble)

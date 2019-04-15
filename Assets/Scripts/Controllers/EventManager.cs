@@ -15,7 +15,7 @@ public class EventManager : MonoBehaviour {
 	public delegate void GameEvent(EventID id);
 	public static GameEvent OnGameEvent;
 
-	public delegate void ButtonClick(ButtonID id);
+	public delegate void ButtonClick(ButtonID id, SimpleButtonHandler handler);
 	public static ButtonClick OnButtonClick;
 	public static ButtonClick OnButtonEnter;
 

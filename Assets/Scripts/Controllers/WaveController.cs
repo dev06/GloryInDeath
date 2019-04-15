@@ -28,7 +28,7 @@ public class WaveController : MonoBehaviour {
 
 	private int currentEnemyIndex;
 
-	private int goldCollected;
+	private static int goldCollected;
 
 	private bool waveEnded;
 
@@ -242,8 +242,15 @@ public class WaveController : MonoBehaviour {
 	{
 		switch (s)
 		{
+
+			case State.CHARACTER_SELECT:
+			{
+				GameController.Instance.AddGold(GoldCollected);
+				break;
+			}
 			case State.GAME:
 			{
+				GoldCollected = 0;
 				StartNextWave();
 				break;
 			}
@@ -257,11 +264,16 @@ public class WaveController : MonoBehaviour {
 			return goldCollected;
 		}
 
-		set { this.goldCollected = value; }
+		set { goldCollected = value; }
 	}
 
 	IEnumerator IResetEnemyParent()
 	{
 		yield return new WaitForSeconds(2);
+	}
+
+	public List<Enemy> EnemyList
+	{
+		get { return enemyList;}
 	}
 }

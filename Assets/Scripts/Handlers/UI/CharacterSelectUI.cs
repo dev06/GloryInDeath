@@ -12,7 +12,6 @@ public class CharacterSelectUI : MonoBehaviour {
 	public Image leftArrow, rightArrow;
 	public State activeState;
 	private PlayerController player;
-	private CSStatHandler csstatHandler;
 	private DragSnapHandler dragSnap;
 
 	void OnEnable()
@@ -37,7 +36,6 @@ public class CharacterSelectUI : MonoBehaviour {
 		player = FindObjectOfType<PlayerController>();
 		dragSnap = FindObjectOfType<DragSnapHandler>();
 		Toggle(GameController.state == activeState);
-
 	}
 
 
@@ -52,11 +50,6 @@ public class CharacterSelectUI : MonoBehaviour {
 
 	private void OnCharacterModelHover(CharacterModel m)
 	{
-		if (csstatHandler == null)
-		{
-			csstatHandler = FindObjectOfType<CSStatHandler>();
-		}
-
 		if (player == null)
 		{
 			player =  PlayerController.Instance;
@@ -68,7 +61,7 @@ public class CharacterSelectUI : MonoBehaviour {
 	private void UpdateCharacterDescription(CharacterModel m)
 	{
 
-		switch (m.modelType)
+		switch (m.ModelType)
 		{
 			case CharacterType.AURA_BLACKSWORD:
 			{
@@ -93,7 +86,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
 
 
-	public void OnButtonEnter(ButtonID id)
+	public void OnButtonEnter(ButtonID id, SimpleButtonHandler handler)
 	{
 		switch (id)
 		{
@@ -101,13 +94,13 @@ public class CharacterSelectUI : MonoBehaviour {
 		}
 	}
 
-	public void OnButtonClick(ButtonID id)
+	public void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
 	{
 		switch (id)
 		{
 			case ButtonID.SELECT_CHARACTER:
 			{
-				PlayerController.Instance.SetCharacter(CharacterModel.SELECTED_MODEL.modelType);
+				PlayerController.Instance.SetCharacter(CharacterModel.SELECTED_MODEL.ModelType);
 				GameController.Instance.SetState(State.GAME);
 				break;
 			}

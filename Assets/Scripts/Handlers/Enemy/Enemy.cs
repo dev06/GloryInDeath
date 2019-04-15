@@ -58,17 +58,18 @@ public class Enemy: MonoBehaviour
 	public EnemyAttributes defaultAttributes;
 	public bool walk;
 	[HideInInspector]
-	private EnemyAttributes attributes;
+	private EnemyAttributes attributes, waveAttributes;
 	public Transform quad;
 	private Transform healthBar;
 	private ParticleSystem hurtParticles, goldParticles;
 	private PlayerController player;
 	private NavMeshAgent agent;
-	private bool move;
-	private bool dead;
+	private bool move, dead, canAttack;
 	private Animator animator;
 	private Vector3 playerDestinationLocation;
 	private Rigidbody rigidBody;
+	private float attackTimer;
+
 	void Start()
 	{
 		Init();
@@ -94,14 +95,18 @@ public class Enemy: MonoBehaviour
 	public void Move()
 	{
 		ToggleSkin(true);
+		waveAttributes = new EnemyAttributes();
+		waveAttributes.SetAttributes(defaultAttributes);
+		waveAttributes.health = defaultAttributes.health * WaveController.Instance.wave;
+		waveAttributes.damage = defaultAttributes.damage * WaveController.Instance.wave;
+		defaultAttributes.SetAttributes(waveAttributes);
 		attributes.SetAttributes(defaultAttributes);
-
 		move = true;
 	}
 	void Update()
 	{
 		if (GameController.state != State.GAME) { return; }
-
+		rigidBody.velocity = Vector3.zero;
 		dead = attributes.health <= 0;
 
 		if (dead)
@@ -124,6 +129,15 @@ public class Enemy: MonoBehaviour
 			return;
 		}
 
+		if (attackTimer > 1.5f)
+		{
+			Attack();
+		}
+		else
+		{
+			attackTimer += Time.deltaTime;
+		}
+
 
 
 
@@ -141,11 +155,19 @@ public class Enemy: MonoBehaviour
 		{
 			animator.SetBool(walk ? "Walk" : "Run", agent.velocity.magnitude > 0);
 
-			animator.SetBool("Attack", agent.remainingDistance < 2f);
-
 		}
 	}
 
+	public void Attack()
+	{
+		animator.SetBool("Attack", agent.remainingDistance < 2f);
+
+		if (agent.remainingDistance < 2f)
+		{
+			PlayerController.Instance.TakeDamage(attributes.damage);
+			attackTimer = 0;
+		}
+	}
 
 	public void TakeDamage(float damage)
 	{

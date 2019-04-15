@@ -20,6 +20,8 @@ public class MovementHandler : MonoBehaviour {
 	void FixedUpdate ()
 	{
 
+		if (GameController.state != State.GAME) return;
+
 		if (playerController.LockMovement) { return; }
 
 		if (leftController.GetLastTouchVector.magnitude != 0)
@@ -30,7 +32,7 @@ public class MovementHandler : MonoBehaviour {
 
 		if (!playerController.isPlaying("BaseLayer.Attack"))
 		{
-			transform.Translate(transform.forward * leftController.GetTouchPosition.magnitude * Time.deltaTime * playerController.Speed, Space.World);
+			transform.Translate(transform.forward * leftController.GetTouchPosition.magnitude * Time.deltaTime * 4f, Space.World);
 		}
 
 		playerController.walking = leftController.GetTouchPosition.magnitude > 0;
@@ -50,7 +52,7 @@ public class MovementHandler : MonoBehaviour {
 				transform.forward = movement;
 				if (!playerController.isPlaying("BaseLayer.Attack"))
 				{
-					transform.Translate(movement * Time.deltaTime * playerController.Speed, Space.World);
+					transform.Translate(movement * Time.deltaTime * 4f, Space.World);
 				}
 
 				playerController.walking = movement.magnitude > 0;
@@ -59,6 +61,7 @@ public class MovementHandler : MonoBehaviour {
 		}
 #endif
 
+		rigidbody.velocity = Vector2.zero;
 
 	}
 

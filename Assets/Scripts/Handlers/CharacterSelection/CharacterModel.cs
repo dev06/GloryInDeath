@@ -6,7 +6,10 @@ public class CharacterModel : MonoBehaviour
 {
 	public static CharacterModel SELECTED_MODEL;
 
-	public CharacterType modelType;
+	public DefaultCharacterAttribute defaultCharacterAttributes;
+	public CharacterAttributes attributes;
+
+	private CharacterType modelType;
 
 	void OnEnable()
 	{
@@ -17,11 +20,24 @@ public class CharacterModel : MonoBehaviour
 		EventManager.OnCharacterModelHover -= OnCharacterModelHover;
 	}
 
+	void Start()
+	{
+		modelType = defaultCharacterAttributes.type;
+
+		if (PlayerPrefs.HasKey(modelType + ""))
+		{
+			attributes.SetAttributes(CharacterAttributes.Load(modelType));
+		}
+		else
+		{
+			attributes.SetAttributes(defaultCharacterAttributes);
+		}
+
+	}
+
 	public void Hover()
 	{
 		SELECTED_MODEL = this;
-
-		PlayerController.Instance.SetCharacter(modelType);
 
 		if (EventManager.OnCharacterModelHover != null)
 		{
@@ -34,10 +50,6 @@ public class CharacterModel : MonoBehaviour
 		if (this == SELECTED_MODEL)
 		{
 			transform.Rotate(Vector3.up, -Time.deltaTime * 30f);
-		}
-		else
-		{
-
 		}
 	}
 
@@ -80,5 +92,42 @@ public class CharacterModel : MonoBehaviour
 			yield return null;
 		}
 
+	}
+
+	public void UpgradeHealth()
+	{
+		attributes.index.health++;
+		attributes.Health = defaultCharacterAttributes.health + (attributes.index.health * 10);
+		attributes.upgrade.healthCost += 10;
+		attributes.Save();
+	}
+
+	public void UpgradeSpeed()
+	{
+		attributes.index.speed++;
+		attributes.Speed = defaultCharacterAttributes.speed + (attributes.index.speed);
+		attributes.upgrade.speedCost += 10;
+		attributes.Save();
+	}
+
+	public void UpgradeDamage()
+	{
+		attributes.index.damage++;
+		attributes.Damage = defaultCharacterAttributes.damage + (attributes.index.damage);
+		attributes.upgrade.damageCost += 10;
+		attributes.Save();
+	}
+
+	public void UpgradeArmor()
+	{
+		attributes.index.armor++;
+		attributes.Armor = defaultCharacterAttributes.armor + (attributes.index.armor);
+		attributes.upgrade.armorCost += 10;
+		attributes.Save();
+	}
+
+	public CharacterType ModelType
+	{
+		get { return modelType;}
 	}
 }

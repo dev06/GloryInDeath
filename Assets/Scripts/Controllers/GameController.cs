@@ -16,7 +16,8 @@ public class GameController : MonoBehaviour {
 	public bool DeleteSave;
 
 
-	private int currentGold = 500;
+	private int currentGold = 999999999;
+
 
 	void Awake()
 	{
@@ -30,8 +31,9 @@ public class GameController : MonoBehaviour {
 		{
 			Destroy(gameObject);
 		}
-
+		Load();
 		SetState(State.CHARACTER_SELECT);
+
 	}
 
 	void OnValidate()
@@ -44,7 +46,7 @@ public class GameController : MonoBehaviour {
 
 	void Start()
 	{
-		Load();
+
 	}
 
 	public void SetState(State s)
@@ -88,7 +90,8 @@ public class GameController : MonoBehaviour {
 
 	private void Load()
 	{
-		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 0;
+		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 1;
+		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 1500;
 	}
 
 	public void Reload()
@@ -101,13 +104,11 @@ public class GameController : MonoBehaviour {
 	public void AddGold(int gold)
 	{
 		CurrentGold += gold;
-
+		PlayerPrefs.SetInt("GOLD", CurrentGold);
 	}
 
-
-
-	public bool CanPurchase(int cost)
+	public bool CanPurchase(float cost)
 	{
-		return CurrentGold >= cost;
+		return CurrentGold >= (int)cost;
 	}
 }

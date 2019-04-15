@@ -8,7 +8,7 @@ public class GameUI : MonoBehaviour {
 
 	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD;
 
-	public Image healthForeground, healthBackground;
+	public Image healthForeground, healthBackground, attackFillImage, specialAttackFillImage;
 
 	public Animation hurtOverlay, fade, goldCollectedAnimation;
 
@@ -31,8 +31,7 @@ public class GameUI : MonoBehaviour {
 	void Start()
 	{
 		Toggle(false);
-		healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
-		goldCollected.text = 0 + "";
+
 	}
 
 	void OnGameEvent(EventID id)
@@ -75,8 +74,11 @@ public class GameUI : MonoBehaviour {
 
 	void Update()
 	{
+		if (GameController.state != State.GAME) return;
 		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
-		healthLeft.text = PlayerController.Instance.attributes.Health + " / " + PlayerController.Instance.defaultAttriubtes.Health;
+		healthLeft.text = PlayerController.Instance.HealthText;
+		attackFillImage.fillAmount = PlayerController.Instance.AttackCoolDown;
+		specialAttackFillImage.fillAmount = PlayerController.Instance.SpecialCoolDown;
 	}
 
 	void OnStateChange(State s)
@@ -86,13 +88,16 @@ public class GameUI : MonoBehaviour {
 			case State.GAME:
 			{
 				Toggle(true);
+				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
+				goldCollected.text = 0 + "";
 				fade.Play("fade_in");
+
 				break;
 			}
 		}
 	}
 
-	void OnButtonClick(ButtonID id)
+	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
 	{
 	}
 
