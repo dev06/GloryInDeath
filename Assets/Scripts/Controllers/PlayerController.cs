@@ -82,7 +82,6 @@ public class PlayerController : MonoBehaviour {
 		UpdateAnimations();
 		UpdateAttackTimers();
 
-
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
 			StartCoroutine("IOnDeath");
@@ -198,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void TriggerAttack()
 	{
-		if (!canAttack) return;
+		if (!canAttack) { return; }
 		animator.SetTrigger("AttackTrigger");
 		Enemy e;
 		if (CheckWithinRange(2f, out e))
@@ -213,7 +212,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void TriggerAbility()
 	{
-		if (!canSpecialAttack) return;
+		if (!canSpecialAttack) { return; }
 		animator.SetTrigger("AttackTrigger");
 		Enemy e;
 		if (CheckWithinRange(2f, out e))
@@ -254,17 +253,21 @@ public class PlayerController : MonoBehaviour {
 
 	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
 	{
+
 		switch (id)
 		{
 			case ButtonID.ATTACK:
 			{
 				TriggerAttack();
+				handler.GetComponent<Animation>().Play();
 				break;
 			}
 
 			case ButtonID.ABILITY:
 			{
 				TriggerAbility();
+				handler.GetComponent<Animation>().Play();
+
 				break;
 			}
 		}

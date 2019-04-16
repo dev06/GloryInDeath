@@ -34,6 +34,8 @@ public class WaveController : MonoBehaviour {
 
 	private int enemySpawnDelay = 2;
 
+	private CharacterSelectUI characterSelectUI;
+
 	void OnEnable()
 	{
 		EventManager.OnGameEvent += OnGameEvent;
@@ -54,7 +56,7 @@ public class WaveController : MonoBehaviour {
 
 	void Start ()
 	{
-		//InitializeWave();
+		characterSelectUI = FindObjectOfType<CharacterSelectUI>();
 	}
 
 	public void StartNextWave()
@@ -245,7 +247,16 @@ public class WaveController : MonoBehaviour {
 
 			case State.CHARACTER_SELECT:
 			{
-				GameController.Instance.AddGold(GoldCollected);
+
+				if (GoldCollected > 0)
+				{
+					if (characterSelectUI == null)
+					{
+						characterSelectUI = FindObjectOfType<CharacterSelectUI>();
+					}
+
+					characterSelectUI.TriggerGoldCollectedDialog();
+				}
 				break;
 			}
 			case State.GAME:

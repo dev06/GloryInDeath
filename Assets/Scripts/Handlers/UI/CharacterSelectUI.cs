@@ -8,11 +8,13 @@ using TMPro;
 public class CharacterSelectUI : MonoBehaviour {
 
 
-	public TextMeshProUGUI goldText, characterDescText;
+	public TextMeshProUGUI goldText, characterDescText, sessionGoldCollectedText;
 	public Image leftArrow, rightArrow;
+	public CanvasGroup goldCollectedDialog;
 	public State activeState;
 	private PlayerController player;
 	private DragSnapHandler dragSnap;
+
 
 	void OnEnable()
 	{
@@ -132,5 +134,21 @@ public class CharacterSelectUI : MonoBehaviour {
 	private void OnUpgradeStat(UpgradeStat.Type type)
 	{
 		UpdateUI();
+	}
+
+	public void TriggerGoldCollectedDialog()
+	{
+		GameController.Instance.AddGold(WaveController.Instance.GoldCollected);
+		sessionGoldCollectedText.text = WaveController.Instance.GoldCollected.ToString();
+		goldCollectedDialog.alpha = 1f;
+		goldCollectedDialog.blocksRaycasts = true;
+		UpdateUI();
+
+	}
+
+	public void DisableGoldCollectedDialog()
+	{
+		goldCollectedDialog.alpha = 0f;
+		goldCollectedDialog.blocksRaycasts = false;
 	}
 }

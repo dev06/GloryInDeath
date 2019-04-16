@@ -173,6 +173,7 @@ public class Enemy: MonoBehaviour
 	{
 		if (dead) { return; }
 
+
 		attributes.health -= damage;
 
 		if (isDead())

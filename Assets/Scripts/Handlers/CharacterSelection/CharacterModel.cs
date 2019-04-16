@@ -113,7 +113,7 @@ public class CharacterModel : MonoBehaviour
 	public void UpgradeDamage()
 	{
 		attributes.index.damage++;
-		attributes.Damage = defaultCharacterAttributes.damage + (attributes.index.damage);
+		attributes.Damage++;
 		attributes.upgrade.damageCost += 10;
 		attributes.Save();
 	}

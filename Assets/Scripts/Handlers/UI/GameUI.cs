@@ -12,7 +12,7 @@ public class GameUI : MonoBehaviour {
 
 	public Animation hurtOverlay, fade, goldCollectedAnimation;
 
-	public TextMeshProUGUI goldCollected, healthLeft;
+	public TextMeshProUGUI goldCollected, healthLeft, lowHealthText;
 
 
 	void OnEnable () {
@@ -62,7 +62,7 @@ public class GameUI : MonoBehaviour {
 
 			case EventID.ENEMY_KILLED:
 			{
-				WaveController.Instance.GoldCollected += 5;
+				WaveController.Instance.GoldCollected += 20;
 				goldCollected.text = WaveController.Instance.GoldCollected + "";
 				goldCollectedAnimation.Play();
 				break;
@@ -74,11 +74,12 @@ public class GameUI : MonoBehaviour {
 
 	void Update()
 	{
-		if (GameController.state != State.GAME) return;
+		if (GameController.state != State.GAME) { return; }
 		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
 		healthLeft.text = PlayerController.Instance.HealthText;
 		attackFillImage.fillAmount = PlayerController.Instance.AttackCoolDown;
 		specialAttackFillImage.fillAmount = PlayerController.Instance.SpecialCoolDown;
+		lowHealthText.enabled = PlayerController.Instance.HealthRatio < .20f;
 	}
 
 	void OnStateChange(State s)
