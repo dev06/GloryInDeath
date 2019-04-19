@@ -6,7 +6,7 @@ using TMPro;
 public class GameUI : MonoBehaviour {
 
 
-	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD;
+	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD, pausePanel;
 
 	public Image healthForeground, healthBackground, attackFillImage, specialAttackFillImage;
 
@@ -168,5 +168,28 @@ public class GameUI : MonoBehaviour {
 		cg.alpha = b ? 1 : 0;
 
 		cg.blocksRaycasts = b;
+	}
+
+
+	public void PauseButtonClick()
+	{
+		Time.timeScale = 0f;
+		GameController.PAUSE = true;
+		pausePanel.alpha = 1f;
+		pausePanel.blocksRaycasts = true;
+	}
+
+	public void ResumeButtonClick()
+	{
+		Time.timeScale = 1f;
+		GameController.PAUSE = false;
+		pausePanel.alpha = 0f;
+		pausePanel.blocksRaycasts = false;
+	}
+
+	public void FleeButtonClick()
+	{
+		Time.timeScale = 1f;
+		GameController.Instance.Reload();
 	}
 }

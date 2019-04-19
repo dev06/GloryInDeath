@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	public static GameController Instance;
 	public static State state = State.CHARACTER_SELECT;
 
+	public static bool PAUSE;
 	public bool DeleteSave;
 
 
@@ -91,7 +92,8 @@ public class GameController : MonoBehaviour {
 	private void Load()
 	{
 		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 1;
-		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 1500;
+		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 100;
+		// WaveController.Instance.wave = 21;
 	}
 
 	public void Reload()

@@ -97,8 +97,9 @@ public class Enemy: MonoBehaviour
 		ToggleSkin(true);
 		waveAttributes = new EnemyAttributes();
 		waveAttributes.SetAttributes(defaultAttributes);
-		waveAttributes.health = defaultAttributes.health * WaveController.Instance.wave;
-		waveAttributes.damage = defaultAttributes.damage * WaveController.Instance.wave;
+		waveAttributes.health = defaultAttributes.health * (float)(WaveController.Instance.wave) * .4f;
+		waveAttributes.damage = defaultAttributes.damage * (float)(WaveController.Instance.wave) * .2f;
+
 		defaultAttributes.SetAttributes(waveAttributes);
 		attributes.SetAttributes(defaultAttributes);
 		move = true;
@@ -129,6 +130,9 @@ public class Enemy: MonoBehaviour
 			return;
 		}
 
+
+
+
 		if (attackTimer > 1.5f)
 		{
 			Attack();
@@ -137,7 +141,6 @@ public class Enemy: MonoBehaviour
 		{
 			attackTimer += Time.deltaTime;
 		}
-
 
 
 

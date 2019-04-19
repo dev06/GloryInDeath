@@ -23,7 +23,7 @@ public class CharacterModel : MonoBehaviour
 	void Start()
 	{
 		modelType = defaultCharacterAttributes.type;
-
+		Debug.Log("Load Attributes");
 		if (PlayerPrefs.HasKey(modelType + ""))
 		{
 			attributes.SetAttributes(CharacterAttributes.Load(modelType));
@@ -32,7 +32,7 @@ public class CharacterModel : MonoBehaviour
 		{
 			attributes.SetAttributes(defaultCharacterAttributes);
 		}
-
+		Debug.Log("Damage Loaded as -> " + attributes.Damage);
 	}
 
 	public void Hover()

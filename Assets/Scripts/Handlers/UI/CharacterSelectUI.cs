@@ -138,11 +138,10 @@ public class CharacterSelectUI : MonoBehaviour {
 
 	public void TriggerGoldCollectedDialog()
 	{
-		GameController.Instance.AddGold(WaveController.Instance.GoldCollected);
 		sessionGoldCollectedText.text = WaveController.Instance.GoldCollected.ToString();
 		goldCollectedDialog.alpha = 1f;
 		goldCollectedDialog.blocksRaycasts = true;
-		UpdateUI();
+
 
 	}
 
@@ -150,5 +149,8 @@ public class CharacterSelectUI : MonoBehaviour {
 	{
 		goldCollectedDialog.alpha = 0f;
 		goldCollectedDialog.blocksRaycasts = false;
+
+		GameController.Instance.AddGold(WaveController.Instance.GoldCollected);
+		UpdateUI();
 	}
 }

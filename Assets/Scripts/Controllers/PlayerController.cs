@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			case CharacterType.FREYA_SKAAR:
 			{
+				ToggleSkin(2);
 				break;
 			}
 		}
@@ -179,6 +180,7 @@ public class PlayerController : MonoBehaviour {
 			sessionAttributes = new CharacterAttributes();
 		}
 
+		Debug.Log("Session Attributes set");
 		sessionAttributes.SetAttributes(Attributes);
 	}
 
@@ -245,7 +247,7 @@ public class PlayerController : MonoBehaviour {
 
 	private float GetAttackDelay()
 	{
-		float ret =  1f - ( .05f * Attributes.Speed);
+		float ret =  2f - ( .05f * Attributes.Speed);
 		ret = Mathf.Clamp(ret, .01f, ret);
 		return ret;
 	}

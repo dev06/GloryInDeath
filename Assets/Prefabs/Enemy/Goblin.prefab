@@ -2501,7 +2501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultAttributes:
     type: 0
-    health: 3
+    health: 10
     speed: 0.5
     damage: 0.5
     difficulty: 1

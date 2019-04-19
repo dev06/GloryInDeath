@@ -66,6 +66,7 @@ public class CharacterAttributes
 
 	public void Save()
 	{
+		Debug.Log("Damage Saved as -> " + Damage);
 		PlayerPrefs.SetString(type + "", "recorded");
 		PlayerPrefs.SetFloat(type + "_Health", Health);
 		PlayerPrefs.SetFloat(type + "_Speed", Speed);
@@ -103,7 +104,7 @@ public class CharacterAttributes
 
 
 
-		CharacterAttributes ca = new CharacterAttributes(type, _health, _speed, _damage, _armor);
+		CharacterAttributes ca = new CharacterAttributes(type, _health, _speed, _armor, _damage);
 
 		ca.index.health = _indexhealth;
 		ca.index.speed = _indexspeed;
@@ -114,6 +115,9 @@ public class CharacterAttributes
 		ca.upgrade.speedCost = _speedCost;
 		ca.upgrade.damageCost = _damageCost;
 		ca.upgrade.armorCost = _armorCost;
+
+
+
 
 		return ca;
 

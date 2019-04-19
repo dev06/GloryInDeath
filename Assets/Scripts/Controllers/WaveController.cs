@@ -113,7 +113,18 @@ public class WaveController : MonoBehaviour {
 
 		currentEnemyIndex = 0;
 
-		WaveBuilder currentWaveBuilder = waves[wave - 1];
+		WaveBuilder currentWaveBuilder;
+
+		if (wave > waves.Count)
+		{
+			currentWaveBuilder = waves[waves.Count - 1];
+		}
+		else
+		{
+			currentWaveBuilder = waves[wave - 1];
+		}
+
+
 
 		for (int i = 0; i < currentWaveBuilder.enemyInWave.Count; i++)
 		{
@@ -179,6 +190,7 @@ public class WaveController : MonoBehaviour {
 
 	public Transform GetParentTransform(EnemyType type)
 	{
+
 		switch (type)
 		{
 			case EnemyType.GOBLIN:
