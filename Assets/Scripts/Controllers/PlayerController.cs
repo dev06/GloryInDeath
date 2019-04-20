@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 	public CharacterState characterState = CharacterState.IDLE;
 	private float attackTimer, specialAttackTimer;
 
+	private float autoAttackTimer;
 	void Awake()
 	{
 		if (Instance == null)
@@ -85,6 +86,26 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
 			StartCoroutine("IOnDeath");
+		}
+
+		autoAttackTimer += Time.deltaTime;
+		if (autoAttackTimer > 1f)
+		{
+			Enemy e;
+			if (CheckWithinRange(2f, out e))
+			{
+				Quaternion lookRotation = Quaternion.LookRotation(e.transform.position - transform.position, Vector3.up);
+				lookRotation.x = lookRotation.z = 0;
+				transform.rotation = lookRotation;
+				if (canSpecialAttack)
+				{
+					TriggerAbility(e);
+				}
+				else
+				{
+					TriggerAttack(e);
+				}
+			}
 		}
 	}
 
@@ -180,7 +201,6 @@ public class PlayerController : MonoBehaviour {
 			sessionAttributes = new CharacterAttributes();
 		}
 
-		Debug.Log("Session Attributes set");
 		sessionAttributes.SetAttributes(Attributes);
 	}
 
@@ -200,13 +220,30 @@ public class PlayerController : MonoBehaviour {
 	public void TriggerAttack()
 	{
 		if (!canAttack) { return; }
-		animator.SetTrigger("AttackTrigger");
+
 		Enemy e;
+		animator.SetTrigger("AttackTrigger");
+
 		if (CheckWithinRange(2f, out e))
 		{
+
 			e.TakeDamage(Attributes.Damage);
 			CameraController.Instance.TriggerShake(.2f);
 		}
+
+		attackTimer = 0;
+		canAttack = false;
+	}
+
+
+	public void TriggerAttack(Enemy e)
+	{
+		if (!canAttack) { return; }
+
+		animator.SetTrigger("AttackTrigger");
+
+		e.TakeDamage(Attributes.Damage);
+		CameraController.Instance.TriggerShake(.2f);
 
 		attackTimer = 0;
 		canAttack = false;
@@ -227,12 +264,26 @@ public class PlayerController : MonoBehaviour {
 		canSpecialAttack = false;
 	}
 
+	public void TriggerAbility(Enemy e)
+	{
+		if (!canSpecialAttack) { return; }
+		animator.SetTrigger("AttackTrigger");
+
+		e.TakeDamage(Attributes.Damage * 2f);
+		CameraController.Instance.TriggerShake(.2f);
+
+		specialAttackTimer = 0;
+		canSpecialAttack = false;
+	}
+
 	private bool CheckWithinRange(float threshold, out Enemy e)
 	{
 		bool b = false;
 		e = null;
 		for (int i = 0; i < WaveController.Instance.EnemyList.Count; i++)
 		{
+			if (!WaveController.Instance.EnemyList[i].gameObject.activeSelf) continue;
+
 			float distance = (WaveController.Instance.EnemyList[i].transform.position - transform.position).magnitude;
 
 			if (distance < threshold)
@@ -260,16 +311,19 @@ public class PlayerController : MonoBehaviour {
 		{
 			case ButtonID.ATTACK:
 			{
+				Haptic.Vibrate(HapticIntensity.Light);
 				TriggerAttack();
+				autoAttackTimer = 0;
 				handler.GetComponent<Animation>().Play();
 				break;
 			}
 
 			case ButtonID.ABILITY:
 			{
+				Haptic.Vibrate(HapticIntensity.Medium);
 				TriggerAbility();
+				autoAttackTimer = 0;
 				handler.GetComponent<Animation>().Play();
-
 				break;
 			}
 		}
@@ -295,7 +349,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void TakeDamage(float damage)
 	{
-		float d = .01f * Attributes.Armor;
+		float d = .05f * Attributes.Armor;
 		damage = damage - d;
 		damage = Mathf.Clamp(damage, .001f, damage);
 		Attributes.health -= damage;
@@ -329,6 +383,9 @@ public class PlayerController : MonoBehaviour {
 	private bool iOnDeathStarted;
 	IEnumerator IOnDeath()
 	{
+		var parameters = new Dictionary<string, object>();
+		parameters["WAVE"] = WaveController.Instance.wave;
+		FacebookManager.Instance.EventSent("Wave Failed", 1, parameters);
 		GetComponentInChildren<MeshRenderer>().enabled = false;
 		yield return new WaitForSeconds(1f);
 		GameController.Instance.Reload();
@@ -379,5 +436,11 @@ public class PlayerController : MonoBehaviour {
 	public float SpecialCoolDown
 	{
 		get { return (specialAttackTimer / 3f); }
+	}
+
+	public float AutoAttackTimer
+	{
+		get { return autoAttackTimer; }
+		set { this.autoAttackTimer = value; }
 	}
 }

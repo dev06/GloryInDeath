@@ -97,8 +97,8 @@ public class Enemy: MonoBehaviour
 		ToggleSkin(true);
 		waveAttributes = new EnemyAttributes();
 		waveAttributes.SetAttributes(defaultAttributes);
-		waveAttributes.health = defaultAttributes.health * (float)(WaveController.Instance.wave) * .4f;
-		waveAttributes.damage = defaultAttributes.damage * (float)(WaveController.Instance.wave) * .2f;
+		waveAttributes.health = defaultAttributes.health * (float)(WaveController.Instance.wave) * .45f;
+		waveAttributes.damage = defaultAttributes.damage * (float)(WaveController.Instance.wave) * .3f;
 
 		defaultAttributes.SetAttributes(waveAttributes);
 		attributes.SetAttributes(defaultAttributes);

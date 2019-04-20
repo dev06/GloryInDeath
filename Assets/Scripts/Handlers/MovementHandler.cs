@@ -36,6 +36,8 @@ public class MovementHandler : MonoBehaviour {
 		}
 
 		playerController.walking = leftController.GetTouchPosition.magnitude > 0;
+		playerController.AutoAttackTimer = playerController.walking ? 0 : playerController.AutoAttackTimer;
+
 
 #if UNITY_EDITOR
 
@@ -56,6 +58,7 @@ public class MovementHandler : MonoBehaviour {
 				}
 
 				playerController.walking = movement.magnitude > 0;
+				playerController.AutoAttackTimer = playerController.walking ? 0 : playerController.AutoAttackTimer;
 			}
 
 		}

@@ -23,7 +23,6 @@ public class CharacterModel : MonoBehaviour
 	void Start()
 	{
 		modelType = defaultCharacterAttributes.type;
-		Debug.Log("Load Attributes");
 		if (PlayerPrefs.HasKey(modelType + ""))
 		{
 			attributes.SetAttributes(CharacterAttributes.Load(modelType));
@@ -32,7 +31,6 @@ public class CharacterModel : MonoBehaviour
 		{
 			attributes.SetAttributes(defaultCharacterAttributes);
 		}
-		Debug.Log("Damage Loaded as -> " + attributes.Damage);
 	}
 
 	public void Hover()
@@ -98,7 +96,7 @@ public class CharacterModel : MonoBehaviour
 	{
 		attributes.index.health++;
 		attributes.Health = defaultCharacterAttributes.health + (attributes.index.health * 10);
-		attributes.upgrade.healthCost += 10;
+		attributes.upgrade.healthCost += 50;
 		attributes.Save();
 	}
 
@@ -106,7 +104,7 @@ public class CharacterModel : MonoBehaviour
 	{
 		attributes.index.speed++;
 		attributes.Speed = defaultCharacterAttributes.speed + (attributes.index.speed);
-		attributes.upgrade.speedCost += 10;
+		attributes.upgrade.speedCost += 50;
 		attributes.Save();
 	}
 
@@ -114,7 +112,7 @@ public class CharacterModel : MonoBehaviour
 	{
 		attributes.index.damage++;
 		attributes.Damage++;
-		attributes.upgrade.damageCost += 10;
+		attributes.upgrade.damageCost += 50;
 		attributes.Save();
 	}
 
@@ -122,7 +120,7 @@ public class CharacterModel : MonoBehaviour
 	{
 		attributes.index.armor++;
 		attributes.Armor = defaultCharacterAttributes.armor + (attributes.index.armor);
-		attributes.upgrade.armorCost += 10;
+		attributes.upgrade.armorCost += 50;
 		attributes.Save();
 	}
 

@@ -102,6 +102,7 @@ public class CharacterSelectUI : MonoBehaviour {
 		{
 			case ButtonID.SELECT_CHARACTER:
 			{
+				Haptic.Vibrate(HapticIntensity.Light);
 				PlayerController.Instance.SetCharacter(CharacterModel.SELECTED_MODEL.ModelType);
 				GameController.Instance.SetState(State.GAME);
 				break;
@@ -149,7 +150,7 @@ public class CharacterSelectUI : MonoBehaviour {
 	{
 		goldCollectedDialog.alpha = 0f;
 		goldCollectedDialog.blocksRaycasts = false;
-
+		Haptic.Vibrate(HapticIntensity.Light);
 		GameController.Instance.AddGold(WaveController.Instance.GoldCollected);
 		UpdateUI();
 	}

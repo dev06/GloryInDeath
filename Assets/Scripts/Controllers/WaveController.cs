@@ -61,6 +61,7 @@ public class WaveController : MonoBehaviour {
 
 	public void StartNextWave()
 	{
+		GameController.Instance.waveStarts++;
 		StopCoroutine("IStartNextWave");
 		StartCoroutine("IStartNextWave");
 	}
@@ -145,6 +146,8 @@ public class WaveController : MonoBehaviour {
 
 	void Update ()
 	{
+		if (GameController.state != State.GAME) return;
+
 		if (enemyWaveTransform.childCount <= 0)
 		{
 			if (!waveEnded)

@@ -70,7 +70,7 @@ public class UpgradeStat : MonoBehaviour {
 				handler.GetComponent<Animation>().Play();
 				GameController.Instance.AddGold((int) - attributes.upgrade.healthCost);
 				CharacterModel.SELECTED_MODEL.UpgradeHealth();
-
+				Haptic.Vibrate(HapticIntensity.Light);
 				targetProgressFill = attributes.index.health / MAX;
 				UpdateValues(attributes);
 				EventManager.OnUpgradeStat(type);
@@ -84,7 +84,7 @@ public class UpgradeStat : MonoBehaviour {
 
 				GameController.Instance.AddGold((int) - attributes.upgrade.speedCost);
 				CharacterModel.SELECTED_MODEL.UpgradeSpeed();
-
+				Haptic.Vibrate(HapticIntensity.Light);
 				handler.GetComponent<Animation>().Play();
 				targetProgressFill = attributes.index.speed / MAX;
 				UpdateValues(attributes);
@@ -101,6 +101,7 @@ public class UpgradeStat : MonoBehaviour {
 				GameController.Instance.AddGold((int) - attributes.upgrade.damageCost);
 				CharacterModel.SELECTED_MODEL.UpgradeDamage();
 				handler.GetComponent<Animation>().Play();
+				Haptic.Vibrate(HapticIntensity.Light);
 				targetProgressFill = attributes.index.damage / MAX;
 				UpdateValues(attributes);
 				EventManager.OnUpgradeStat(type);
@@ -116,6 +117,7 @@ public class UpgradeStat : MonoBehaviour {
 				GameController.Instance.AddGold((int) - attributes.upgrade.armorCost);
 				CharacterModel.SELECTED_MODEL.UpgradeArmor();
 				handler.GetComponent<Animation>().Play();
+				Haptic.Vibrate(HapticIntensity.Light);
 				targetProgressFill = attributes.index.armor / MAX;
 				UpdateValues(attributes);
 				EventManager.OnUpgradeStat(type);

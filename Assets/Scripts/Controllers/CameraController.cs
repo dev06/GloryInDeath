@@ -80,6 +80,9 @@ public class CameraController : MonoBehaviour {
 		{
 			case EventID.WAVE_END:
 			{
+				var parameters = new Dictionary<string, object>();
+				parameters["WAVE"] = WaveController.Instance.wave;
+				FacebookManager.Instance.EventSent("Wave Completed", 1, parameters);
 				waveEnded = true;
 				endRotationVelocity = (Random.Range(0, 2) == 0 ? -5f : 5f);
 				break;

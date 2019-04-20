@@ -90,6 +90,7 @@ public class DragSnapHandler : MonoBehaviour {
 			if (lastSelected != selectedIndex)
 			{
 				characterModels.GetChild(selectedIndex).GetComponent<CharacterModel>().Hover();
+				Haptic.Vibrate(HapticIntensity.Light);
 			}
 
 			rotationMovement = 0;

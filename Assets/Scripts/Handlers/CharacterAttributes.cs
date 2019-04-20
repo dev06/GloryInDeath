@@ -66,7 +66,6 @@ public class CharacterAttributes
 
 	public void Save()
 	{
-		Debug.Log("Damage Saved as -> " + Damage);
 		PlayerPrefs.SetString(type + "", "recorded");
 		PlayerPrefs.SetFloat(type + "_Health", Health);
 		PlayerPrefs.SetFloat(type + "_Speed", Speed);

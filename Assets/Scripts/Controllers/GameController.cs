@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using RabaGames;
 public enum State
 {
 	CHARACTER_SELECT,
@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour {
 
 
 	private int currentGold = 999999999;
+
+	public int waveStarts = 0;
 
 
 	void Awake()
@@ -47,7 +49,19 @@ public class GameController : MonoBehaviour {
 
 	void Start()
 	{
+		if (waveStarts > 0 && waveStarts % 5 == 0)
+		{
+			ShowRateDialog();
+		}
+	}
 
+
+	public void ShowRateDialog()
+	{
+		if (Application.platform == RuntimePlatform.IPhonePlayer)
+		{
+			RateInsideAppiOS.DisplayReviewDialog();
+		}
 	}
 
 	public void SetState(State s)
@@ -87,12 +101,15 @@ public class GameController : MonoBehaviour {
 	private void Save()
 	{
 		PlayerPrefs.SetInt("WAVE_COMPLETED", WaveController.Instance.wave);
+		PlayerPrefs.SetInt("WAVESTARTS", waveStarts);
 	}
 
 	private void Load()
 	{
 		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 1;
 		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 100;
+		waveStarts = PlayerPrefs.HasKey("WAVESTARTS") ?  PlayerPrefs.GetInt("WAVESTARTS") : 0;
+
 		// WaveController.Instance.wave = 21;
 	}
 
