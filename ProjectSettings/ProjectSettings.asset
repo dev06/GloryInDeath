@@ -156,7 +156,8 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.VayStudios.GloryInDeath
     iOS: com.VayStudios.GloryInDeath
-  buildNumber: {}
+  buildNumber:
+    iOS: 1
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
@@ -246,8 +247,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: /Users/devan/Local Document/Unity/Keystore/GID-1.0_NJ22.keystore
+  AndroidKeyaliasName: glory in death
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
