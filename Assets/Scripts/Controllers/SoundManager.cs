@@ -9,20 +9,18 @@ public class SoundManager : MonoBehaviour {
     private AudioClip gameplayMusic;
     private AudioClip deathSound;
     private State current;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         menuMusic = Resources.Load<AudioClip>("Music/Dark Dungeon AMBIENT LOOP");
         gameplayMusic = Resources.Load<AudioClip>("Music/Barren Combat LOOP");
         deathSound = Resources.Load<AudioClip>("Music/Death PIANO");
         musicPlayer.loop = true;
         current = State.GAME;
-	}
+    }
 
     private void Update()
     {
-        Debug.Log(GameController.state);
-        Debug.Log(current);
-        if((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
+        if ((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
         {
             EnterMenu();
             current = GameController.state;
