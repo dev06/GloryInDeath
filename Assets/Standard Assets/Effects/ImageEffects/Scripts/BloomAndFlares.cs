@@ -112,7 +112,7 @@ namespace UnityStandardAssets.ImageEffects
 #if UNITY_5_6_OR_NEWER
                 doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().allowHDR;
 #else
-                doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().hdr;
+                doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().allowHDR;
 #endif
             else
             {

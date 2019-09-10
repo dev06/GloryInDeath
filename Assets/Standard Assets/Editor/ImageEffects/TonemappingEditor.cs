@@ -45,7 +45,7 @@ namespace UnityStandardAssets.ImageEffects
 #if UNITY_5_6_OR_NEWER
                 if (!cam.allowHDR) {
 #else
-                if (!cam.hdr) {
+                if (!cam.allowHDR) {
 #endif
                 EditorGUILayout.HelpBox("The camera is not HDR enabled. This will likely break the Tonemapper.", MessageType.Warning);
                 }

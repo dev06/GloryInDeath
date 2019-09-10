@@ -75,7 +75,7 @@ namespace UnityEditor.PostProcessing
             importer.sRGBTexture = false;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
 #else
-            importer.textureType = TextureImporterType.Advanced;
+            importer.textureType = TextureImporterType.Default;
             importer.linearTexture = true;
             importer.textureFormat = TextureImporterFormat.RGB24;
 #endif

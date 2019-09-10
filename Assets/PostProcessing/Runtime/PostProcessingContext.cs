@@ -37,7 +37,7 @@ namespace UnityEngine.PostProcessing
 #if UNITY_5_6 || UNITY_5_6_OR_NEWER
             get { return camera.allowHDR; }
 #else
-            get { return camera.hdr; }
+            get { return camera.allowHDR; }
 #endif
         }
 

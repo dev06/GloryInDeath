@@ -88,7 +88,7 @@ namespace UnityStandardAssets.ImageEffects
 #if UNITY_5_6_OR_NEWER
                 if (screenBlendMode.enumValueIndex==0 && ((cam.allowHDR && hdr.enumValueIndex==0) || (hdr.enumValueIndex==1))) {
 #else
-                if (screenBlendMode.enumValueIndex==0 && ((cam.hdr && hdr.enumValueIndex==0) || (hdr.enumValueIndex==1))) {
+                if (screenBlendMode.enumValueIndex==0 && ((cam.allowHDR && hdr.enumValueIndex==0) || (hdr.enumValueIndex==1))) {
 #endif
                 EditorGUILayout.HelpBox("Screen blend is not supported in HDR. Using 'Add' instead.", MessageType.Info);
                 }

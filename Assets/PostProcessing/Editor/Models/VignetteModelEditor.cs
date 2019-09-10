@@ -104,7 +104,7 @@ namespace UnityEditor.PostProcessing
             importer.alphaSource = TextureImporterAlphaSource.FromGrayScale;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
 #else
-            importer.textureType = TextureImporterType.Advanced;
+            importer.textureType = TextureImporterType.Default;
             importer.grayscaleToAlpha = true;
             importer.textureFormat = TextureImporterFormat.Alpha8;
 #endif
