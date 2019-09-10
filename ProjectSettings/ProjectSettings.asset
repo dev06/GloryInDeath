@@ -765,7 +765,7 @@ PlayerSettings:
     ErrorHub: 0
     Hub: 0
     UNet: 1
-  facebookSdkVersion: 7.9.4
+  facebookSdkVersion: plugin
   apiCompatibilityLevel: 2
   cloudProjectId: 025f2d53-e6c1-455c-a477-8fdd0a1b94e6
   projectName: CGDD4803_Studio
