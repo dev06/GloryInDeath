@@ -17,7 +17,7 @@ public class MovementHandler : MonoBehaviour {
 	{
 		if (GameController.state != State.GAME) { return; }
 		if (_playerController.LockMovement) { return; }
-		Debug.Log(_playerController.activeCharacterTransform);
+		//Debug.Log(_playerController.activeCharacterTransform);
 		Vector3 _movement = leftController.GetTouchPosition;
 		_movement = new Vector3(_movement.x, 0f, _movement.y);
 		if (_movement.magnitude != 0)
