@@ -32,25 +32,27 @@ public class PlayerController : MonoBehaviour {
 
 	public CharacterAttributes attributes;
 	public CharacterAttributes sessionAttributes;
-
-
-
+	public Transform activeCharacterTransform;
 	public Transform[] characterSkins;
-
+	public CharacterState characterState = CharacterState.IDLE;
 	public bool withinEnemyRange;
-	private Enemy contactingEnemy;
-	private Animator animator;
-
+	public bool walking;
 	[HideInInspector]
 	public bool lockMovement;
-	public bool walking;
-	private bool damageTaken, canAttack, canSpecialAttack;
-	private float damageTakenCoolDown;
-	private Rigidbody rigidbody;
-	public CharacterState characterState = CharacterState.IDLE;
-	private float attackTimer, specialAttackTimer;
 
+	private Enemy contactingEnemy;
+	private Animator animator;
+	private bool damageTaken, canAttack, canSpecialAttack;
+	private Rigidbody rigidbody;
+	private float damageTakenCoolDown;
+	private float attackTimer;
+	private float specialAttackTimer;
 	private float autoAttackTimer;
+
+
+	[Header("Particle System")]
+	public ParticleSystem hammerSpecial;
+
 	void Awake()
 	{
 		if (Instance == null)
@@ -63,12 +65,16 @@ public class PlayerController : MonoBehaviour {
 	{
 		EventManager.OnButtonClick += OnButtonClick;
 		EventManager.OnGameEvent += OnGameEvent;
+		EventManager.OnWeaponHit += OnWeaponHit;
+		EventManager.OnSpecialAttackHit += OnSpecialAttackHit;
 	}
 
 	void OnDisable()
 	{
 		EventManager.OnButtonClick -= OnButtonClick;
 		EventManager.OnGameEvent -= OnGameEvent;
+		EventManager.OnWeaponHit -= OnWeaponHit;
+		EventManager.OnSpecialAttackHit -= OnSpecialAttackHit;
 	}
 
 
@@ -88,25 +94,25 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine("IOnDeath");
 		}
 
-		autoAttackTimer += Time.deltaTime;
-		if (autoAttackTimer > 1f)
-		{
-			Enemy e;
-			if (CheckWithinRange(2f, out e))
-			{
-				Quaternion lookRotation = Quaternion.LookRotation(e.transform.position - transform.position, Vector3.up);
-				lookRotation.x = lookRotation.z = 0;
-				transform.rotation = lookRotation;
-				if (canSpecialAttack)
-				{
-					TriggerAbility(e);
-				}
-				else
-				{
-					TriggerAttack(e);
-				}
-			}
-		}
+		// autoAttackTimer += Time.deltaTime;
+		// if (autoAttackTimer > 1f)
+		// {
+		// 	Enemy e;
+		// 	if (CheckWithinRange(2f, out e))
+		// 	{
+		// 		Quaternion lookRotation = Quaternion.LookRotation(e.transform.position - transform.position, Vector3.up);
+		// 		lookRotation.x = lookRotation.z = 0;
+		// 		transform.rotation = lookRotation;
+		// 		if (canSpecialAttack)
+		// 		{
+		// 			TriggerAbility(e);
+		// 		}
+		// 		else
+		// 		{
+		// 			TriggerAttack(e);
+		// 		}
+		// 	}
+		// }
 	}
 
 	void LateUpdate()
@@ -133,25 +139,11 @@ public class PlayerController : MonoBehaviour {
 
 	public void UpdateAnimations()
 	{
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			animator.SetTrigger("AttackTrigger");
-		}
 		animator.SetBool("Run", walking);
 	}
 
 	private void UpdateAttackTimers()
 	{
-		if (attackTimer > GetAttackDelay())
-		{
-			canAttack = true;
-		}
-		else
-		{
-			attackTimer += Time.deltaTime;
-		}
-
-
 		if (specialAttackTimer > 3f)
 		{
 			canSpecialAttack = true;
@@ -173,6 +165,47 @@ public class PlayerController : MonoBehaviour {
 		ToggleRunning(state == CharacterState.RUN);
 	}
 
+	public void OnWeaponHit(GameObject go)
+	{
+		if (go.tag != "Entity/Enemy") { return; }
+		Enemy e;
+		if (CheckWithinRange(2f, out e))
+		{
+
+			e.TakeDamage(Attributes.Damage);
+			CameraController.Instance.TriggerShake(.2f);
+		}
+	}
+
+	public void OnSpecialAttackHit(string _id)
+	{
+		float _distance = 0;
+		switch (_id)
+		{
+			case "character_one":
+			{
+				_distance = 1f;
+				break;
+			}
+			case "character_two":
+			{
+				_distance = 3f;
+				CameraController.Instance.TriggerShake(.6f);
+				hammerSpecial.Play();
+				hammerSpecial.transform.position = activeCharacterTransform.position + new Vector3(0f, .3f, 0f);
+				break;
+			}
+		}
+
+		List<Enemy> e = GetEnemiesWithinRange(_distance);
+
+
+		for (int i = 0; i < e.Count; i++)
+		{
+			e[i].TakeDamage(Attributes.Damage * 3f);
+		}
+	}
+
 	public void SetCharacter(CharacterType type)
 	{
 		Attributes.SetAttributes(CharacterModel.SELECTED_MODEL.attributes);
@@ -182,6 +215,7 @@ public class PlayerController : MonoBehaviour {
 			case CharacterType.AURA_BLACKSWORD:
 			{
 				ToggleSkin(0);
+
 				break;
 			}
 			case CharacterType.HALLFRED_THORALDSON:
@@ -192,6 +226,7 @@ public class PlayerController : MonoBehaviour {
 			case CharacterType.FREYA_SKAAR:
 			{
 				ToggleSkin(2);
+
 				break;
 			}
 		}
@@ -214,35 +249,24 @@ public class PlayerController : MonoBehaviour {
 		}
 		animator = characterSkins[i].GetComponent<Animator>();
 		characterSkins[i].gameObject.SetActive(true);
+		activeCharacterTransform = transform.GetChild(i + 1).gameObject.transform;
 	}
 
 
 	public void TriggerAttack()
 	{
-		if (!canAttack) { return; }
-
-		Enemy e;
 		animator.SetTrigger("AttackTrigger");
-
-		if (CheckWithinRange(2f, out e))
-		{
-
-			e.TakeDamage(Attributes.Damage);
-			CameraController.Instance.TriggerShake(.2f);
-		}
-
 		attackTimer = 0;
 		canAttack = false;
 	}
 
-
 	public void TriggerAttack(Enemy e)
 	{
-		if (!canAttack) { return; }
+		//if (!canAttack) { return; }
 
 		animator.SetTrigger("AttackTrigger");
 
-		e.TakeDamage(Attributes.Damage);
+		//e.TakeDamage(Attributes.Damage);
 		CameraController.Instance.TriggerShake(.2f);
 
 		attackTimer = 0;
@@ -252,14 +276,7 @@ public class PlayerController : MonoBehaviour {
 	public void TriggerAbility()
 	{
 		if (!canSpecialAttack) { return; }
-		animator.SetTrigger("AttackTrigger");
-		Enemy e;
-		if (CheckWithinRange(2f, out e))
-		{
-			e.TakeDamage(Attributes.Damage * 2f);
-			CameraController.Instance.TriggerShake(.2f);
-		}
-
+		animator.SetTrigger("SpecialTrigger");
 		specialAttackTimer = 0;
 		canSpecialAttack = false;
 	}
@@ -267,14 +284,11 @@ public class PlayerController : MonoBehaviour {
 	public void TriggerAbility(Enemy e)
 	{
 		if (!canSpecialAttack) { return; }
-		animator.SetTrigger("AttackTrigger");
-
-		e.TakeDamage(Attributes.Damage * 2f);
-		CameraController.Instance.TriggerShake(.2f);
-
+		animator.SetTrigger("SpecialTrigger");
 		specialAttackTimer = 0;
 		canSpecialAttack = false;
 	}
+
 
 	private bool CheckWithinRange(float threshold, out Enemy e)
 	{
@@ -282,9 +296,9 @@ public class PlayerController : MonoBehaviour {
 		e = null;
 		for (int i = 0; i < WaveController.Instance.EnemyList.Count; i++)
 		{
-			if (!WaveController.Instance.EnemyList[i].gameObject.activeSelf) continue;
+			if (!WaveController.Instance.EnemyList[i].gameObject.activeSelf) { continue; }
 
-			float distance = (WaveController.Instance.EnemyList[i].transform.position - transform.position).magnitude;
+			float distance = (WaveController.Instance.EnemyList[i].transform.position - activeCharacterTransform.position).magnitude;
 
 			if (distance < threshold)
 			{
@@ -294,6 +308,22 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		return b;
+	}
+
+	private List<Enemy> GetEnemiesWithinRange(float _range)
+	{
+		List<Enemy> _ret = new List<Enemy>();
+		for (int i = 0; i < WaveController.Instance.EnemyList.Count; i++)
+		{
+			if (!WaveController.Instance.EnemyList[i].gameObject.activeSelf) { continue; }
+			float distance = (WaveController.Instance.EnemyList[i].transform.position - activeCharacterTransform.position).magnitude;
+			if (distance < _range)
+			{
+				_ret.Add(WaveController.Instance.EnemyList[i]);
+			}
+		}
+
+		return _ret;
 	}
 
 	private float GetAttackDelay()
@@ -376,7 +406,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			Transform bodyPoints = transform.GetChild(1);
 			Vector3 point = bodyPoints.GetChild(Random.Range(0, bodyPoints.childCount)).transform.position;
-			return point;
+			return activeCharacterTransform.position;
 		}
 	}
 

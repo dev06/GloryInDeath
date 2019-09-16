@@ -69,6 +69,7 @@ public class Enemy: MonoBehaviour
 	private Vector3 playerDestinationLocation;
 	private Rigidbody rigidBody;
 	private float attackTimer;
+	private Transform _healthContainer;
 
 	void Start()
 	{
@@ -89,6 +90,8 @@ public class Enemy: MonoBehaviour
 		rigidBody = GetComponent<Rigidbody>();
 		attributes = new EnemyAttributes();
 		attributes.SetAttributes(defaultAttributes);
+
+		_healthContainer = transform.GetChild(0);
 
 	}
 
@@ -112,7 +115,7 @@ public class Enemy: MonoBehaviour
 
 		if (dead)
 		{
-			rigidBody.isKinematic = true;
+			//rigidBody.isKinematic = true;
 			attributes.health = 0;
 		}
 
@@ -131,6 +134,7 @@ public class Enemy: MonoBehaviour
 		}
 
 
+		_healthContainer.LookAt(Camera.main.transform.position);
 
 
 		if (attackTimer > 1.5f)
@@ -144,9 +148,13 @@ public class Enemy: MonoBehaviour
 
 
 
-		agent.speed = attributes.speed;
-		playerDestinationLocation = player.GetBodypoint;
-		agent.SetDestination(playerDestinationLocation);
+		if (!dead)
+		{
+			agent.speed = attributes.speed;
+			playerDestinationLocation = player.GetBodypoint;
+			agent.SetDestination(playerDestinationLocation);
+		}
+
 		Vector3 lookrotation = agent.steeringTarget - transform.position;
 
 		if (lookrotation != Vector3.zero)

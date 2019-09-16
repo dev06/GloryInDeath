@@ -414,13 +414,14 @@ GameObject:
   - component: {fileID: 65921552311325730}
   - component: {fileID: 114556201327629846}
   - component: {fileID: 195571951434930084}
+  - component: {fileID: 65322078027671780}
   m_Layer: 10
   m_Name: Goblin
   m_TagString: Entity/Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1345389475536866
 GameObject:
   m_ObjectHideFlags: 1
@@ -2458,6 +2459,18 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 1
+--- !u!65 &65322078027671780
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1320904280942136}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 6.315235, z: 4}
+  m_Center: {x: 0, y: 2.8973827, z: 0}
 --- !u!65 &65921552311325730
 BoxCollider:
   m_ObjectHideFlags: 1

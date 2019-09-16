@@ -97,6 +97,8 @@ public class CameraController : MonoBehaviour {
 			GetComponent<Animation>().Play();
 
 			transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
+
+			playerTransform = FindObjectOfType<PlayerController>().activeCharacterTransform;
 		}
 	}
 
@@ -121,7 +123,7 @@ public class CameraController : MonoBehaviour {
 
 		if (GameController.state != State.GAME) { return; }
 
-		if (!unlockControls) return;
+		if (!unlockControls) { return; }
 
 		Vector3 raw =  defaultPosition + new Vector3(playerTransform.position.x, 0, playerTransform.position.z) + new Vector3(0, 0, distanceOffset);
 		raw.z = Mathf.Clamp(raw.z, -15f, raw.z);
