@@ -22,6 +22,7 @@ public class WaveController : MonoBehaviour {
 
 	public int wave = 0; // represents current wave;
 
+
 	public int waveDifficulty = 5;
 
 	public List<WaveBuilder> waves = new List<WaveBuilder>();
@@ -32,7 +33,7 @@ public class WaveController : MonoBehaviour {
 
 	private bool waveEnded;
 
-	private int enemySpawnDelay = 2;
+	private int enemySpawnDelay = 0;
 
 	private CharacterSelectUI characterSelectUI;
 
@@ -116,26 +117,32 @@ public class WaveController : MonoBehaviour {
 
 		WaveBuilder currentWaveBuilder;
 
-		if (wave > waves.Count)
+		// if (wave > waves.Count)
+		// {
+		// 	currentWaveBuilder = waves[waves.Count - 1];
+		// }
+		// else
+		// {
+		// 	currentWaveBuilder = waves[wave - 1];
+		// }
+
+		for (int i = 0; i < 10; i++)
 		{
-			currentWaveBuilder = waves[waves.Count - 1];
-		}
-		else
-		{
-			currentWaveBuilder = waves[wave - 1];
+			EnemyType eType = Random.value > .8f ? EnemyType.GOBLIN : EnemyType.ORC;
+			Enemy e = GetParentTransform(eType).GetChild(i).GetComponent<Enemy>();
+			e.Init();
+			enemyList.Add(e);
 		}
 
-
-
-		for (int i = 0; i < currentWaveBuilder.enemyInWave.Count; i++)
-		{
-			for (int j = 0; j < currentWaveBuilder.enemyInWave[i].quantity; j++)
-			{
-				Enemy e = GetParentTransform(currentWaveBuilder.enemyInWave[i].type).GetChild(j).GetComponent<Enemy>();
-				e.Init();
-				enemyList.Add(e);
-			}
-		}
+		// for (int i = 0; i < currentWaveBuilder.enemyInWave.Count; i++)
+		// {
+		// 	for (int j = 0; j < currentWaveBuilder.enemyInWave[i].quantity; j++)
+		// 	{
+		// 		Enemy e = GetParentTransform(currentWaveBuilder.enemyInWave[i].type).GetChild(j).GetComponent<Enemy>();
+		// 		e.Init();
+		// 		enemyList.Add(e);
+		// 	}
+		// }
 
 		for (int i = 0; i < enemyList.Count; i++)
 		{
@@ -146,8 +153,15 @@ public class WaveController : MonoBehaviour {
 
 	void Update ()
 	{
-		if (GameController.state != State.GAME) return;
+		if (GameController.state != State.GAME) { return; }
 
+		if (Input.GetKeyDown(KeyCode.R)) {
+			if (EventManager.OnGameEvent != null)
+			{
+				EventManager.OnGameEvent(EventID.WAVE_END);
+			}
+			waveEnded = true;
+		}
 		if (enemyWaveTransform.childCount <= 0)
 		{
 			if (!waveEnded)
@@ -222,6 +236,7 @@ public class WaveController : MonoBehaviour {
 					{
 						EventManager.OnGameEvent(EventID.WAVE_END);
 					}
+					waveEnded = true;
 				}
 
 				break;

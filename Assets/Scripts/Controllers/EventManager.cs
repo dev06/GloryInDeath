@@ -34,4 +34,11 @@ public class EventManager : MonoBehaviour {
 
 	public delegate void SpecialAttack(string _id);
 	public static SpecialAttack OnSpecialAttackHit;
+
+	public delegate void RegularAttack(string _id);
+	public static RegularAttack OnRegularAttack;
+	public static RegularAttack OnRegularAttackStart;
+	public static RegularAttack OnRegularAttackEnd;
+
+
 }

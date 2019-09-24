@@ -5,20 +5,24 @@ using UnityEngine;
 public class MovementHandler : MonoBehaviour {
 
 	private Rigidbody _rigidbody;
-	public SimpleTouchController leftController;
+	private JoyStickReposition _leftController;
 	private PlayerController _playerController;
 
 	void Start ()
 	{
 		_rigidbody = GetComponent<Rigidbody>();
 		_playerController = GetComponent<PlayerController>();
+		_leftController = FindObjectOfType<JoyStickReposition>();
 	}
 	void FixedUpdate ()
 	{
 		if (GameController.state != State.GAME) { return; }
-		if (_playerController.LockMovement) { return; }
-		//Debug.Log(_playerController.activeCharacterTransform);
-		Vector3 _movement = leftController.GetTouchPosition;
+		if (_playerController.LockMovement) {
+			_playerController.walking = false;
+			return;
+		}
+
+		Vector3 _movement = _leftController.GetTouchPosition;
 		_movement = new Vector3(_movement.x, 0f, _movement.y);
 		if (_movement.magnitude != 0)
 		{
@@ -27,7 +31,7 @@ public class MovementHandler : MonoBehaviour {
 				_playerController.activeCharacterTransform.forward = _movement * Time.deltaTime * 4f;
 			}
 		}
-		_playerController.walking = leftController.GetTouchPosition.magnitude > 0;
+		_playerController.walking = _leftController.GetTouchPosition.magnitude > 0;
 		_playerController.AutoAttackTimer = _playerController.walking ? 0 : _playerController.AutoAttackTimer;
 
 #if UNITY_EDITOR

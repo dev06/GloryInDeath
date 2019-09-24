@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RabaGames;
+using TMPro;
 public enum State
 {
 	CHARACTER_SELECT,
@@ -22,6 +23,10 @@ public class GameController : MonoBehaviour {
 	public int waveStarts = 0;
 
 
+	[Header("Debug")]
+	public TextMeshProUGUI fpsText;
+	private float _deltatime;
+	private float _updateFPSTimer;
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -36,6 +41,8 @@ public class GameController : MonoBehaviour {
 		}
 		Load();
 		SetState(State.CHARACTER_SELECT);
+
+		//Debug.Log("Hit");
 
 	}
 
@@ -52,6 +59,19 @@ public class GameController : MonoBehaviour {
 		if (waveStarts > 0 && waveStarts % 5 == 0)
 		{
 			ShowRateDialog();
+		}
+	}
+
+	void Update()
+	{
+		_deltatime += (Time.unscaledDeltaTime - _deltatime) * .1f;
+		_updateFPSTimer += Time.deltaTime;
+		float msec = _deltatime * 1000f;
+		float fps = 1f / _deltatime;
+		if (_updateFPSTimer > 1f)
+		{
+			fpsText.text = (int)fps + " fps";
+			_updateFPSTimer = 0f;
 		}
 	}
 

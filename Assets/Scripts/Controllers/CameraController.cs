@@ -12,28 +12,18 @@ public struct CameraGameTransform
 public class CameraController : MonoBehaviour {
 
 	public static CameraController Instance;
-
 	public Light directionalLight;
-
-	public float distanceOffset = 0;
-
-	private Transform playerTransform;
-
-	private Vector3 defaultPosition;
-
-	private Vector3 targetPosition;
-
-	private Quaternion targetRotation;
-
+	public Vector3 cameraOffset;
 	public CameraGameTransform cameraGameTransform;
 
-	private Canvas csCanvas;
-
-	private bool unlockControls;
-
-	private BlurOptimized blur;
-
-	private float endRotationVelocity;
+	private Transform _playerTransform;
+	private Vector3 _defaultPosition;
+	private Vector3 _targetPosition;
+	private Quaternion _targetRotation;
+	private Canvas _csCanvas;
+	private Blur _blur;
+	private float _endRotationVelocity;
+	private bool _unlockControls;
 
 	void OnEnable()
 	{
@@ -59,16 +49,16 @@ public class CameraController : MonoBehaviour {
 
 	public void Init()
 	{
-		playerTransform = FindObjectOfType<MovementHandler>().transform;
+		_playerTransform = FindObjectOfType<MovementHandler>().transform;
 
-		if (csCanvas == null)
+		if (_csCanvas == null)
 		{
-			csCanvas = transform.GetChild(0).GetComponent<Canvas>();
+			_csCanvas = transform.GetChild(0).GetComponent<Canvas>();
 		}
 
-		blur = GetComponent<BlurOptimized>();
+		_blur = GetComponent<Blur>();
 
-		csCanvas.enabled = false;
+		_csCanvas.enabled = false;
 
 	}
 
@@ -82,9 +72,9 @@ public class CameraController : MonoBehaviour {
 			{
 				var parameters = new Dictionary<string, object>();
 				parameters["WAVE"] = WaveController.Instance.wave;
-				FacebookManager.Instance.EventSent("Wave Completed", 1, parameters);
+				//				FacebookManager.Instance.EventSent("Wave Completed", 1, parameters);
 				waveEnded = true;
-				endRotationVelocity = (Random.Range(0, 2) == 0 ? -5f : 5f);
+				_endRotationVelocity = (Random.Range(0, 2) == 0 ? -5f : 5f);
 				break;
 			}
 		}
@@ -94,22 +84,26 @@ public class CameraController : MonoBehaviour {
 	{
 		if (s == State.GAME)
 		{
-			GetComponent<Animation>().Play();
+			//transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
+			_playerTransform = FindObjectOfType<PlayerController>().activeCharacterTransform;
 
-			transform.rotation = Quaternion.Euler(cameraGameTransform.rotation);
-
-			playerTransform = FindObjectOfType<PlayerController>().activeCharacterTransform;
+			_defaultPosition = cameraGameTransform.position;
+			_targetPosition = _defaultPosition;
+			transform.position = _defaultPosition;
+			_targetRotation = Quaternion.Euler(cameraGameTransform.rotation);
+			transform.rotation = _targetRotation;
+			_unlockControls = true;
 		}
 	}
 
 	public void OnCameraIntroFinished()
 	{
-		targetPosition = cameraGameTransform.position;
-		targetRotation = Quaternion.Euler(cameraGameTransform.rotation);
+		// _targetPosition = cameraGameTransform.position;
+		// _targetRotation = Quaternion.Euler(cameraGameTransform.rotation);
 
-		defaultPosition = transform.position - new Vector3(0f, 3f, 0);
+		// _defaultPosition = transform.position - new Vector3(0f, 3f, 0);
 
-		unlockControls = true;
+		// _unlockControls = true;
 	}
 
 	void Start ()
@@ -123,24 +117,29 @@ public class CameraController : MonoBehaviour {
 
 		if (GameController.state != State.GAME) { return; }
 
-		if (!unlockControls) { return; }
+		if (waveEnded)
+		{
+			transform.RotateAround(_playerTransform.position, Vector3.up, Time.deltaTime * _endRotationVelocity);
 
-		Vector3 raw =  defaultPosition + new Vector3(playerTransform.position.x, 0, playerTransform.position.z) + new Vector3(0, 0, distanceOffset);
-		raw.z = Mathf.Clamp(raw.z, -15f, raw.z);
-		targetPosition = raw;
+		}
+		if (!_unlockControls) { return; }
 
-		Vector3 relativePos = playerTransform.position - transform.position;
+		Vector3 raw =  _defaultPosition + new Vector3(_playerTransform.position.x, 0, _playerTransform.position.z) + cameraOffset;
+		// /raw.z = Mathf.Clamp(raw.z, -15f, raw.z);
+		_targetPosition = raw;
+
+		Vector3 relativePos = _playerTransform.position - transform.position;
 		Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-		targetRotation = rotation;
+		_targetRotation = rotation;
 
 		if (!waveEnded)
 		{
-			transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 2f);
-			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
+			transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * 2f);
+			transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, Time.deltaTime * 2f);
 		}
 		else
 		{
-			transform.RotateAround(playerTransform.position, Vector3.up, Time.deltaTime * endRotationVelocity);
+			_unlockControls = false;
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space))
@@ -172,14 +171,14 @@ public class CameraController : MonoBehaviour {
 
 	public void ToggleBlur(bool b)
 	{
-		blur.enabled = b;
+		// _blur.enabled = b;
 	}
 
 
 
-	public void SetTargetPosition(Vector3 position)
+	public void Set_targetPosition(Vector3 position)
 	{
-		this.targetPosition = position;
+		this._targetPosition = position;
 	}
 
 

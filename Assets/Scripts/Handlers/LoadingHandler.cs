@@ -19,7 +19,7 @@ public class LoadingHandler : MonoBehaviour {
 		while (!asyncLoad.isDone)
 		{
 			float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
-			text.text = "Loading..." + (progress * 100f) + "%";
+			text.text = "Loading..." + (progress * 100f).ToString("F0") + "%";
 			yield return null;
 		}
 	}

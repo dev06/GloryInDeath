@@ -71,18 +71,22 @@ public class CharacterModel : MonoBehaviour
 	{
 
 		Vector3 expandScale = new Vector3(1.2f, 1.2f, 1.2f);
+		ToggleChildren(true);
 
 		while (transform.localScale != expandScale)
 		{
 			transform.localScale = Vector3.Lerp(transform.localScale, expandScale, Time.deltaTime * 10f);
 			yield return null;
 		}
+
 	}
 
 	IEnumerator IShrink()
 	{
 		Vector3 target = Vector3.one * .2f;
 		Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+		yield return new WaitForSecondsRealtime(.25f);
+		ToggleChildren(false);
 		while (transform.localScale != target || transform.rotation != targetRotation)
 		{
 			transform.localScale = Vector3.Lerp(transform.localScale, target, Time.deltaTime * 10f);
@@ -92,6 +96,13 @@ public class CharacterModel : MonoBehaviour
 
 	}
 
+	public void ToggleChildren(bool b)
+	{
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			transform.GetChild(i).gameObject.SetActive(b);
+		}
+	}
 	public void UpgradeHealth()
 	{
 		attributes.index.health++;

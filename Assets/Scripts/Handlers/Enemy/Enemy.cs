@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using TMPro;
 [System.Serializable]
 public struct EnemyWaveBuilder
 {
@@ -57,10 +57,10 @@ public class Enemy: MonoBehaviour
 
 	public EnemyAttributes defaultAttributes;
 	public bool walk;
+	public HealthHandler healthHandler;
+
 	[HideInInspector]
 	private EnemyAttributes attributes, waveAttributes;
-	public Transform quad;
-	private Transform healthBar;
 	private ParticleSystem hurtParticles, goldParticles;
 	private PlayerController player;
 	private NavMeshAgent agent;
@@ -68,31 +68,41 @@ public class Enemy: MonoBehaviour
 	private Animator animator;
 	private Vector3 playerDestinationLocation;
 	private Rigidbody rigidBody;
-	private float attackTimer;
+	private float attackTimer, _stunTimer;
 	private Transform _healthContainer;
+	private Animator _animator;
+	private Transform _cameraTransform;
+	private bool _stun;
+
+
+	void OnEnable()
+	{
+		EventManager.OnRegularAttack += OnRegularAttack;
+	}
+	void OnDisable()
+	{
+		EventManager.OnRegularAttack -= OnRegularAttack;
+	}
 
 	void Start()
 	{
 		Init();
 		player = FindObjectOfType<PlayerController>();
-
+		_animator = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
 	}
 
 	public virtual void Init()
 	{
-		healthBar = quad.transform.GetChild(1).transform;
 		hurtParticles = transform.GetChild(1).transform.GetComponent<ParticleSystem>();
 		goldParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
-
 		animator = GetComponent<Animator>();
 		rigidBody = GetComponent<Rigidbody>();
 		attributes = new EnemyAttributes();
 		attributes.SetAttributes(defaultAttributes);
-
 		_healthContainer = transform.GetChild(0);
-
+		_cameraTransform = Camera.main.transform;
 	}
 
 	public void Move()
@@ -105,104 +115,111 @@ public class Enemy: MonoBehaviour
 
 		defaultAttributes.SetAttributes(waveAttributes);
 		attributes.SetAttributes(defaultAttributes);
+
+		healthHandler.health = (Attributes.health / defaultAttributes.health);
+		healthHandler.healthString = (Attributes.health + "/" + defaultAttributes.health);
 		move = true;
 	}
 	void Update()
 	{
 		if (GameController.state != State.GAME) { return; }
 		rigidBody.velocity = Vector3.zero;
-		dead = attributes.health <= 0;
-
-		if (dead)
-		{
-			//rigidBody.isKinematic = true;
-			attributes.health = 0;
-		}
-
-		healthBar.localScale = Vector3.Lerp(healthBar.localScale, new Vector3((attributes.health * 2) / (defaultAttributes.health), .5f, .5f), Time.deltaTime * 10f);
 
 		if (!move)
 		{
 			if (animator != null)
 			{
 				animator.SetBool("Run", false);
-
 				animator.SetBool("Attack", false);
 			}
 
 			return;
 		}
 
-
-		_healthContainer.LookAt(Camera.main.transform.position);
-
-
-		if (attackTimer > 1.5f)
+		if (Stun)
 		{
-			Attack();
-		}
-		else
-		{
-			attackTimer += Time.deltaTime;
+			_stunTimer += Time.unscaledDeltaTime;
+			if (_stunTimer > 1f)
+			{
+				_stunTimer = 0f;
+				Stun = false;
+			}
 		}
 
-
-
-		if (!dead)
+		_healthContainer.LookAt(_cameraTransform.position);
+		Vector3 _deltaPos = player.GetBodypoint - transform.position;
+		float _distance = _deltaPos.magnitude;
+		bool _canAttack = _distance < 2f && !Stun;
+		if (PlayerController.Instance.IsDead)
 		{
-			agent.speed = attributes.speed;
-			playerDestinationLocation = player.GetBodypoint;
-			agent.SetDestination(playerDestinationLocation);
+			animator.SetBool("Idle", true);
+		} else
+		{
+			animator.SetBool("Attack", _canAttack);
+			if (!Stun)
+			{
+				animator.SetBool(walk ? "Walk" : "Run", !_canAttack);
+			} else
+			{
+				animator.SetBool(walk ? "Walk" : "Run", false);
+
+			}
 		}
 
-		Vector3 lookrotation = agent.steeringTarget - transform.position;
-
-		if (lookrotation != Vector3.zero)
+		Vector3 lookrotation = player.GetBodypoint - transform.position;
+		if (lookrotation != Vector3.zero && !dead)
 		{
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
 		}
 
-		if (animator != null)
-		{
-			animator.SetBool(walk ? "Walk" : "Run", agent.velocity.magnitude > 0);
+		dead = attributes.health <= 0;
+		agent.updatePosition = agent.updateRotation = !dead;
+	}
 
+	void OnAnimatorMove()
+	{
+		if (GameController.PAUSE || _animator == null || agent == null || dead) { return; }
+		Vector3 v = _animator.deltaPosition / Time.deltaTime;
+		if (!float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z))
+		{
+			agent.velocity = v;
 		}
+	}
+
+	public void OnRegularAttack(string _id)
+	{
 	}
 
 	public void Attack()
 	{
-		animator.SetBool("Attack", agent.remainingDistance < 2f);
-
-		if (agent.remainingDistance < 2f)
-		{
-			PlayerController.Instance.TakeDamage(attributes.damage);
-			attackTimer = 0;
-		}
+		PlayerController.Instance.TakeDamage(attributes.damage);
 	}
+
 
 	public void TakeDamage(float damage)
 	{
 		if (dead) { return; }
 
-
+		animator.SetTrigger("Hit");
 		attributes.health -= damage;
-
+		attributes.health = Mathf.Clamp(attributes.health, 0f , attributes.health);
+		healthHandler.health = (Attributes.health / defaultAttributes.health);
+		healthHandler.healthString = ((int)Attributes.health + "/" + (int)defaultAttributes.health);
 		if (isDead())
 		{
+			healthHandler.Toggle(false);
 			hurtParticles.Play();
-
 			if (gameObject.activeSelf)
 			{
-				StopCoroutine("IReset");
 				StartCoroutine("IReset");
 			}
-
 			return;
+		} else
+		{
+			goldParticles.Play();
+			hurtParticles.Play();
 		}
 
-		goldParticles.Play();
-
-		hurtParticles.Play();
 	}
 
 	private void ToggleSkin(bool b)
@@ -238,15 +255,11 @@ public class Enemy: MonoBehaviour
 	public bool isDead()
 	{
 		attributes.health = Mathf.Clamp(attributes.health, 0f, attributes.health);
-
 		bool dead = attributes.health <= 0;
-
-
 		if (dead)
 		{
 			GetComponent<BoxCollider>().enabled = false;
-			quad.gameObject.SetActive(false);
-
+			rigidBody.isKinematic = true;
 			if (EventManager.OnGameEvent != null)
 			{
 				EventManager.OnGameEvent(EventID.ENEMY_KILLED);
@@ -263,5 +276,11 @@ public class Enemy: MonoBehaviour
 	public bool IsMoving
 	{
 		get { return move; }
+	}
+
+	public bool Stun
+	{
+		get {return _stun; }
+		set {this._stun = value; }
 	}
 }

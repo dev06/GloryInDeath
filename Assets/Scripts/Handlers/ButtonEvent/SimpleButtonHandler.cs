@@ -24,7 +24,7 @@ public struct Interact
 	public bool bubble;
 	public bool press;
 }
-public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler {
+public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler {
 
 	public ButtonID buttonID;
 
@@ -32,6 +32,7 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 
 	public virtual void OnPointerClick(PointerEventData data)
 	{
+
 		if (EventManager.OnButtonClick != null)
 		{
 			EventManager.OnButtonClick(buttonID, this);
@@ -71,8 +72,14 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 			StopCoroutine("ILerp");
 			StartCoroutine("ILerp", Vector3.one);
 		}
-	}
 
+
+
+	}
+	public virtual void OnPointerDown(PointerEventData data)
+	{
+
+	}
 
 	public virtual void OnPointerUp(PointerEventData data)
 	{

@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
+    path: Assets/adsf.unity
+    guid: 05ab5a11d7424ed499eddb88b6b7c3bf
+  - enabled: 0
+    path: Assets/Scenes/joystickmovement.unity
+    guid: 7507e02034737f940b9cef357d5dca49
+  - enabled: 0
     path: Assets/Scenes/blank.unity
     guid: 4e8c882a54a7f4b08b9e860027eaddf0
   - enabled: 1

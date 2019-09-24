@@ -19,7 +19,7 @@ public class UpgradeStat : MonoBehaviour {
 
 	public Type type;
 
-	public Text currentStatText;
+	public TextMeshProUGUI currentStatText;
 	public TextMeshProUGUI upgradeCostText;
 
 	private int upgradeCost = 50;
@@ -66,7 +66,7 @@ public class UpgradeStat : MonoBehaviour {
 			{
 				if (type != UpgradeStat.Type.HEALTH) { break; }
 				CharacterAttributes attributes = CharacterModel.SELECTED_MODEL.attributes;
-				if (attributes.index.health >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.healthCost)) break;
+				if (attributes.index.health >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.healthCost)) { break; }
 				handler.GetComponent<Animation>().Play();
 				GameController.Instance.AddGold((int) - attributes.upgrade.healthCost);
 				CharacterModel.SELECTED_MODEL.UpgradeHealth();
@@ -80,7 +80,7 @@ public class UpgradeStat : MonoBehaviour {
 			{
 				if (type != UpgradeStat.Type.SPEED) { break; }
 				CharacterAttributes attributes = CharacterModel.SELECTED_MODEL.attributes;
-				if (attributes.index.speed >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.speedCost)) break;
+				if (attributes.index.speed >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.speedCost)) { break; }
 
 				GameController.Instance.AddGold((int) - attributes.upgrade.speedCost);
 				CharacterModel.SELECTED_MODEL.UpgradeSpeed();
@@ -96,7 +96,7 @@ public class UpgradeStat : MonoBehaviour {
 			{
 				if (type != UpgradeStat.Type.DAMAGE) { break; }
 				CharacterAttributes attributes =  CharacterModel.SELECTED_MODEL.attributes;
-				if (attributes.index.damage >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.damageCost)) break;
+				if (attributes.index.damage >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.damageCost)) { break; }
 
 				GameController.Instance.AddGold((int) - attributes.upgrade.damageCost);
 				CharacterModel.SELECTED_MODEL.UpgradeDamage();
@@ -112,7 +112,7 @@ public class UpgradeStat : MonoBehaviour {
 			{
 				if (type != UpgradeStat.Type.ARMOR) { break; }
 				CharacterAttributes attributes = CharacterModel.SELECTED_MODEL.attributes;
-				if (attributes.index.armor >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.armorCost)) break;
+				if (attributes.index.armor >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.armorCost)) { break; }
 
 				GameController.Instance.AddGold((int) - attributes.upgrade.armorCost);
 				CharacterModel.SELECTED_MODEL.UpgradeArmor();

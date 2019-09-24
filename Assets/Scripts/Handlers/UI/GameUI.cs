@@ -14,7 +14,6 @@ public class GameUI : MonoBehaviour {
 
 	public TextMeshProUGUI goldCollected, healthLeft, lowHealthText;
 
-
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
 		EventManager.OnButtonClick += OnButtonClick;
@@ -78,6 +77,7 @@ public class GameUI : MonoBehaviour {
 		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
 		healthLeft.text = PlayerController.Instance.HealthText;
 		attackFillImage.fillAmount = PlayerController.Instance.AttackCoolDown;
+		specialAttackFillImage.enabled = PlayerController.Instance.SpecialCoolDown < 1;
 		specialAttackFillImage.fillAmount = PlayerController.Instance.SpecialCoolDown;
 		lowHealthText.enabled = PlayerController.Instance.HealthRatio < .20f;
 	}
@@ -92,7 +92,6 @@ public class GameUI : MonoBehaviour {
 				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
 				goldCollected.text = 0 + "";
 				fade.Play("fade_in");
-
 				break;
 			}
 		}
@@ -140,7 +139,7 @@ public class GameUI : MonoBehaviour {
 
 		waveEndHUD.transform.GetComponent<Animation>().Play();
 
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(5f);
 
 		while (waveEndHUD.alpha > .01f)
 		{
