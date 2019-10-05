@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour {
 	private float specialAttackTimer;
 	private float autoAttackTimer;
 
+    public AudioClip Attacksound;
+    public AudioSource SFXplayer;
+
 
 	[Header("Particle System")]
 	public ParticleSystem hammerSpecial;
@@ -258,7 +261,8 @@ public class PlayerController : MonoBehaviour {
 		animator.SetTrigger("AttackTrigger");
 		attackTimer = 0;
 		canAttack = false;
-	}
+        SFXplayer.PlayOneShot(Attacksound);
+    }
 
 	public void TriggerAttack(Enemy e)
 	{

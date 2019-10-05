@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour {
     private AudioClip menuMusic;
     private AudioClip gameplayMusic;
     private AudioClip deathSound;
+    public AudioSource sfxPlayer;
     private State current;
     // Use this for initialization
     void Start () {
@@ -20,16 +21,22 @@ public class SoundManager : MonoBehaviour {
 
     private void Update()
     {
-        if ((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
-        {
-            EnterMenu();
-            current = GameController.state;
-        }
-        else if ((GameController.state == State.GAME) && current != State.GAME)
-        {
-            EnterGameplay();
-            current = GameController.state;
-        }
+
+        Debug.Log(PlayerController.Instance.attributes.Health);
+            if ((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
+            {
+                EnterMenu();
+                current = GameController.state;
+            }
+            else if ((GameController.state == State.GAME) && current != State.GAME)
+            {
+                EnterGameplay();
+                current = GameController.state;
+            }            
+         
+
+            
+        
     }
     public void EnterMenu()
     {
@@ -43,5 +50,10 @@ public class SoundManager : MonoBehaviour {
         musicPlayer.Stop();
         musicPlayer.clip = gameplayMusic;
         musicPlayer.Play();
+    }
+
+    public void OnDeath()
+    {
+        sfxPlayer.PlayOneShot(deathSound);
     }
 }

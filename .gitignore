@@ -34,3 +34,28 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Animation/CharacterAnimations/Deletethisafterdemo/Characters.meta
+Assets/FacebookSDK/Plugins/Android/Facebook.Unity.Android.dll.meta
+Assets/FacebookSDK/Plugins/Android/Facebook.Unity.IOS.dll.meta
+Assets/FacebookSDK/Plugins/iOS/Facebook.Unity.Android.dll.meta
+Assets/FacebookSDK/Plugins/iOS/Facebook.Unity.IOS.dll.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBSDK+Internal.h.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnityInterface.h.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnityInterface.mm.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnitySDKDelegate.h.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnitySDKDelegate.m.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnityUtility.h.meta
+Assets/FacebookSDK/SDK/Editor/iOS/FBUnityUtility.mm.meta
+Assets/Rabagames/Plugins/iOS/RateInsideAppiOS/RateInsideAppiOS.h.meta
+Assets/Rabagames/Plugins/iOS/RateInsideAppiOS/RateInsideAppiOS.mm.meta
+Assets/Resources/Fonts/bebas SDF.asset
+Assets/Resources/Fonts/RobotoSlab SDF.asset
+Assets/Standard Assets/Effects/ImageEffects/Scripts/DepthOfField.cs
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+Assets/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset
+Logs/Packages-Update.log
+Packages/manifest.json
+ProjectSettings/ProjectSettings.asset
+ProjectSettings/ProjectVersion.txt
+ProjectSettings/VFXManager.asset
+ProjectSettings/XRSettings.asset
