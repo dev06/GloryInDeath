@@ -16,6 +16,13 @@ public enum ButtonID
 	PERK_ADD_SPEED,
 	PERK_ADD_DAMAGE,
 	PERK_ADD_ARMOR,
+
+	UPG_HEALTH,
+	UPG_STAMINA,
+	UPG_DAMAGE,
+
+	DEFENSE,
+	MENU,
 }
 
 [System.Serializable]

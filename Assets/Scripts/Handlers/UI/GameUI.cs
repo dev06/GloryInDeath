@@ -6,13 +6,11 @@ using TMPro;
 public class GameUI : MonoBehaviour {
 
 
-	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD, pausePanel;
+	public CanvasGroup waveHUD, waveEndHUD, virtualJoyStickHUD, pausePanel, bloodOverlay;
 
-	public Image healthForeground, healthBackground, attackFillImage, specialAttackFillImage;
+	public Animation hurtOverlay, fade;
 
-	public Animation hurtOverlay, fade, goldCollectedAnimation;
-
-	public TextMeshProUGUI goldCollected, healthLeft, lowHealthText;
+	public DisplayText levelUpDisplayText;
 
 	void OnEnable () {
 		EventManager.OnGameEvent += OnGameEvent;
@@ -37,12 +35,7 @@ public class GameUI : MonoBehaviour {
 	{
 		switch (id)
 		{
-			case EventID.WAVE_START:
-			{
-				StopCoroutine("IShowWaveHUD");
-				StartCoroutine("IShowWaveHUD");
-				break;
-			}
+
 
 			case EventID.WAVE_END:
 			{
@@ -54,7 +47,6 @@ public class GameUI : MonoBehaviour {
 
 			case EventID.PLAYER_HURT:
 			{
-				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
 				hurtOverlay.Play();
 				break;
 			}
@@ -62,8 +54,12 @@ public class GameUI : MonoBehaviour {
 			case EventID.ENEMY_KILLED:
 			{
 				WaveController.Instance.GoldCollected += 20;
-				goldCollected.text = WaveController.Instance.GoldCollected + "";
-				goldCollectedAnimation.Play();
+				break;
+			}
+
+			case EventID.LEVEL_UP:
+			{
+				levelUpDisplayText.Show("Level Up!", Color.yellow);
 				break;
 			}
 		}
@@ -74,12 +70,7 @@ public class GameUI : MonoBehaviour {
 	void Update()
 	{
 		if (GameController.state != State.GAME) { return; }
-		healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, healthForeground.fillAmount, Time.deltaTime);
-		healthLeft.text = PlayerController.Instance.HealthText;
-		attackFillImage.fillAmount = PlayerController.Instance.AttackCoolDown;
-		specialAttackFillImage.enabled = PlayerController.Instance.SpecialCoolDown < 1;
-		specialAttackFillImage.fillAmount = PlayerController.Instance.SpecialCoolDown;
-		lowHealthText.enabled = PlayerController.Instance.HealthRatio < .20f;
+		bloodOverlay.alpha = 1f - PlayerController.Instance.HealthRatio;
 	}
 
 	void OnStateChange(State s)
@@ -89,8 +80,6 @@ public class GameUI : MonoBehaviour {
 			case State.GAME:
 			{
 				Toggle(true);
-				healthForeground.fillAmount = PlayerController.Instance.HealthRatio;
-				goldCollected.text = 0 + "";
 				fade.Play("fade_in");
 				break;
 			}
@@ -101,29 +90,6 @@ public class GameUI : MonoBehaviour {
 	{
 	}
 
-	IEnumerator IShowWaveHUD()
-	{
-
-		waveHUD.alpha = 1f;
-
-		waveHUD.blocksRaycasts = true;
-
-		waveHUD.transform.GetChild(0).GetComponent<Text>().text = "Wave " + WaveController.Instance.wave;
-
-		waveHUD.transform.GetComponent<Animation>().Play();
-
-		yield return new WaitForSeconds(2);
-
-		while (waveHUD.alpha > .01f)
-		{
-			waveHUD.alpha -= Time.deltaTime;
-			yield return null;
-		}
-
-		waveHUD.alpha = 0f;
-
-		waveHUD.blocksRaycasts = false;
-	}
 
 	IEnumerator IShowWaveEndHUD()
 	{

@@ -110,17 +110,16 @@ public class UpgradeStat : MonoBehaviour {
 			}
 			case ButtonID.PERK_ADD_ARMOR:
 			{
-				if (type != UpgradeStat.Type.ARMOR) { break; }
-				CharacterAttributes attributes = CharacterModel.SELECTED_MODEL.attributes;
-				if (attributes.index.armor >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.armorCost)) { break; }
+				// if (type != UpgradeStat.Type.ARMOR) { break; }
+				// CharacterAttributes attributes = CharacterModel.SELECTED_MODEL.attributes;
+				// if (attributes.index.armor >= MAX || !GameController.Instance.CanPurchase(attributes.upgrade.armorCost)) { break; }
 
-				GameController.Instance.AddGold((int) - attributes.upgrade.armorCost);
-				CharacterModel.SELECTED_MODEL.UpgradeArmor();
-				handler.GetComponent<Animation>().Play();
-				Haptic.Vibrate(HapticIntensity.Light);
-				targetProgressFill = attributes.index.armor / MAX;
-				UpdateValues(attributes);
-				EventManager.OnUpgradeStat(type);
+				// GameController.Instance.AddGold((int) - attributes.upgrade.armorCost);
+				// handler.GetComponent<Animation>().Play();
+				// Haptic.Vibrate(HapticIntensity.Light);
+				// targetProgressFill = attributes.index.armor / MAX;
+				// UpdateValues(attributes);
+				// EventManager.OnUpgradeStat(type);
 				break;
 			}
 		}

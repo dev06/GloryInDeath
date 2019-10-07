@@ -10,32 +10,20 @@ public struct WaveBuilder
 
 public class WaveController : MonoBehaviour {
 
-	public static int MAX_ENEMY_AT_TIME = 2;
-
+	public static int MAX_ENEMY_AT_TIME = 4;
 	public static WaveController Instance;
-
-	private List<Enemy> enemyList = new List<Enemy>();
-
+	public List<WaveBuilder> waves = new List<WaveBuilder>();
+	public bool spawnEnemy;
+	public int wave = 0; // represents current wave;
+	public int waveDifficulty = 5;
 	public Transform enemyPool, enemyWaveTransform, spawnPoints;
 
-	public bool spawnEnemy;
-
-	public int wave = 0; // represents current wave;
-
-
-	public int waveDifficulty = 5;
-
-	public List<WaveBuilder> waves = new List<WaveBuilder>();
-
-	private int currentEnemyIndex;
-
 	private static int goldCollected;
-
-	private bool waveEnded;
-
-	private int enemySpawnDelay = 0;
-
 	private CharacterSelectUI characterSelectUI;
+	private List<Enemy> enemyList = new List<Enemy>();
+	private int currentEnemyIndex;
+	private int enemySpawnDelay = 0;
+	private bool waveEnded;
 
 	void OnEnable()
 	{
@@ -89,7 +77,7 @@ public class WaveController : MonoBehaviour {
 
 	IEnumerator ISpawnEnemy()
 	{
-		while (currentEnemyIndex < enemyList.Count)
+		while (true)
 		{
 			int a = GetActiveEnemyCount();
 
@@ -99,12 +87,6 @@ public class WaveController : MonoBehaviour {
 			}
 
 			yield return new WaitForSeconds(enemySpawnDelay);
-
-			if (currentEnemyIndex == enemyList.Count)
-			{
-				StopCoroutine("ISpawnEnemy");
-				Debug.Log("Stopped");
-			}
 		}
 	}
 
@@ -117,36 +99,18 @@ public class WaveController : MonoBehaviour {
 
 		WaveBuilder currentWaveBuilder;
 
-		// if (wave > waves.Count)
-		// {
-		// 	currentWaveBuilder = waves[waves.Count - 1];
-		// }
-		// else
-		// {
-		// 	currentWaveBuilder = waves[wave - 1];
-		// }
-
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 2; i++)
 		{
-			EnemyType eType = Random.value > .8f ? EnemyType.GOBLIN : EnemyType.ORC;
-			Enemy e = GetParentTransform(eType).GetChild(i).GetComponent<Enemy>();
+			Enemy e = GetParentTransform(EnemyType.GOBLIN).GetChild(i).GetComponent<Enemy>();
 			e.Init();
-			enemyList.Add(e);
+			e.transform.SetParent(enemyWaveTransform);
 		}
 
-		// for (int i = 0; i < currentWaveBuilder.enemyInWave.Count; i++)
-		// {
-		// 	for (int j = 0; j < currentWaveBuilder.enemyInWave[i].quantity; j++)
-		// 	{
-		// 		Enemy e = GetParentTransform(currentWaveBuilder.enemyInWave[i].type).GetChild(j).GetComponent<Enemy>();
-		// 		e.Init();
-		// 		enemyList.Add(e);
-		// 	}
-		// }
-
-		for (int i = 0; i < enemyList.Count; i++)
+		for (int i = 0; i < 2; i++)
 		{
-			enemyList[i].transform.SetParent(enemyWaveTransform);
+			Enemy e = GetParentTransform(EnemyType.ORC).GetChild(i).GetComponent<Enemy>();
+			e.Init();
+			e.transform.SetParent(enemyWaveTransform);
 		}
 	}
 
@@ -173,20 +137,38 @@ public class WaveController : MonoBehaviour {
 
 	public void SpawnNextEnemy()
 	{
-		if (enemyList[currentEnemyIndex].IsMoving) { return; }
+		Enemy e = GetNextEnemy();
+		if (e == null) { return; }
+		if (e.IsMoving) { return; }
 
-		enemyList[currentEnemyIndex].transform.position = GetSpawnLocation();
+		e.transform.position = GetSpawnLocation();
 
-		enemyList[currentEnemyIndex].Move();
+		e.Move();
 
-		enemyList[currentEnemyIndex].transform.gameObject.SetActive(true);
+		e.transform.gameObject.SetActive(true);
 
-		currentEnemyIndex++;
+		// currentEnemyIndex++;
 
-		if (currentEnemyIndex > enemyList.Count - 1)
+		// if (currentEnemyIndex > enemyWaveTransform.childCount - 1)
+		// {
+		// 	currentEnemyIndex = enemyWaveTransform.childCount - 1;
+		// }
+
+	}
+
+	public Enemy GetNextEnemy()
+	{
+		for (int i = 0; i < enemyWaveTransform.childCount; i++)
 		{
-			currentEnemyIndex = enemyList.Count - 1;
+			if (enemyWaveTransform.GetChild(i).gameObject.activeSelf)
+			{
+				continue;
+			}
+
+			return enemyWaveTransform.GetChild(i).GetComponent<Enemy>();
 		}
+
+		return null;
 	}
 
 	public int GetActiveEnemyCount()
@@ -246,10 +228,16 @@ public class WaveController : MonoBehaviour {
 
 	public void ResetEnemyParent(Enemy e)
 	{
-		Transform parent = GetParentTransform(e.defaultAttributes.type);
+		Transform parent = GetParentTransform(e.Attributes.type);
 		e.transform.SetParent(parent);
 		e.transform.position = GetSpawnLocation();
-		WaveController.Instance.CheckForWaveEnd();
+		e.transform.gameObject.SetActive(false);
+
+		EnemyType eType = Random.value > .8f ? EnemyType.GOBLIN : EnemyType.ORC;
+		Enemy ee = GetParentTransform(eType).GetChild(0).GetComponent<Enemy>();
+		ee.Init();
+		ee.transform.SetParent(enemyWaveTransform);
+
 	}
 
 	public void CheckForWaveEnd()
@@ -308,10 +296,11 @@ public class WaveController : MonoBehaviour {
 		set { goldCollected = value; }
 	}
 
-	IEnumerator IResetEnemyParent()
+	public Transform EnemyWaveTransform
 	{
-		yield return new WaitForSeconds(2);
+		get {return enemyWaveTransform; }
 	}
+
 
 	public List<Enemy> EnemyList
 	{

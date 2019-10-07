@@ -8,15 +8,18 @@ public class HealthHandler : MonoBehaviour
 	public Transform target;
 	public Image healthForeground;
 	public Image staminaForeground;
-	public TextMeshProUGUI healthText;
+	public Image levelForeground;
+	public TextMeshProUGUI healthText, levelText;
 
 	[Header("Settings")]
 	public Color foregroundColor;
+	public bool lerpColor;
+	public Color lerpToColor;
 
 	[HideInInspector]
-	public float health, stamina;
+	public float health, stamina, levelProgress;
 	[HideInInspector]
-	public string healthString;
+	public string healthString, levelTextString;
 
 	private Vector3 _offset;
 	private Transform _camera;
@@ -33,10 +36,7 @@ public class HealthHandler : MonoBehaviour
 		if (target != null) {
 			_offset =  transform.localPosition - target.localPosition;
 		}
-
 		_canvas = GetComponent<Canvas>();
-
-
 		_camera = Camera.main.transform;
 	}
 
@@ -50,10 +50,23 @@ public class HealthHandler : MonoBehaviour
 		transform.LookAt(_camera.position);
 		healthText.text = healthString;
 		healthForeground.fillAmount = health;
-
+		if (lerpColor) {
+			healthForeground.color = Color.Lerp(foregroundColor, lerpToColor, 1f - health);
+		}
 		if (staminaForeground != null)
 		{
 			staminaForeground.fillAmount = stamina;
+		}
+
+		if (levelText != null)
+		{
+			levelText.text = levelTextString;
+		}
+
+		if (levelForeground != null)
+		{
+			levelForeground.fillAmount = levelProgress;
+
 		}
 	}
 

@@ -22,66 +22,61 @@ public class EnemyAttributes
 {
 	public EnemyType type;
 	public float health;
-	public float speed;
 	public float damage;
-	public float difficulty;
+	public float maxHealth;
 
 	public EnemyAttributes()
 	{
 
 	}
 
-	public EnemyAttributes(EnemyType type, float health, float speed, float damage, float difficulty)
-	{
-
-		this.difficulty = difficulty;
-		this.type = type;
-		this.health = health * difficulty;
-		this.speed = speed;
-		this.damage = damage * difficulty;
-	}
-
 	public void SetAttributes(EnemyAttributes attributes)
 	{
-
-		this.difficulty = attributes.difficulty;
 		this.type = attributes.type;
 		this.health = attributes.health ;
-		this.speed = attributes.speed;
+		this.maxHealth = attributes.maxHealth;
 		this.damage = attributes.damage;
+	}
+
+	public void SetAttributes(EnemyStats stats)
+	{
+		this.maxHealth = stats.health;
+		this.health = stats.health;
+		this.damage = stats.damage;
+		this.type = stats.type;
 	}
 }
 
 public class Enemy: MonoBehaviour
 {
-
-	public EnemyAttributes defaultAttributes;
+	public EnemyType type;
+	public EnemyAttributes sessionAttributes;
 	public bool walk;
 	public HealthHandler healthHandler;
 
 	[HideInInspector]
 	private EnemyAttributes attributes, waveAttributes;
-	private ParticleSystem hurtParticles, goldParticles;
 	private PlayerController player;
+	private ParticleSystem hurtParticles, goldParticles;
 	private NavMeshAgent agent;
-	private bool move, dead, canAttack;
 	private Animator animator;
 	private Vector3 playerDestinationLocation;
 	private Rigidbody rigidBody;
-	private float attackTimer, _stunTimer;
-	private Transform _healthContainer;
 	private Animator _animator;
+	private Transform _healthContainer;
 	private Transform _cameraTransform;
+	private bool move, dead, canAttack;
 	private bool _stun;
+	private float attackTimer, _stunTimer;
 
 
 	void OnEnable()
 	{
-		EventManager.OnRegularAttack += OnRegularAttack;
+		EventManager.OnGameEvent += OnGameEvent;
 	}
 	void OnDisable()
 	{
-		EventManager.OnRegularAttack -= OnRegularAttack;
+		EventManager.OnGameEvent -= OnGameEvent;
 	}
 
 	void Start()
@@ -90,7 +85,7 @@ public class Enemy: MonoBehaviour
 		player = FindObjectOfType<PlayerController>();
 		_animator = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent>();
-		agent.updateRotation = false;
+		agent.updatePosition = false;
 	}
 
 	public virtual void Init()
@@ -99,8 +94,8 @@ public class Enemy: MonoBehaviour
 		goldParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
 		animator = GetComponent<Animator>();
 		rigidBody = GetComponent<Rigidbody>();
-		attributes = new EnemyAttributes();
-		attributes.SetAttributes(defaultAttributes);
+		// sessionAttributes = new EnemyAttributes();
+		// sessionAttributes.SetAttributes(enemyStats);
 		_healthContainer = transform.GetChild(0);
 		_cameraTransform = Camera.main.transform;
 	}
@@ -108,18 +103,17 @@ public class Enemy: MonoBehaviour
 	public void Move()
 	{
 		ToggleSkin(true);
-		waveAttributes = new EnemyAttributes();
-		waveAttributes.SetAttributes(defaultAttributes);
-		waveAttributes.health = defaultAttributes.health * (float)(WaveController.Instance.wave) * .45f;
-		waveAttributes.damage = defaultAttributes.damage * (float)(WaveController.Instance.wave) * .3f;
+		gameObject.tag = "Entity/Enemy";
+		sessionAttributes = getAttributes();
 
-		defaultAttributes.SetAttributes(waveAttributes);
-		attributes.SetAttributes(defaultAttributes);
+		attributes = new EnemyAttributes();
+		attributes.SetAttributes(sessionAttributes);
 
-		healthHandler.health = (Attributes.health / defaultAttributes.health);
-		healthHandler.healthString = (Attributes.health + "/" + defaultAttributes.health);
+		updateHealthDisplay();
+		healthHandler.Toggle(true);
 		move = true;
 	}
+
 	void Update()
 	{
 		if (GameController.state != State.GAME) { return; }
@@ -136,16 +130,30 @@ public class Enemy: MonoBehaviour
 			return;
 		}
 
+
+		updateTimers();
+		updateAnimations();
+		updateRotations();
+
+		dead = attributes.health <= 0;
+		agent.updatePosition = agent.updateRotation = !dead;
+	}
+
+	private void updateTimers()
+	{
 		if (Stun)
 		{
 			_stunTimer += Time.unscaledDeltaTime;
-			if (_stunTimer > 1f)
+			if (_stunTimer > 2f)
 			{
 				_stunTimer = 0f;
 				Stun = false;
 			}
 		}
+	}
 
+	private void updateAnimations()
+	{
 		_healthContainer.LookAt(_cameraTransform.position);
 		Vector3 _deltaPos = player.GetBodypoint - transform.position;
 		float _distance = _deltaPos.magnitude;
@@ -165,29 +173,35 @@ public class Enemy: MonoBehaviour
 
 			}
 		}
+	}
 
+	private void updateRotations()
+	{
 		Vector3 lookrotation = player.GetBodypoint - transform.position;
-		if (lookrotation != Vector3.zero && !dead)
-		{
-			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
-		}
-
-		dead = attributes.health <= 0;
-		agent.updatePosition = agent.updateRotation = !dead;
+		if (lookrotation == Vector3.zero || dead) { return; }
+		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
 	}
 
 	void OnAnimatorMove()
 	{
 		if (GameController.PAUSE || _animator == null || agent == null || dead) { return; }
 		Vector3 v = _animator.deltaPosition / Time.deltaTime;
+
 		if (!float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z))
 		{
 			agent.velocity = v;
 		}
 	}
 
-	public void OnRegularAttack(string _id)
+	public void OnGameEvent(EventID _id)
 	{
+		if (_id == EventID.LEVEL_UP)
+		{
+			// EnemyAttributes a = new EnemyAttributes();
+			// a.health = sessionAttributes.health + (sessionAttributes.health * .1f);
+			// a.damage = sessionAttributes.damage + (sessionAttributes.damage * .1f);
+			// sessionAttributes.SetAttributes(a);
+		}
 	}
 
 	public void Attack()
@@ -199,14 +213,15 @@ public class Enemy: MonoBehaviour
 	public void TakeDamage(float damage)
 	{
 		if (dead) { return; }
-
+		Stun = true;
 		animator.SetTrigger("Hit");
 		attributes.health -= damage;
-		attributes.health = Mathf.Clamp(attributes.health, 0f , attributes.health);
-		healthHandler.health = (Attributes.health / defaultAttributes.health);
-		healthHandler.healthString = ((int)Attributes.health + "/" + (int)defaultAttributes.health);
+		GameController.Instance.gameOverStatsSO.damageDealt += damage;
+		attributes.health = Mathf.Clamp(attributes.health, 0f , sessionAttributes.health);
+		updateHealthDisplay();
 		if (isDead())
 		{
+
 			healthHandler.Toggle(false);
 			hurtParticles.Play();
 			if (gameObject.activeSelf)
@@ -219,7 +234,28 @@ public class Enemy: MonoBehaviour
 			goldParticles.Play();
 			hurtParticles.Play();
 		}
+	}
 
+	private EnemyAttributes getAttributes()
+	{
+		switch (type)
+		{
+			case EnemyType.GOBLIN:
+			{
+				return EnemyController.Instance.goblinAttributes;
+			}
+			case EnemyType.ORC:
+			{
+				return EnemyController.Instance.orcAttributes;
+			}
+		}
+		return null;
+	}
+
+	private void updateHealthDisplay()
+	{
+		healthHandler.health = (Attributes.health / sessionAttributes.health);
+		healthHandler.healthString = ((int)Attributes.health + "/" + (int)sessionAttributes.health);
 	}
 
 	private void ToggleSkin(bool b)
@@ -231,7 +267,6 @@ public class Enemy: MonoBehaviour
 	public void Reset()
 	{
 		WaveController.Instance.ResetEnemyParent(this);
-		transform.gameObject.SetActive(false);
 	}
 
 	IEnumerator IReset()
@@ -255,11 +290,16 @@ public class Enemy: MonoBehaviour
 	public bool isDead()
 	{
 		attributes.health = Mathf.Clamp(attributes.health, 0f, attributes.health);
-		bool dead = attributes.health <= 0;
+		bool dead = (int)attributes.health <= 0;
 		if (dead)
 		{
+			if (Random.value < DropProbs.HEALTH_POTION)
+			{
+				DropHandler.Instance.Drop(transform.position + new Vector3(Random.Range(-1f, 1f), 3f, Random.Range(-1f, 1f) ));
+			}
 			GetComponent<BoxCollider>().enabled = false;
 			rigidBody.isKinematic = true;
+			GameController.Instance.gameOverStatsSO.kills++;
 			if (EventManager.OnGameEvent != null)
 			{
 				EventManager.OnGameEvent(EventID.ENEMY_KILLED);
@@ -283,4 +323,6 @@ public class Enemy: MonoBehaviour
 		get {return _stun; }
 		set {this._stun = value; }
 	}
+
+
 }

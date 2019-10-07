@@ -9,6 +9,9 @@ public enum EventID
 	WAVE_START,
 	WAVE_END,
 	PLAYER_HURT,
+	LEVEL_UP,
+	CHARACTER_UPG,
+	DEATH,
 }
 public class EventManager : MonoBehaviour {
 

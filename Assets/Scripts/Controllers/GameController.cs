@@ -13,20 +13,35 @@ public class GameController : MonoBehaviour {
 
 	public static GameController Instance;
 	public static State state = State.CHARACTER_SELECT;
-
 	public static bool PAUSE;
+	public int waveStarts = 0;
+	public GameOverUI gameOverUI;
+	public GameOverStatsSO gameOverStatsSO;
 	public bool DeleteSave;
 
-
 	private int currentGold = 999999999;
-
-	public int waveStarts = 0;
-
 
 	[Header("Debug")]
 	public TextMeshProUGUI fpsText;
 	private float _deltatime;
 	private float _updateFPSTimer;
+
+	private float _mins;
+	private float _secs;
+	private bool _startTimer;
+
+	void OnEnable()
+	{
+		EventManager.OnGameEvent += OnGameEvent;
+		EventManager.OnButtonClick += OnButtonClick;
+	}
+
+	void OnDisable()
+	{
+		EventManager.OnGameEvent -= OnGameEvent;
+		EventManager.OnButtonClick -= OnButtonClick;
+	}
+
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -60,6 +75,11 @@ public class GameController : MonoBehaviour {
 		{
 			ShowRateDialog();
 		}
+
+		gameOverStatsSO.timeSurvived = "0:00";
+		gameOverStatsSO.kills = 0;
+		gameOverStatsSO.damageDealt = 0;
+		gameOverStatsSO.damageTaken = 0;
 	}
 
 	void Update()
@@ -73,8 +93,41 @@ public class GameController : MonoBehaviour {
 			fpsText.text = (int)fps + " fps";
 			_updateFPSTimer = 0f;
 		}
+
+
+		if (_startTimer)
+		{
+			_secs += Time.deltaTime;
+			if (_secs > 59)
+			{
+				_secs = 0;
+				_mins++;
+			}
+		}
 	}
 
+	void OnGameEvent(EventID id)
+	{
+		if (id == EventID.WAVE_START)
+		{
+			_startTimer = true;
+		}
+
+		if (id == EventID.DEATH)
+		{
+			_startTimer = false;
+			gameOverStatsSO.timeSurvived = TimeSurvived;
+			gameOverUI.Display(gameOverStatsSO);
+		}
+	}
+
+	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
+	{
+		if (id == ButtonID.MENU)
+		{
+			Reload();
+		}
+	}
 
 	public void ShowRateDialog()
 	{
@@ -126,6 +179,7 @@ public class GameController : MonoBehaviour {
 
 	private void Load()
 	{
+		PAUSE = false;
 		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 1;
 		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 100;
 		waveStarts = PlayerPrefs.HasKey("WAVESTARTS") ?  PlayerPrefs.GetInt("WAVESTARTS") : 0;
@@ -149,5 +203,15 @@ public class GameController : MonoBehaviour {
 	public bool CanPurchase(float cost)
 	{
 		return CurrentGold >= (int)cost;
+	}
+
+	private string convert(float num)
+	{
+		return num < 10 ? "0" + num.ToString("F0") :  "" + num.ToString("F0");
+	}
+
+	public string TimeSurvived
+	{
+		get { return convert(_mins) + ":" + convert(_secs); }
 	}
 }

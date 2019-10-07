@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [System.Serializable]
 public class DefaultCharacterAttribute
 {
@@ -17,20 +19,52 @@ public class DefaultCharacterAttribute
 	public float armorCost = 100;
 }
 
-public class CharacterModifiedLibrary
-{
-	public static CharacterAttributes CHAR_AURA_BLACKSWORD = new CharacterAttributes(CharacterType.AURA_BLACKSWORD, 100, 5, 2, 3);
-	public static CharacterAttributes CHAR_HALLFRED_THORALDSON = new CharacterAttributes(CharacterType.HALLFRED_THORALDSON, 100, 1, 3, 4);
-	public static CharacterAttributes CHAR_FREYA_SKAAR = new CharacterAttributes(CharacterType.FREYA_SKAAR, 100, 5, 4, 5);
-}
+
 
 public struct StaminaCost
 {
 	public static int SPECIAL_ATK_COST = 30;
 	public static int REGULAR_ATK_COST = 20;
 	public static int ROLL_COST = 10;
+}
 
+public struct LevelInfo
+{
+	public int level;
+	public int kills;
+	public int killsRequired;
 
+	public void Init()
+	{
+		level = 1;
+		killsRequired = 5;
+		kills = 0;
+	}
+
+	public void LevelUp()
+	{
+		level++;
+		killsRequired += 3;
+		kills = 0;
+		if (EventManager.OnGameEvent != null)
+		{
+			EventManager.OnGameEvent(EventID.LEVEL_UP);
+		}
+	}
+
+	public void UpdateData()
+	{
+		kills++;
+		if (Ratio >= 1)
+		{
+			LevelUp();
+		}
+	}
+
+	public float Ratio
+	{
+		get { return (float)(kills) / (float)(killsRequired); }
+	}
 }
 
 
@@ -38,7 +72,9 @@ public class PlayerController : MonoBehaviour {
 
 
 	public static PlayerController Instance;
-	public CharacterAttributes attributes;
+
+	public DisplayText displayText;
+	public LevelInfo levelInfo;
 	public CharacterAttributes sessionAttributes;
 	public Transform activeCharacterTransform;
 	public Transform[] characterSkins;
@@ -57,12 +93,19 @@ public class PlayerController : MonoBehaviour {
 	private float attackTimer;
 	private float specialAttackTimer;
 	private float autoAttackTimer;
+	private float _abilityDoublePressTimer;
+	private float _threshold = .5f;
 	private bool _inAttackRange;
-	private float _stamina = 100;
+	private bool _abilityPressed;
 
 
 	[Header("Particle System")]
 	public ParticleSystem hammerSpecial;
+	public ParticleSystem upg_particles;
+	public ParticleSystem healthPotionParticles;
+
+
+
 
 
 	void Awake()
@@ -97,6 +140,7 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
 	{
 		rigidbody = GetComponent<Rigidbody>();
+		levelInfo.Init();
 	}
 
 	void Update () {
@@ -107,8 +151,19 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			animator.SetTrigger("Roll");
+			StartCoroutine("IPlayUpgParticles");
 		}
+
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			levelInfo.LevelUp();
+		}
+
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			levelInfo.UpdateData();
+		}
+
 	}
 
 	void LateUpdate()
@@ -118,6 +173,8 @@ public class PlayerController : MonoBehaviour {
 		transform.position = position;
 	}
 
+	[Range(.05f, 1f)]
+	public float length = .5f;
 	void OnGameEvent(EventID id)
 	{
 		switch (id)
@@ -128,7 +185,37 @@ public class PlayerController : MonoBehaviour {
 				animator.SetBool("Victory", true);
 				break;
 			}
+			case EventID.ENEMY_KILLED:
+			{
+				levelInfo.UpdateData();
+				break;
+			}
+			case EventID.CHARACTER_UPG:
+			{
+				if (upg_particles != null)
+				{
+					IEnumerator _i = IPlayUpgParticles();
+					StartCoroutine(_i);
+				}
+				break;
+			}
 		}
+	}
+
+	IEnumerator IPlayUpgParticles()
+	{
+		upg_particles.Play();
+		yield return new WaitForSecondsRealtime(length);
+		upg_particles.Stop();
+		StopCoroutine("IPlayUpgParticles");
+	}
+
+	IEnumerator IPlayHealthPotionParticles()
+	{
+		healthPotionParticles.Play();
+		yield return new WaitForSecondsRealtime(.2f);
+		healthPotionParticles.Stop();
+		StopCoroutine("IPlayHealthPotionParticles");
 	}
 
 	void OnRegularAttackStart(string _id)
@@ -140,7 +227,6 @@ public class PlayerController : MonoBehaviour {
 	void OnRegularAttackEnd(string _id)
 	{
 		_inAttackRange = false;
-
 	}
 
 	public bool isPlaying(string stateName)
@@ -166,9 +252,9 @@ public class PlayerController : MonoBehaviour {
 
 	private void UpdateAttackTimers()
 	{
-		canSpecialAttack = _stamina >= StaminaCost.SPECIAL_ATK_COST;
-		_stamina += Time.deltaTime * _staminaRecoverRate;
-		_stamina = Mathf.Clamp(_stamina, 0f, 100f);
+		canSpecialAttack = Attributes.stamina >= StaminaCost.SPECIAL_ATK_COST;
+		Attributes.stamina += Time.deltaTime * _staminaRecoverRate;
+		Attributes.stamina = Mathf.Clamp(Attributes.stamina, 0f, sessionAttributes.stamina);
 
 		if (_abilityPressed)
 		{
@@ -189,18 +275,24 @@ public class PlayerController : MonoBehaviour {
 	public void SetState(CharacterState state)
 	{
 		characterState = state;
-		//ToggleRunning(state == CharacterState.RUN);
 	}
 
 	public void OnWeaponHit(GameObject go)
 	{
-		if (go.tag != "Entity/Enemy" || !_inAttackRange) { return; }
-		Enemy e;
-		if (CheckWithinRange(3f, out e))
+		if (go.tag != "Entity/Enemy" || !_inAttackRange)
 		{
-			e.TakeDamage(Attributes.Damage);
-			CameraController.Instance.TriggerShake(.2f);
+			return;
 		}
+
+		List<Enemy> e = GetEnemiesWithinRange(2);
+
+		for (int i = 0; i < e.Count; i++)
+		{
+			e[i].TakeDamage(Attributes.Damage);
+			displayText.Show("-" + Attributes.Damage.ToString("F1"), Color.red);
+			e[i].Stun = true;
+		}
+		CameraController.Instance.TriggerShake(.2f);
 	}
 
 	public void OnSpecialAttackHit(string _id)
@@ -229,13 +321,14 @@ public class PlayerController : MonoBehaviour {
 		for (int i = 0; i < e.Count; i++)
 		{
 			e[i].TakeDamage(Attributes.Damage * 3f);
+			displayText.Show("-" + (Attributes.Damage * 3f).ToString("F1"), Color.red);
 			e[i].Stun = true;
 		}
 	}
 
 	public void SetCharacter(CharacterType type)
 	{
-		Attributes.SetAttributes(CharacterModel.SELECTED_MODEL.attributes);
+		Attributes.SetAttributes(CharacterModel.SELECTED_MODEL.stats);
 
 		switch (type)
 		{
@@ -301,16 +394,17 @@ public class PlayerController : MonoBehaviour {
 	{
 		bool b = false;
 		e = null;
-		for (int i = 0; i < WaveController.Instance.EnemyList.Count; i++)
+		Transform _waveT = WaveController.Instance.EnemyWaveTransform;
+		for (int i = 0; i < _waveT.childCount; i++)
 		{
-			if (WaveController.Instance.EnemyList[i].IsDead) { continue; }
-
-			float distance = (WaveController.Instance.EnemyList[i].transform.position - activeCharacterTransform.position).magnitude;
+			Enemy ee = _waveT.GetChild(i).GetComponent<Enemy>();
+			if (ee.Attributes.health <= 0) { continue; }
+			float distance = (ee.transform.position - activeCharacterTransform.position).magnitude;
 
 			if (distance < threshold)
 			{
 				b = true;
-				e = WaveController.Instance.EnemyList[i];
+				e = ee;
 				break;
 			}
 		}
@@ -320,13 +414,15 @@ public class PlayerController : MonoBehaviour {
 	private List<Enemy> GetEnemiesWithinRange(float _range)
 	{
 		List<Enemy> _ret = new List<Enemy>();
-		for (int i = 0; i < WaveController.Instance.EnemyList.Count; i++)
+		Transform _waveT = WaveController.Instance.EnemyWaveTransform;
+		for (int i = 0; i < _waveT.childCount; i++)
 		{
-			if (!WaveController.Instance.EnemyList[i].gameObject.activeSelf) { continue; }
-			float distance = (WaveController.Instance.EnemyList[i].transform.position - activeCharacterTransform.position).magnitude;
+			Enemy ee = _waveT.GetChild(i).GetComponent<Enemy>();
+			if (!ee.gameObject.activeSelf) { continue; }
+			float distance = (ee.transform.position - activeCharacterTransform.position).magnitude;
 			if (distance < _range)
 			{
-				_ret.Add(WaveController.Instance.EnemyList[i]);
+				_ret.Add(ee);
 			}
 		}
 
@@ -340,9 +436,7 @@ public class PlayerController : MonoBehaviour {
 		return ret;
 	}
 
-	private bool _abilityPressed;
-	private float _abilityDoublePressTimer;
-	float _threshold = .5f;
+
 	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
 	{
 		if (IsDead) { return; }
@@ -358,20 +452,28 @@ public class PlayerController : MonoBehaviour {
 				break;
 			}
 
+			case ButtonID.DEFENSE:
+			{
+				if (!isPlaying("BaseLayer.Roll") && Stamina >= StaminaCost.ROLL_COST)
+				{
+					animator.SetTrigger("Roll");
+					Stamina  -= StaminaCost.ROLL_COST;
+					Haptic.Vibrate(HapticIntensity.Medium);
+					handler.GetComponent<Animation>().Play();
+				}
+				break;
+			}
+
 			case ButtonID.ABILITY:
 			{
 
-				if (_abilityPressed && _abilityDoublePressTimer < _threshold && Stamina >= StaminaCost.ROLL_COST)
-				{
-					if (!isPlaying("BaseLayer.Roll"))
-					{
-						animator.SetTrigger("Roll");
-						Stamina -= StaminaCost.ROLL_COST;
-					}
-				} else
-				{
-					TriggerAbility();
-				}
+				// if (_abilityPressed && _abilityDoublePressTimer < _threshold && Stamina >= StaminaCost.ROLL_COST)
+				// {
+
+				// } else
+				// {
+				// }
+				TriggerAbility();
 
 				_abilityPressed = true;
 				Haptic.Vibrate(HapticIntensity.Medium);
@@ -381,12 +483,26 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	public Gradient g;
 
 	void OnCollisionEnter(Collision col)
 	{
 		if (col.gameObject.tag == "Entity/Enemy")
 		{
 			contactingEnemy = col.gameObject.transform.GetComponent<Enemy>();
+		}
+		if (col.gameObject.tag == "Objects/HealthPotion")
+		{
+			if (healthPotionParticles != null)
+			{
+				IEnumerator _i = IPlayHealthPotionParticles();
+				StartCoroutine(_i);
+			}
+			float _percentToAdd = .1f;
+			col.gameObject.GetComponent<HealthPotion>().PickUp();
+			Attributes.health = Attributes.health + (sessionAttributes.health * _percentToAdd);
+			Attributes.health = Mathf.Clamp(Attributes.health, 0f, sessionAttributes.health);
+			displayText.Show("+" +  (sessionAttributes.health * _percentToAdd).ToString("F0"), Color.green);
 		}
 	}
 
@@ -404,6 +520,7 @@ public class PlayerController : MonoBehaviour {
 		if (isDead) { return; }
 		damage = Mathf.Clamp(damage, .001f, damage);
 		Attributes.health -= damage;
+		GameController.Instance.gameOverStatsSO.damageTaken += damage;
 
 		if (Attributes.health <= 0)
 		{
@@ -414,8 +531,16 @@ public class PlayerController : MonoBehaviour {
 			activeCharacterTransform.GetComponent<Collider>().enabled = false;
 			if (!iOnDeathStarted)
 			{
-				StartCoroutine("IOnDeath");
+				var parameters = new Dictionary<string, object>();
+				parameters["WAVE"] = WaveController.Instance.wave;
+				//FacebookManager.Instance.EventSent("Wave Failed", 1, parameters);
+				//GetComponentInChildren<MeshRenderer>().enabled = false;
 				iOnDeathStarted = true;
+
+				if (EventManager.OnGameEvent != null)
+				{
+					EventManager.OnGameEvent(EventID.DEATH);
+				}
 			}
 		}
 
@@ -436,20 +561,27 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private bool iOnDeathStarted;
-	IEnumerator IOnDeath()
+
+	public string LevelString
 	{
-		var parameters = new Dictionary<string, object>();
-		parameters["WAVE"] = WaveController.Instance.wave;
-		//		FacebookManager.Instance.EventSent("Wave Failed", 1, parameters);
-		//GetComponentInChildren<MeshRenderer>().enabled = false;
-		yield return new WaitForSeconds(5f);
-		GameController.Instance.Reload();
+		get {return "Lvl " + levelInfo.level; }
+	}
+
+	public float LevelProgress
+	{
+		get {return levelInfo.Ratio;}
+	}
+
+	public CharacterAttributes SessionAttributes
+	{
+		get { return sessionAttributes; }
 	}
 
 	public CharacterAttributes Attributes
 	{
 		get { return CharacterModel.SELECTED_MODEL.attributes; }
 	}
+
 	public float Speed
 	{
 		get { return Attributes.speed;}
@@ -470,6 +602,11 @@ public class PlayerController : MonoBehaviour {
 
 			return Attributes.health / sessionAttributes.health;
 		}
+	}
+
+	public float StaminaRatio
+	{
+		get {return Attributes.stamina / sessionAttributes.stamina;}
 	}
 
 	public string HealthText
@@ -506,7 +643,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float Stamina
 	{
-		get {return _stamina; }
-		set {this._stamina = value; }
+		get {return Attributes.stamina; }
+		set {this.Attributes.stamina = value; }
 	}
 }

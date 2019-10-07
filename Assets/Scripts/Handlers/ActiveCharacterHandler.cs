@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ActiveCharacterHandler : MonoBehaviour
 {
+	public CharacterStats stats;
 	public HealthHandler healthHandler;
 
 	private PlayerController _player;
@@ -20,6 +21,8 @@ public class ActiveCharacterHandler : MonoBehaviour
 		}
 		healthHandler.health = PlayerController.Instance.HealthRatio;
 		healthHandler.healthString = PlayerController.Instance.HealthText;
-		healthHandler.stamina = PlayerController.Instance.Stamina / 100f;
+		healthHandler.stamina = PlayerController.Instance.StaminaRatio;
+		healthHandler.levelProgress = PlayerController.Instance.LevelProgress;
+		healthHandler.levelTextString = PlayerController.Instance.LevelString;
 	}
 }

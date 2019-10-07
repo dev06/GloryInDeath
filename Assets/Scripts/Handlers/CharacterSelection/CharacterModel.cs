@@ -6,6 +6,7 @@ public class CharacterModel : MonoBehaviour
 {
 	public static CharacterModel SELECTED_MODEL;
 
+	public CharacterStats stats;
 	public DefaultCharacterAttribute defaultCharacterAttributes;
 	public CharacterAttributes attributes;
 
@@ -124,14 +125,6 @@ public class CharacterModel : MonoBehaviour
 		attributes.index.damage++;
 		attributes.Damage++;
 		attributes.upgrade.damageCost += 50;
-		attributes.Save();
-	}
-
-	public void UpgradeArmor()
-	{
-		attributes.index.armor++;
-		attributes.Armor = defaultCharacterAttributes.armor + (attributes.index.armor);
-		attributes.upgrade.armorCost += 50;
 		attributes.Save();
 	}
 
