@@ -13,6 +13,7 @@ public class CharacterAttributes
 	public float speed;
 	public float stamina;
 	public float damage;
+	public float criticalHit;
 
 
 	public CharacterAttributes()
@@ -35,6 +36,7 @@ public class CharacterAttributes
 		this.damage = attributes.damage;
 		this.type = attributes.type;
 		this.stamina = attributes.stamina;
+		this.criticalHit = attributes.criticalHit;
 
 		index.health = attributes.index.health;
 		index.speed = attributes.index.speed;
@@ -53,6 +55,7 @@ public class CharacterAttributes
 			case "Damage": this.damage = attributes.damage; break;
 			case "Stamina": this.stamina = attributes.stamina; break;
 			case "type": this.type = attributes.type; break;
+			case "CriticalHit": this.criticalHit = attributes.criticalHit; break;
 		}
 	}
 	public void SetAttributes(CharacterStats stats)
@@ -62,6 +65,7 @@ public class CharacterAttributes
 		this.damage = stats.damage;
 		this.speed = stats.speed;
 		this.stamina = stats.stamina;
+		this.criticalHit = stats.criticalHit;
 	}
 	public void SetAttributes(DefaultCharacterAttribute def)
 	{
@@ -69,6 +73,7 @@ public class CharacterAttributes
 		this.speed = def.speed;
 		this.damage = def.damage;
 		this.type = def.type;
+
 
 		upgrade.healthCost = def.healthCost;
 		upgrade.speedCost = def.speedCost;

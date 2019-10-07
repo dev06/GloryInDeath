@@ -39,7 +39,7 @@ public class IngameUpgrade : MonoBehaviour
 
 	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
 	{
-		if (id != ButtonID.UPG_HEALTH && id != ButtonID.UPG_DAMAGE && id != ButtonID.UPG_STAMINA) { return; }
+		if (id != ButtonID.UPG_HEALTH && id != ButtonID.UPG_DAMAGE && id != ButtonID.UPG_STAMINA && id != ButtonID.UPG_CRITICAL) { return; }
 
 		if (id == ButtonID.UPG_HEALTH)
 		{
@@ -60,6 +60,13 @@ public class IngameUpgrade : MonoBehaviour
 			CharacterAttributes a = new CharacterAttributes();
 			a.SetAttributes(PlayerController.Instance.SessionAttributes);
 			a.stamina = a.stamina + (a.stamina * 0.1f);
+			PlayerController.Instance.SessionAttributes.SetAttributes(a);
+		} else if (id == ButtonID.UPG_CRITICAL)
+		{
+			CharacterAttributes a = new CharacterAttributes();
+			a.SetAttributes(PlayerController.Instance.SessionAttributes);
+			a.criticalHit = a.criticalHit + (a.criticalHit * .05f);
+			PlayerController.Instance.Attributes.SetAttributes("CriticalHit", a);
 			PlayerController.Instance.SessionAttributes.SetAttributes(a);
 		}
 

@@ -20,6 +20,7 @@ public enum ButtonID
 	UPG_HEALTH,
 	UPG_STAMINA,
 	UPG_DAMAGE,
+	UPG_CRITICAL,
 
 	DEFENSE,
 	MENU,

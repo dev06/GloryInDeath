@@ -53,6 +53,7 @@ public class Enemy: MonoBehaviour
 	public EnemyAttributes sessionAttributes;
 	public bool walk;
 	public HealthHandler healthHandler;
+	public ParticleSystem fireFX;
 
 	[HideInInspector]
 	private EnemyAttributes attributes, waveAttributes;
@@ -67,7 +68,9 @@ public class Enemy: MonoBehaviour
 	private Transform _cameraTransform;
 	private bool move, dead, canAttack;
 	private bool _stun;
+	protected bool _inFireArea, _fireActive;
 	private float attackTimer, _stunTimer;
+	private float _fireActiveTimer;
 
 
 	void OnEnable()
@@ -118,7 +121,6 @@ public class Enemy: MonoBehaviour
 	{
 		if (GameController.state != State.GAME) { return; }
 		rigidBody.velocity = Vector3.zero;
-
 		if (!move)
 		{
 			if (animator != null)
@@ -149,6 +151,38 @@ public class Enemy: MonoBehaviour
 				_stunTimer = 0f;
 				Stun = false;
 			}
+		}
+
+
+		if (_inFireArea)
+		{
+			_fireActiveTimer = 0f;
+		}
+
+		if (_fireActive)
+		{
+			takeSimpleDamage(1f * Time.deltaTime);
+			_fireActiveTimer += Time.deltaTime;
+			if (_fireActiveTimer > 2f)
+			{
+				toggleFire(false);
+			}
+		}
+	}
+
+	private void toggleFire(bool b)
+	{
+		if (fireFX == null) { return; }
+		if (b)
+		{
+			fireFX.Play();
+			_fireActive = true;
+		} else
+		{
+			fireFX.Stop();
+			_fireActive = false;
+			_fireActiveTimer = 0f;
+
 		}
 	}
 
@@ -209,11 +243,45 @@ public class Enemy: MonoBehaviour
 		PlayerController.Instance.TakeDamage(attributes.damage);
 	}
 
+	void OnTriggerEnter(Collider col)
+	{
+		if (col.gameObject.tag == "Env/Fire")
+		{
+			_inFireArea = true;
+			toggleFire(true);
+		}
+	}
+	void OnTriggerExit(Collider col)
+	{
+		if (col.gameObject.tag == "Env/Fire")
+		{
+			_inFireArea = false;
+		}
+	}
 
-	public void TakeDamage(float damage)
+	private void takeSimpleDamage(float damage)
+	{
+		attributes.health -= damage;
+		GameController.Instance.gameOverStatsSO.damageDealt += damage;
+		attributes.health = Mathf.Clamp(attributes.health, 0f , sessionAttributes.health);
+		updateHealthDisplay();
+		if (isDead())
+		{
+
+			healthHandler.Toggle(false);
+			hurtParticles.Play();
+			if (gameObject.activeSelf)
+			{
+				StartCoroutine("IReset");
+			}
+			return;
+		}
+	}
+
+	public void TakeDamage(float damage, bool _shouldStun = true)
 	{
 		if (dead) { return; }
-		Stun = true;
+		Stun = _shouldStun;
 		animator.SetTrigger("Hit");
 		attributes.health -= damage;
 		GameController.Instance.gameOverStatsSO.damageDealt += damage;

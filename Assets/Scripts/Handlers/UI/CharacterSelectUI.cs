@@ -67,13 +67,13 @@ public class CharacterSelectUI : MonoBehaviour {
 		{
 			case CharacterType.AURA_BLACKSWORD:
 			{
-				characterDescText.text = "Name: Aura Blacksword\nRace: Human\nGender: Female";
+				characterDescText.text = "Name: <color=yellow>Aura Blacksword\n</color>Race: <color=yellow>Human\n</color>Gender: <color=yellow>Female";
 
 				break;
 			}
 			case CharacterType.HALLFRED_THORALDSON:
 			{
-				characterDescText.text = "Name: Hallfred Thoraldson\nRace: Dwarf\nGender: Male";
+				characterDescText.text = "Name: <color=yellow>Hallfred Thoraldson\n</color>Race: <color=yellow>Dwarf\n</color>Gender: <color=yellow>Male";
 
 				break;
 			}

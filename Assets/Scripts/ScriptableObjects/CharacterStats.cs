@@ -10,5 +10,6 @@ public class CharacterStats: ScriptableObject
 	public float speed;
 	public float damage;
 	public float stamina;
+	public float criticalHit;
 }
 

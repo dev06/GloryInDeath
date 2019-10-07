@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour {
 	private float _threshold = .5f;
 	private bool _inAttackRange;
 	private bool _abilityPressed;
+	private bool _inFireArea;
 
 
 	[Header("Particle System")]
@@ -148,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 		if (GameController.state != State.GAME) { return; }
 		UpdateAnimations();
 		UpdateAttackTimers();
-
+		updateLogic();
 		if (Input.GetKeyDown(KeyCode.H))
 		{
 			StartCoroutine("IPlayUpgParticles");
@@ -250,6 +251,14 @@ public class PlayerController : MonoBehaviour {
 		animator.SetBool("Run", walking);
 	}
 
+	private void updateLogic()
+	{
+		if (_inFireArea)
+		{
+			TakeDamage(1 * Time.deltaTime);
+		}
+	}
+
 	private void UpdateAttackTimers()
 	{
 		canSpecialAttack = Attributes.stamina >= StaminaCost.SPECIAL_ATK_COST;
@@ -286,10 +295,19 @@ public class PlayerController : MonoBehaviour {
 
 		List<Enemy> e = GetEnemiesWithinRange(2);
 
+		bool _prob = Random.value < .1f;
 		for (int i = 0; i < e.Count; i++)
 		{
-			e[i].TakeDamage(Attributes.Damage);
-			displayText.Show("-" + Attributes.Damage.ToString("F1"), Color.red);
+			if (_prob)
+			{
+				e[i].TakeDamage(Attributes.Damage * Attributes.criticalHit);
+				displayText.Show("Critical Hit!\n-" + (Attributes.Damage * Attributes.criticalHit).ToString("F1"), Color.yellow);
+			}
+			else
+			{
+				e[i].TakeDamage(Attributes.Damage);
+				displayText.Show("-" + Attributes.Damage.ToString("F1"), Color.red);
+			}
 			e[i].Stun = true;
 		}
 		CameraController.Instance.TriggerShake(.2f);
@@ -514,6 +532,23 @@ public class PlayerController : MonoBehaviour {
 			contactingEnemy = null;
 		}
 	}
+
+	void OnTriggerEnter(Collider col)
+	{
+		if (col.gameObject.tag == "Env/Fire")
+		{
+			_inFireArea = true;
+		}
+	}
+	void OnTriggerExit(Collider col)
+	{
+		if (col.gameObject.tag == "Env/Fire")
+		{
+			_inFireArea = false;
+		}
+	}
+
+
 
 	public void TakeDamage(float damage)
 	{
