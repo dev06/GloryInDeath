@@ -5,17 +5,4 @@ using UnityEngine;
 public class Orc : Enemy
 {
 
-	public ParticleSystem fireFX;
-	public override void Init()
-	{
-		base.Init();
-		_inFireArea = false;
-	}
-
-
-	void Update()
-	{
-
-
-	}
 }
