@@ -1,113 +1,145 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-
-
 
 public class IngameUpgrade : MonoBehaviour
 {
 	public List<CharacterUpgrade> characterUpgrades;
+	public List<CharacterUpgrade> activeUpgrades;
 
 	public UpgradeCard[] upgradeCards;
 
 	private CanvasGroup _canvasGroup;
-	void OnEnable()
+	void OnEnable ()
 	{
 		EventManager.OnButtonClick += OnButtonClick;
 		EventManager.OnGameEvent += OnGameEvent;
 	}
-	void OnDisable()
+	void OnDisable ()
 	{
 		EventManager.OnButtonClick -= OnButtonClick;
 		EventManager.OnGameEvent -= OnGameEvent;
 	}
 
-	void Start()
+	void Start ()
 	{
-		Toggle(false);
+		Toggle (false);
+		checkActiveUpgrades ();
 	}
 
-	void Update()
+	void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.P))
+		if (Input.GetKeyDown (KeyCode.P))
 		{
-			Display();
+			Display ();
 		}
 	}
 
-	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
+	void checkActiveUpgrades ()
+	{
+		activeUpgrades.Clear();
+		activeUpgrades.Add (characterUpgrades[0]);
+		activeUpgrades.Add (characterUpgrades[2]);
+
+		bool _hasDamage = PlayerPrefs.HasKey ("UPG_DAMAGE") ? bool.Parse (PlayerPrefs.GetString ("UPG_DAMAGE")) : false;
+		bool _hasCritHit = PlayerPrefs.HasKey ("UPG_CRITHIT") ? bool.Parse (PlayerPrefs.GetString ("UPG_CRITHIT")) : false;
+		if (_hasDamage) activeUpgrades.Add (characterUpgrades[1]);
+		if (_hasCritHit) activeUpgrades.Add (characterUpgrades[3]);
+	}
+
+	void OnButtonClick (ButtonID id, SimpleButtonHandler handler)
 	{
 		if (id != ButtonID.UPG_HEALTH && id != ButtonID.UPG_DAMAGE && id != ButtonID.UPG_STAMINA && id != ButtonID.UPG_CRITICAL) { return; }
 
 		if (id == ButtonID.UPG_HEALTH)
 		{
-			CharacterAttributes a = new CharacterAttributes();
-			a.SetAttributes(PlayerController.Instance.SessionAttributes);
+			CharacterAttributes a = new CharacterAttributes ();
+			a.SetAttributes (PlayerController.Instance.SessionAttributes);
 			a.health += 50;
 			PlayerController.Instance.Attributes.health += 25;
-			PlayerController.Instance.SessionAttributes.SetAttributes(a);
-		} else if (id == ButtonID.UPG_DAMAGE)
+			PlayerController.Instance.SessionAttributes.SetAttributes (a);
+		}
+		else if (id == ButtonID.UPG_DAMAGE)
 		{
-			CharacterAttributes a = new CharacterAttributes();
-			a.SetAttributes(PlayerController.Instance.SessionAttributes);
+			CharacterAttributes a = new CharacterAttributes ();
+			a.SetAttributes (PlayerController.Instance.SessionAttributes);
 			a.Damage = a.Damage + (a.Damage * 0.15f);
-			PlayerController.Instance.Attributes.SetAttributes("Damage", a);
-			PlayerController.Instance.SessionAttributes.SetAttributes(a);
-		} else if (id == ButtonID.UPG_STAMINA)
+			PlayerController.Instance.Attributes.SetAttributes ("Damage", a);
+			PlayerController.Instance.SessionAttributes.SetAttributes (a);
+		}
+		else if (id == ButtonID.UPG_STAMINA)
 		{
-			CharacterAttributes a = new CharacterAttributes();
-			a.SetAttributes(PlayerController.Instance.SessionAttributes);
+			CharacterAttributes a = new CharacterAttributes ();
+			a.SetAttributes (PlayerController.Instance.SessionAttributes);
 			a.stamina = a.stamina + (a.stamina * 0.1f);
-			PlayerController.Instance.SessionAttributes.SetAttributes(a);
-		} else if (id == ButtonID.UPG_CRITICAL)
+			PlayerController.Instance.SessionAttributes.SetAttributes (a);
+		}
+		else if (id == ButtonID.UPG_CRITICAL)
 		{
-			CharacterAttributes a = new CharacterAttributes();
-			a.SetAttributes(PlayerController.Instance.SessionAttributes);
+			CharacterAttributes a = new CharacterAttributes ();
+			a.SetAttributes (PlayerController.Instance.SessionAttributes);
 			a.criticalHit = a.criticalHit + (a.criticalHit * .05f);
-			PlayerController.Instance.Attributes.SetAttributes("CriticalHit", a);
-			PlayerController.Instance.SessionAttributes.SetAttributes(a);
+			PlayerController.Instance.Attributes.SetAttributes ("CriticalHit", a);
+			PlayerController.Instance.SessionAttributes.SetAttributes (a);
 		}
 
 		if (EventManager.OnGameEvent != null)
 		{
-			EventManager.OnGameEvent(EventID.CHARACTER_UPG);
+			EventManager.OnGameEvent (EventID.CHARACTER_UPG);
 		}
 
-		Toggle(false);
+		Toggle (false);
 	}
 
-	void OnGameEvent(EventID id)
+	void OnGameEvent (EventID id)
 	{
-		if (id == EventID.LEVEL_UP)
+		switch (id)
 		{
-			Display();
+			case EventID.LEVEL_UP:
+				{
+					Display ();
+					break;
+				}
+
+			case EventID.CHR_UPG_DAMAGE:
+				{
+					PlayerPrefs.SetString ("UPG_DAMAGE", true.ToString());
+					checkActiveUpgrades ();
+					break;
+				}
+			case EventID.CHR_UPG_CRITHIT:
+				{
+					PlayerPrefs.SetString ("UPG_CRITHIT", true.ToString());
+					checkActiveUpgrades ();
+					break;
+				}
+
 		}
 	}
-	public void Display()
+	public void Display ()
 	{
-		Toggle(true);
+		Toggle (true);
 		for (int i = 0; i < upgradeCards.Length; i++)
 		{
-			upgradeCards[i].Shuffle();
+			upgradeCards[i].Shuffle ();
 		}
 	}
 
-
-	private void Toggle(bool b)
+	private void Toggle (bool b)
 	{
 		if (_canvasGroup == null)
 		{
-			_canvasGroup = GetComponent<CanvasGroup>();
+			_canvasGroup = GetComponent<CanvasGroup> ();
 		}
 
 		_canvasGroup.alpha = b ? 1f : 0f;
-		_canvasGroup.blocksRaycasts = b ;
+		_canvasGroup.blocksRaycasts = b;
 	}
 
-	private CharacterUpgrade ChooseUpgrade()
+	private CharacterUpgrade ChooseUpgrade ()
 	{
-		return characterUpgrades[Random.Range(0, characterUpgrades.Count)];
+		return activeUpgrades[Random.Range (0, activeUpgrades.Count)];
 	}
 }

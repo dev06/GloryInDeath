@@ -53,7 +53,7 @@ public class GameUI : MonoBehaviour {
 
 			case EventID.ENEMY_KILLED:
 			{
-				WaveController.Instance.GoldCollected += 20;
+				WaveController.Instance.GoldCollected += 5;
 				break;
 			}
 

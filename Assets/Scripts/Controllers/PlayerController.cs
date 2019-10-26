@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 [System.Serializable]
 public class DefaultCharacterAttribute
 {
@@ -19,8 +17,6 @@ public class DefaultCharacterAttribute
 	public float armorCost = 100;
 }
 
-
-
 public struct StaminaCost
 {
 	public static int SPECIAL_ATK_COST = 30;
@@ -34,42 +30,41 @@ public struct LevelInfo
 	public int kills;
 	public int killsRequired;
 
-	public void Init()
+	public void Init ()
 	{
 		level = 1;
-		killsRequired = 5;
+		killsRequired = 15;
 		kills = 0;
 	}
 
-	public void LevelUp()
+	public void LevelUp ()
 	{
 		level++;
-		killsRequired += 3;
+		killsRequired += 10;
 		kills = 0;
 		if (EventManager.OnGameEvent != null)
 		{
-			EventManager.OnGameEvent(EventID.LEVEL_UP);
+			EventManager.OnGameEvent (EventID.LEVEL_UP);
 		}
 	}
 
-	public void UpdateData()
+	public void UpdateData ()
 	{
 		kills++;
 		if (Ratio >= 1)
 		{
-			LevelUp();
+			LevelUp ();
 		}
 	}
 
 	public float Ratio
 	{
-		get { return (float)(kills) / (float)(killsRequired); }
+		get { return (float) (kills) / (float) (killsRequired); }
 	}
 }
 
-
-public class PlayerController : MonoBehaviour {
-
+public class PlayerController : MonoBehaviour
+{
 
 	public static PlayerController Instance;
 
@@ -84,6 +79,7 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector]
 	public bool lockMovement;
 
+	private ActiveCharacterHandler _activeCharacterHandler;
 	private float _staminaRecoverRate = 10f;
 	private Enemy contactingEnemy;
 	private Animator animator;
@@ -99,17 +95,12 @@ public class PlayerController : MonoBehaviour {
 	private bool _abilityPressed;
 	private bool _inFireArea;
 
-
-	[Header("Particle System")]
+	[Header ("Particle System")]
 	public ParticleSystem hammerSpecial;
 	public ParticleSystem upg_particles;
 	public ParticleSystem healthPotionParticles;
 
-
-
-
-
-	void Awake()
+	void Awake ()
 	{
 		if (Instance == null)
 		{
@@ -117,9 +108,11 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void OnEnable()
+	void OnEnable ()
 	{
 		EventManager.OnButtonClick += OnButtonClick;
+		EventManager.OnButtonDown += OnButtonDown;
+		EventManager.OnButtonUp += OnButtonUp;
 		EventManager.OnGameEvent += OnGameEvent;
 		EventManager.OnWeaponHit += OnWeaponHit;
 		EventManager.OnSpecialAttackHit += OnSpecialAttackHit;
@@ -127,9 +120,11 @@ public class PlayerController : MonoBehaviour {
 		EventManager.OnRegularAttackEnd += OnRegularAttackEnd;
 	}
 
-	void OnDisable()
+	void OnDisable ()
 	{
 		EventManager.OnButtonClick -= OnButtonClick;
+		EventManager.OnButtonDown -= OnButtonDown;
+		EventManager.OnButtonUp -= OnButtonUp;
 		EventManager.OnGameEvent -= OnGameEvent;
 		EventManager.OnWeaponHit -= OnWeaponHit;
 		EventManager.OnSpecialAttackHit -= OnSpecialAttackHit;
@@ -137,133 +132,159 @@ public class PlayerController : MonoBehaviour {
 		EventManager.OnRegularAttackEnd -= OnRegularAttackEnd;
 	}
 
-
 	void Start ()
 	{
-		rigidbody = GetComponent<Rigidbody>();
-		levelInfo.Init();
+		rigidbody = GetComponent<Rigidbody> ();
+		levelInfo.Init ();
 	}
 
-	void Update () {
+	void Update ()
+	{
 
 		if (GameController.state != State.GAME) { return; }
-		UpdateAnimations();
-		UpdateAttackTimers();
-		updateLogic();
-		if (Input.GetKeyDown(KeyCode.H))
+		UpdateAnimations ();
+		UpdateAttackTimers ();
+		updateLogic ();
+		if (Input.GetKeyDown (KeyCode.H))
 		{
-			StartCoroutine("IPlayUpgParticles");
+			StartCoroutine ("IPlayUpgParticles");
 		}
 
-		if (Input.GetKeyDown(KeyCode.Q))
+		if (Input.GetKeyDown (KeyCode.Q))
 		{
-			levelInfo.LevelUp();
+			levelInfo.LevelUp ();
 		}
 
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown (KeyCode.E))
 		{
-			levelInfo.UpdateData();
+			levelInfo.UpdateData ();
 		}
 
 	}
 
-	void LateUpdate()
+	void LateUpdate ()
 	{
 		Vector3 position = transform.position;
 		position.y = 0f;
 		transform.position = position;
 	}
 
-	[Range(.05f, 1f)]
+	[Range (.05f, 1f)]
 	public float length = .5f;
-	void OnGameEvent(EventID id)
+	void OnGameEvent (EventID id)
 	{
 		switch (id)
 		{
 			case EventID.WAVE_END:
-			{
-				LockMovement = true;
-				animator.SetBool("Victory", true);
-				break;
-			}
-			case EventID.ENEMY_KILLED:
-			{
-				levelInfo.UpdateData();
-				break;
-			}
-			case EventID.CHARACTER_UPG:
-			{
-				if (upg_particles != null)
 				{
-					IEnumerator _i = IPlayUpgParticles();
-					StartCoroutine(_i);
+					LockMovement = true;
+					animator.SetBool ("Victory", true);
+					break;
 				}
-				break;
-			}
+			case EventID.ENEMY_KILLED:
+				{
+					levelInfo.UpdateData ();
+					break;
+				}
+			case EventID.CHARACTER_UPG:
+				{
+					if (upg_particles != null)
+					{
+						IEnumerator _i = IPlayUpgParticles ();
+						StartCoroutine (_i);
+					}
+					break;
+				}
 		}
 	}
 
-	IEnumerator IPlayUpgParticles()
+	IEnumerator IPlayUpgParticles ()
 	{
-		upg_particles.Play();
-		yield return new WaitForSecondsRealtime(length);
-		upg_particles.Stop();
-		StopCoroutine("IPlayUpgParticles");
+		upg_particles.Play ();
+		yield return new WaitForSecondsRealtime (length);
+		upg_particles.Stop ();
+		StopCoroutine ("IPlayUpgParticles");
 	}
 
-	IEnumerator IPlayHealthPotionParticles()
+	IEnumerator IPlayHealthPotionParticles ()
 	{
-		healthPotionParticles.Play();
-		yield return new WaitForSecondsRealtime(.2f);
-		healthPotionParticles.Stop();
-		StopCoroutine("IPlayHealthPotionParticles");
+		healthPotionParticles.Play ();
+		yield return new WaitForSecondsRealtime (.2f);
+		healthPotionParticles.Stop ();
+		StopCoroutine ("IPlayHealthPotionParticles");
 	}
 
-	void OnRegularAttackStart(string _id)
+	void OnRegularAttackStart (string _id)
 	{
 		_inAttackRange = true;
 		Stamina -= StaminaCost.REGULAR_ATK_COST;
 
 	}
-	void OnRegularAttackEnd(string _id)
+	void OnRegularAttackEnd (string _id)
 	{
 		_inAttackRange = false;
 	}
 
-	public bool isPlaying(string stateName)
+	private AnimatorStateInfo info (string name)
 	{
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
-		        animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f) {
+
+		return animator.GetCurrentAnimatorStateInfo (0);
+
+	}
+
+	private void SetRunningSpeed (float s)
+	{
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName ("BaseLayer.Run"))
+		{
+			animator.speed = s;
+		}
+		else
+		{
+			animator.speed = 1;
+		}
+	}
+
+	public bool isPlaying (string stateName)
+	{
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName (stateName)
+			&& animator.GetCurrentAnimatorStateInfo (0).normalizedTime < 1.0f)
+		{
 			return true;
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
 
-	public void UpdateAnimations()
+	public void UpdateAnimations ()
 	{
 		if (isDead)
 		{
-			animator.SetBool("Run", false);
+			animator.SetBool ("Run", false);
 			return;
 		}
-		animator.SetBool("Run", walking);
+		animator.SetBool ("Run", walking);
 	}
 
-	private void updateLogic()
+	private void updateLogic ()
 	{
 		if (_inFireArea)
 		{
-			TakeDamage(1 * Time.deltaTime);
+			TakeDamage (1 * Time.deltaTime);
 		}
+
+		upg_particles.transform.SetParent(_activeCharacterHandler.transform); 
+		healthPotionParticles.transform.SetParent(_activeCharacterHandler.transform); 
+		// upg_particles.transform.position = _activeCharacterHandler.transform.position; 
+		// healthPotionParticles.transform.position = _activeCharacterHandler.transform.position; 
 	}
 
-	private void UpdateAttackTimers()
+	private void UpdateAttackTimers ()
 	{
 		canSpecialAttack = Attributes.stamina >= StaminaCost.SPECIAL_ATK_COST;
 		Attributes.stamina += Time.deltaTime * _staminaRecoverRate;
-		Attributes.stamina = Mathf.Clamp(Attributes.stamina, 0f, sessionAttributes.stamina);
+		Attributes.stamina = Mathf.Clamp (Attributes.stamina, 0f, sessionAttributes.stamina);
 
 		if (_abilityPressed)
 		{
@@ -276,146 +297,158 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public void ToggleRunning(bool b)
+	public void ToggleRunning (bool b)
 	{
-		animator.SetBool("Run", b);
+		animator.SetBool ("Run", b);
 	}
 
-	public void SetState(CharacterState state)
+	public void SetState (CharacterState state)
 	{
 		characterState = state;
 	}
 
-	public void OnWeaponHit(GameObject go)
+	public void OnWeaponHit (GameObject go)
 	{
 		if (go.tag != "Entity/Enemy" || !_inAttackRange)
 		{
 			return;
 		}
 
-		List<Enemy> e = GetEnemiesWithinRange(2);
+		List<Enemy> e = GetEnemiesWithinRange (2);
 
 		bool _prob = Random.value < .1f;
+		float mult = 1f;
+		if (_activeCharacterHandler.Type == CharacterType.AURA_BLACKSWORD && _activeCharacterHandler.ShieldActive)
+		{
+			mult = .5f;
+		}
 		for (int i = 0; i < e.Count; i++)
 		{
 			if (_prob)
 			{
-				e[i].TakeDamage(Attributes.Damage * Attributes.criticalHit);
-				displayText.Show("Critical Hit!\n-" + (Attributes.Damage * Attributes.criticalHit).ToString("F1"), Color.yellow);
+
+				e[i].TakeDamage (Attributes.Damage * Attributes.criticalHit * mult);
+				displayText.Show ("Critical Hit!\n-" + (Attributes.Damage * Attributes.criticalHit * mult).ToString ("F1"), Color.yellow);
 			}
 			else
 			{
-				e[i].TakeDamage(Attributes.Damage);
-				displayText.Show("-" + Attributes.Damage.ToString("F1"), Color.red);
+				e[i].TakeDamage (Attributes.Damage * mult);
+				displayText.Show ("-" + (Attributes.Damage * mult).ToString ("F1"), Color.red);
 			}
 			e[i].Stun = true;
 		}
-		CameraController.Instance.TriggerShake(.2f);
+		CameraController.Instance.TriggerShake (.2f * (_activeCharacterHandler.Type == CharacterType.AURA_BLACKSWORD ? 2f : 1f));
 	}
 
-	public void OnSpecialAttackHit(string _id)
+	public void OnSpecialAttackHit (string _id)
 	{
-		float _distance = 0;
+		float _distance = 3.5f;
 		Stamina -= 50f;
-		switch (_id)
+		float mult = 1f;
+		if (_activeCharacterHandler.Type == CharacterType.AURA_BLACKSWORD && _activeCharacterHandler.ShieldActive)
 		{
-			case "character_one":
-			{
-				_distance = 3.5f;
-				break;
-			}
-			case "character_two":
-			{
-				_distance = 4f;
-				CameraController.Instance.TriggerShake(.6f);
-				hammerSpecial.Play();
-				hammerSpecial.transform.position = activeCharacterTransform.position + new Vector3(0f, .3f, 0f);
-				break;
-			}
+			mult = .5f;
 		}
-
-		List<Enemy> e = GetEnemiesWithinRange(_distance);
+		List<Enemy> e = GetEnemiesWithinRange (_distance);
 
 		for (int i = 0; i < e.Count; i++)
 		{
-			e[i].TakeDamage(Attributes.Damage * 3f);
-			displayText.Show("-" + (Attributes.Damage * 3f).ToString("F1"), Color.red);
+			e[i].TakeDamage (Attributes.Damage * 3f * mult);
+			displayText.Show ("-" + (Attributes.Damage * 3f * mult).ToString ("F1"), Color.red);
 			e[i].Stun = true;
 		}
+		switch (_id)
+		{
+			case "character_one":
+				{
+					_distance = 3.5f;
+					if (e.Count > 0)
+					{
+						CameraController.Instance.TriggerShake (.6f);
+					}
+					break;
+				}
+			case "character_two":
+				{
+					_distance = 4f;
+					CameraController.Instance.TriggerShake (.6f);
+					hammerSpecial.Play ();
+					hammerSpecial.transform.position = activeCharacterTransform.position + new Vector3 (0f, .3f, 0f);
+					break;
+				}
+		}
+
 	}
 
-	public void SetCharacter(CharacterType type)
+	public void SetCharacter (CharacterType type)
 	{
-		Attributes.SetAttributes(CharacterModel.SELECTED_MODEL.stats);
+		Attributes.SetAttributes (CharacterModel.SELECTED_MODEL.stats);
 
 		switch (type)
 		{
 			case CharacterType.AURA_BLACKSWORD:
-			{
-				ToggleSkin(0);
+				{
+					ToggleSkin (0);
 
-				break;
-			}
+					break;
+				}
 			case CharacterType.HALLFRED_THORALDSON:
-			{
-				ToggleSkin(1);
-				break;
-			}
+				{
+					ToggleSkin (1);
+					break;
+				}
 			case CharacterType.FREYA_SKAAR:
-			{
-				ToggleSkin(2);
+				{
+					ToggleSkin (2);
 
-				break;
-			}
+					break;
+				}
 		}
 
 		if (sessionAttributes == null)
 		{
-			sessionAttributes = new CharacterAttributes();
+			sessionAttributes = new CharacterAttributes ();
 		}
 
-		sessionAttributes.SetAttributes(Attributes);
+		sessionAttributes.SetAttributes (Attributes);
 	}
 
-
-
-	void ToggleSkin(int i)
+	void ToggleSkin (int i)
 	{
 		for (int j = 0; j < characterSkins.Length; j++)
 		{
-			characterSkins[j].gameObject.SetActive(false);
+			characterSkins[j].gameObject.SetActive (false);
 		}
-		animator = characterSkins[i].GetComponent<Animator>();
-		characterSkins[i].gameObject.SetActive(true);
-		activeCharacterTransform = transform.GetChild(i + 1).gameObject.transform;
+		animator = characterSkins[i].GetComponent<Animator> ();
+		characterSkins[i].gameObject.SetActive (true);
+		activeCharacterTransform = transform.GetChild (i + 1).gameObject.transform;
+		_activeCharacterHandler = activeCharacterTransform.GetComponent<ActiveCharacterHandler> ();
 	}
 
-
-	public void TriggerAttack()
+	public void TriggerAttack ()
 	{
-		animator.SetTrigger("AttackTrigger");
-		animator.SetInteger("attackIndex", Random.Range(0, 4));
+		animator.SetTrigger ("AttackTrigger");
+		animator.SetInteger ("attackIndex", Random.Range (0, 4));
 		attackTimer = 0;
 		canAttack = false;
 	}
 
-
-	public void TriggerAbility()
+	public void TriggerAbility ()
 	{
 		if (!canSpecialAttack) { return; }
-		animator.SetTrigger("SpecialTrigger");
+		animator.SetTrigger ("SpecialTrigger");
 		specialAttackTimer = 0;
 		canSpecialAttack = false;
 	}
 
-	private bool CheckWithinRange(float threshold, out Enemy e)
+	private bool CheckWithinRange (float threshold, out Enemy e)
 	{
 		bool b = false;
 		e = null;
 		Transform _waveT = WaveController.Instance.EnemyWaveTransform;
 		for (int i = 0; i < _waveT.childCount; i++)
 		{
-			Enemy ee = _waveT.GetChild(i).GetComponent<Enemy>();
+			Enemy ee = _waveT.GetChild (i).GetComponent<Enemy> ();
 			if (ee.Attributes.health <= 0) { continue; }
 			float distance = (ee.transform.position - activeCharacterTransform.position).magnitude;
 
@@ -429,102 +462,105 @@ public class PlayerController : MonoBehaviour {
 		return b;
 	}
 
-	private List<Enemy> GetEnemiesWithinRange(float _range)
+	private List<Enemy> GetEnemiesWithinRange (float _range)
 	{
-		List<Enemy> _ret = new List<Enemy>();
+		List<Enemy> _ret = new List<Enemy> ();
 		Transform _waveT = WaveController.Instance.EnemyWaveTransform;
 		for (int i = 0; i < _waveT.childCount; i++)
 		{
-			Enemy ee = _waveT.GetChild(i).GetComponent<Enemy>();
+			Enemy ee = _waveT.GetChild (i).GetComponent<Enemy> ();
 			if (!ee.gameObject.activeSelf) { continue; }
 			float distance = (ee.transform.position - activeCharacterTransform.position).magnitude;
 			if (distance < _range)
 			{
-				_ret.Add(ee);
+				_ret.Add (ee);
 			}
 		}
 
 		return _ret;
 	}
 
-	private float GetAttackDelay()
+	private float GetAttackDelay ()
 	{
-		float ret =  2f - ( .05f * Attributes.Speed);
-		ret = Mathf.Clamp(ret, .01f, ret);
+		float ret = 2f - (.05f * Attributes.Speed);
+		ret = Mathf.Clamp (ret, .01f, ret);
 		return ret;
 	}
 
+	void OnButtonUp (ButtonID id, SimpleButtonHandler handler) { }
 
-	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
+	void OnButtonDown (ButtonID id, SimpleButtonHandler handler) { }
+
+	void OnButtonClick (ButtonID id, SimpleButtonHandler handler)
 	{
 		if (IsDead) { return; }
 
 		switch (id)
 		{
 			case ButtonID.ATTACK:
-			{
-				Haptic.Vibrate(HapticIntensity.Light);
-				TriggerAttack();
-				autoAttackTimer = 0;
-				handler.GetComponent<Animation>().Play();
-				break;
-			}
+				{
+					Haptic.Vibrate (HapticIntensity.Light);
+					TriggerAttack ();
+					autoAttackTimer = 0;
+					handler.GetComponent<Animation> ().Play ();
+					break;
+				}
 
 			case ButtonID.DEFENSE:
-			{
-				if (!isPlaying("BaseLayer.Roll") && Stamina >= StaminaCost.ROLL_COST)
 				{
-					animator.SetTrigger("Roll");
-					Stamina  -= StaminaCost.ROLL_COST;
-					Haptic.Vibrate(HapticIntensity.Medium);
-					handler.GetComponent<Animation>().Play();
+					if (!isPlaying ("BaseLayer.Roll") && Stamina >= StaminaCost.ROLL_COST)
+					{
+						animator.SetTrigger ("Roll");
+						Stamina -= StaminaCost.ROLL_COST;
+						Haptic.Vibrate (HapticIntensity.Medium);
+						handler.GetComponent<Animation> ().Play ();
+					}
+					break;
 				}
-				break;
-			}
 
 			case ButtonID.ABILITY:
-			{
+				{
 
-				// if (_abilityPressed && _abilityDoublePressTimer < _threshold && Stamina >= StaminaCost.ROLL_COST)
-				// {
+					// if (_abilityPressed && _abilityDoublePressTimer < _threshold && Stamina >= StaminaCost.ROLL_COST)
+					// {
 
-				// } else
-				// {
-				// }
-				TriggerAbility();
+					// } else
+					// {
+					// }
+					TriggerAbility ();
 
-				_abilityPressed = true;
-				Haptic.Vibrate(HapticIntensity.Medium);
-				handler.GetComponent<Animation>().Play();
-				break;
-			}
+					_abilityPressed = true;
+					Haptic.Vibrate (HapticIntensity.Medium);
+					handler.GetComponent<Animation> ().Play ();
+					break;
+				}
 		}
 	}
 
 	public Gradient g;
 
-	void OnCollisionEnter(Collision col)
+	void OnCollisionEnter (Collision col)
 	{
 		if (col.gameObject.tag == "Entity/Enemy")
 		{
-			contactingEnemy = col.gameObject.transform.GetComponent<Enemy>();
+			contactingEnemy = col.gameObject.transform.GetComponent<Enemy> ();
 		}
 		if (col.gameObject.tag == "Objects/HealthPotion")
 		{
 			if (healthPotionParticles != null)
 			{
-				IEnumerator _i = IPlayHealthPotionParticles();
-				StartCoroutine(_i);
+				IEnumerator _i = IPlayHealthPotionParticles ();
+				StartCoroutine (_i);
 			}
 			float _percentToAdd = .1f;
-			col.gameObject.GetComponent<HealthPotion>().PickUp();
+			col.gameObject.GetComponent<HealthPotion> ().PickUp ();
 			Attributes.health = Attributes.health + (sessionAttributes.health * _percentToAdd);
-			Attributes.health = Mathf.Clamp(Attributes.health, 0f, sessionAttributes.health);
-			displayText.Show("+" +  (sessionAttributes.health * _percentToAdd).ToString("F0"), Color.green);
+			Attributes.health = Mathf.Clamp (Attributes.health, 0f, sessionAttributes.health);
+			displayText.Show ("+" + (sessionAttributes.health * _percentToAdd).ToString ("F0"), Color.green);
 		}
 	}
 
-	void OnCollisionExit(Collision col)
+	void OnCollisionExit (Collision col)
 	{
 		if (col.gameObject.tag == "Entity/Enemy")
 		{
@@ -533,14 +569,14 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter(Collider col)
+	void OnTriggerEnter (Collider col)
 	{
 		if (col.gameObject.tag == "Env/Fire")
 		{
 			_inFireArea = true;
 		}
 	}
-	void OnTriggerExit(Collider col)
+	void OnTriggerExit (Collider col)
 	{
 		if (col.gameObject.tag == "Env/Fire")
 		{
@@ -548,25 +584,24 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-
-
-	public void TakeDamage(float damage)
+	public void TakeDamage (float damage)
 	{
 		if (isDead) { return; }
-		damage = Mathf.Clamp(damage, .001f, damage);
-		Attributes.health -= damage;
+		damage = Mathf.Clamp (damage, .001f, damage);
+		float mult = _activeCharacterHandler.Type == CharacterType.AURA_BLACKSWORD? .2f : 1f;
+		Attributes.health -= damage * mult;
 		GameController.Instance.gameOverStatsSO.damageTaken += damage;
 
 		if (Attributes.health <= 0)
 		{
 			LockMovement = true;
-			animator.SetTrigger("DeathTrigger");
+			animator.SetTrigger ("DeathTrigger");
 			isDead = true;
-			GetComponent<Rigidbody>().isKinematic = true;
-			activeCharacterTransform.GetComponent<Collider>().enabled = false;
+			GetComponent<Rigidbody> ().isKinematic = true;
+			activeCharacterTransform.GetComponent<Collider> ().enabled = false;
 			if (!iOnDeathStarted)
 			{
-				var parameters = new Dictionary<string, object>();
+				var parameters = new Dictionary<string, object> ();
 				parameters["WAVE"] = WaveController.Instance.wave;
 				//FacebookManager.Instance.EventSent("Wave Failed", 1, parameters);
 				//GetComponentInChildren<MeshRenderer>().enabled = false;
@@ -574,14 +609,14 @@ public class PlayerController : MonoBehaviour {
 
 				if (EventManager.OnGameEvent != null)
 				{
-					EventManager.OnGameEvent(EventID.DEATH);
+					EventManager.OnGameEvent (EventID.DEATH);
 				}
 			}
 		}
 
 		if (EventManager.OnGameEvent != null)
 		{
-			EventManager.OnGameEvent(EventID.PLAYER_HURT);
+			EventManager.OnGameEvent (EventID.PLAYER_HURT);
 		}
 	}
 
@@ -589,8 +624,8 @@ public class PlayerController : MonoBehaviour {
 	{
 		get
 		{
-			Transform bodyPoints = transform.GetChild(1);
-			Vector3 point = bodyPoints.GetChild(Random.Range(0, bodyPoints.childCount)).transform.position;
+			Transform bodyPoints = transform.GetChild (1);
+			Vector3 point = bodyPoints.GetChild (Random.Range (0, bodyPoints.childCount)).transform.position;
 			return activeCharacterTransform.position;
 		}
 	}
@@ -599,12 +634,12 @@ public class PlayerController : MonoBehaviour {
 
 	public string LevelString
 	{
-		get {return "Lvl " + levelInfo.level; }
+		get { return "Lvl " + levelInfo.level; }
 	}
 
 	public float LevelProgress
 	{
-		get {return levelInfo.Ratio;}
+		get { return levelInfo.Ratio; }
 	}
 
 	public CharacterAttributes SessionAttributes
@@ -619,12 +654,13 @@ public class PlayerController : MonoBehaviour {
 
 	public float Speed
 	{
-		get { return Attributes.speed;}
+		get { return Attributes.speed; }
 	}
 
 	public bool LockMovement
 	{
-		get {
+		get
+		{
 			return lockMovement;
 		}
 
@@ -633,7 +669,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float HealthRatio
 	{
-		get {
+		get
+		{
 
 			return Attributes.health / sessionAttributes.health;
 		}
@@ -641,21 +678,23 @@ public class PlayerController : MonoBehaviour {
 
 	public float StaminaRatio
 	{
-		get {return Attributes.stamina / sessionAttributes.stamina;}
+		get { return Attributes.stamina / sessionAttributes.stamina; }
 	}
 
 	public string HealthText
 	{
-		get {
-			return Mathf.Clamp((int)Attributes.Health, 0f, (int)Attributes.Health) + " / " + sessionAttributes.health;
+		get
+		{
+			return Mathf.Clamp ((int) Attributes.Health, 0f, (int) Attributes.Health) + " / " + sessionAttributes.health;
 		}
 	}
 
 	public float AttackCoolDown
 	{
-		get {
-			float ret = (attackTimer / GetAttackDelay());
-			ret = Mathf.Clamp(ret, 0f, 1f);
+		get
+		{
+			float ret = (attackTimer / GetAttackDelay ());
+			ret = Mathf.Clamp (ret, 0f, 1f);
 			return ret;
 		}
 	}
@@ -667,7 +706,7 @@ public class PlayerController : MonoBehaviour {
 
 	public bool IsDead
 	{
-		get {return isDead; }
+		get { return isDead; }
 	}
 
 	public float AutoAttackTimer
@@ -678,7 +717,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float Stamina
 	{
-		get {return Attributes.stamina; }
-		set {this.Attributes.stamina = value; }
+		get { return Attributes.stamina; }
+		set { this.Attributes.stamina = value; }
 	}
 }

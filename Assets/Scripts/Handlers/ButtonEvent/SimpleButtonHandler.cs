@@ -24,6 +24,14 @@ public enum ButtonID
 
 	DEFENSE,
 	MENU,
+
+	B_UPG_CRITHIT,
+	B_UPG_DAMAGE,
+	B_UPG_ACTIVATE,
+	
+
+	B_STGS_CLOSE,
+	B_STGS_OPEN,
 }
 
 [System.Serializable]
@@ -32,18 +40,19 @@ public struct Interact
 	public bool bubble;
 	public bool press;
 }
-public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler {
+public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
+{
 
 	public ButtonID buttonID;
 
 	public Interact interact;
 
-	public virtual void OnPointerClick(PointerEventData data)
+	public virtual void OnPointerClick (PointerEventData data)
 	{
 
 		if (EventManager.OnButtonClick != null)
 		{
-			EventManager.OnButtonClick(buttonID, this);
+			EventManager.OnButtonClick (buttonID, this);
 		}
 
 		if (interact.press)
@@ -52,56 +61,59 @@ public class SimpleButtonHandler : MonoBehaviour, IPointerClickHandler, IPointer
 		}
 	}
 
-	IEnumerator IReset()
+	IEnumerator IReset ()
 	{
-		yield return new WaitForEndOfFrame();
-		GetComponent<Shadow>().enabled = true;
+		yield return new WaitForEndOfFrame ();
+		GetComponent<Shadow> ().enabled = true;
 	}
 
-	public virtual void OnPointerEnter(PointerEventData data)
+	public virtual void OnPointerEnter (PointerEventData data)
 	{
 		if (EventManager.OnButtonEnter != null)
 		{
-			EventManager.OnButtonEnter(buttonID, this);
+			EventManager.OnButtonEnter (buttonID, this);
 		}
 
 		if (interact.bubble)
 		{
 			Vector3 hoverScale = transform.localScale * 1.1f;
-			StopCoroutine("ILerp");
-			StartCoroutine("ILerp", hoverScale);
+			StopCoroutine ("ILerp");
+			StartCoroutine ("ILerp", hoverScale);
 		}
 	}
 
-	public virtual void OnPointerExit(PointerEventData data)
+	public virtual void OnPointerExit (PointerEventData data)
 	{
 		if (interact.bubble)
 		{
-			StopCoroutine("ILerp");
-			StartCoroutine("ILerp", Vector3.one);
+			StopCoroutine ("ILerp");
+			StartCoroutine ("ILerp", Vector3.one);
 		}
 
-
-
 	}
-	public virtual void OnPointerDown(PointerEventData data)
+	public virtual void OnPointerDown (PointerEventData data)
 	{
-
+		if (EventManager.OnButtonDown != null)
+		{
+			EventManager.OnButtonDown (buttonID, this);
+		}
 	}
 
-	public virtual void OnPointerUp(PointerEventData data)
+	public virtual void OnPointerUp (PointerEventData data)
 	{
-
+		if (EventManager.OnButtonUp != null)
+		{
+			EventManager.OnButtonUp (buttonID, this);
+		}
 	}
 
-	IEnumerator ILerp(Vector3 targetScale)
+	IEnumerator ILerp (Vector3 targetScale)
 	{
 		while (transform.localScale != targetScale)
 		{
-			transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * 10f);
+			transform.localScale = Vector3.Lerp (transform.localScale, targetScale, Time.deltaTime * 10f);
 			yield return null;
 		}
 	}
-
 
 }

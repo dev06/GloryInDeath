@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
-public class CharacterSelectUI : MonoBehaviour {
-
+public class CharacterSelectUI : MonoBehaviour
+{
 
 	public TextMeshProUGUI goldText, characterDescText, sessionGoldCollectedText;
 	public Image leftArrow, rightArrow;
@@ -15,8 +15,7 @@ public class CharacterSelectUI : MonoBehaviour {
 	private PlayerController player;
 	private DragSnapHandler dragSnap;
 
-
-	void OnEnable()
+	void OnEnable ()
 	{
 		EventManager.OnStateChange += OnStateChange;
 		EventManager.OnButtonClick += OnButtonClick;
@@ -24,7 +23,7 @@ public class CharacterSelectUI : MonoBehaviour {
 		EventManager.OnCharacterModelHover += OnCharacterModelHover;
 		EventManager.OnUpgradeStat += OnUpgradeStat;
 	}
-	void OnDisable()
+	void OnDisable ()
 	{
 		EventManager.OnStateChange -= OnStateChange;
 		EventManager.OnButtonClick -= OnButtonClick;
@@ -33,62 +32,59 @@ public class CharacterSelectUI : MonoBehaviour {
 		EventManager.OnUpgradeStat -= OnUpgradeStat;
 	}
 
-	void Start()
+	void Start ()
 	{
-		player = FindObjectOfType<PlayerController>();
-		dragSnap = FindObjectOfType<DragSnapHandler>();
-		Toggle(GameController.state == activeState);
+		player = FindObjectOfType<PlayerController> ();
+		dragSnap = FindObjectOfType<DragSnapHandler> ();
+		Toggle (GameController.state == activeState);
 	}
 
-
-	public void OnStateChange(State s)
+	public void OnStateChange (State s)
 	{
 		if (s != activeState)
 		{
-			Toggle(false);
+			Toggle (false);
 		}
 
 	}
 
-	private void OnCharacterModelHover(CharacterModel m)
+	private void OnCharacterModelHover (CharacterModel m)
 	{
 		if (player == null)
 		{
-			player =  PlayerController.Instance;
+			player = PlayerController.Instance;
 		}
 
-		UpdateCharacterDescription(m);
+		UpdateCharacterDescription (m);
 	}
 
-	private void UpdateCharacterDescription(CharacterModel m)
+	private void UpdateCharacterDescription (CharacterModel m)
 	{
 
 		switch (m.ModelType)
 		{
 			case CharacterType.AURA_BLACKSWORD:
-			{
-				characterDescText.text = "Name: <color=yellow>Aura Blacksword\n</color>Race: <color=yellow>Human\n</color>Gender: <color=yellow>Female";
+				{
+					characterDescText.text = "Name: <color=yellow>Aura Blacksword\n</color>Race: <color=yellow>Human\n</color>Gender: <color=yellow>Female";
 
-				break;
-			}
+					break;
+				}
 			case CharacterType.HALLFRED_THORALDSON:
-			{
-				characterDescText.text = "Name: <color=yellow>Hallfred Thoraldson\n</color>Race: <color=yellow>Dwarf\n</color>Gender: <color=yellow>Male";
+				{
+					characterDescText.text = "Name: <color=yellow>Hallfred Thoraldson\n</color>Race: <color=yellow>Dwarf\n</color>Gender: <color=yellow>Male";
 
-				break;
-			}
+					break;
+				}
 			case CharacterType.FREYA_SKAAR:
-			{
-				characterDescText.text = "Name: Freya Skaar\nRace: - \nGender: Female";
+				{
+					characterDescText.text = "Name: Freya Skaar\nRace: - \nGender: Female";
 
-				break;
-			}
+					break;
+				}
 		}
 	}
 
-
-
-	public void OnButtonEnter(ButtonID id, SimpleButtonHandler handler)
+	public void OnButtonEnter (ButtonID id, SimpleButtonHandler handler)
 	{
 		switch (id)
 		{
@@ -96,62 +92,66 @@ public class CharacterSelectUI : MonoBehaviour {
 		}
 	}
 
-	public void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
+	public void OnButtonClick (ButtonID id, SimpleButtonHandler handler)
 	{
 		switch (id)
 		{
 			case ButtonID.SELECT_CHARACTER:
-			{
-				Haptic.Vibrate(HapticIntensity.Light);
-				PlayerController.Instance.SetCharacter(CharacterModel.SELECTED_MODEL.ModelType);
-				GameController.Instance.SetState(State.GAME);
-				break;
-			}
+				{
+					Haptic.Vibrate (HapticIntensity.Light);
+					PlayerController.Instance.SetCharacter (CharacterModel.SELECTED_MODEL.ModelType);
+					GameController.Instance.SetState (State.GAME);
+					break;
+				}
 		}
 	}
 
-	public void UpdateUI()
+	public void UpdateUI ()
 	{
 		goldText.text = GameController.Instance.CurrentGold + "";
 	}
 
-	public void ToggleArrows(int currentIndex, int childCount)
+	public void ToggleArrows (int currentIndex, int childCount)
 	{
 		leftArrow.enabled = (currentIndex > 0);
 		rightArrow.enabled = (currentIndex < childCount - 1);
 	}
 
-	private void Toggle(bool b)
+	private void Toggle (bool b)
 	{
-		CanvasGroup cg = GetComponent<CanvasGroup>();
+		CanvasGroup cg = GetComponent<CanvasGroup> ();
 		cg.alpha = b ? 1 : 0;
 		cg.blocksRaycasts = b;
 		if (b)
 		{
-			UpdateUI();
+			UpdateUI ();
 		}
 	}
 
-	private void OnUpgradeStat(UpgradeStat.Type type)
+	private void OnUpgradeStat (UpgradeStat.Type type)
 	{
-		UpdateUI();
+		UpdateUI ();
 	}
 
-	public void TriggerGoldCollectedDialog()
+	public void TriggerGoldCollectedDialog ()
 	{
-		sessionGoldCollectedText.text = WaveController.Instance.GoldCollected.ToString();
+		sessionGoldCollectedText.text = WaveController.Instance.GoldCollected.ToString ();
 		goldCollectedDialog.alpha = 1f;
 		goldCollectedDialog.blocksRaycasts = true;
 
-
 	}
 
-	public void DisableGoldCollectedDialog()
+	public void DisableGoldCollectedDialog ()
 	{
 		goldCollectedDialog.alpha = 0f;
 		goldCollectedDialog.blocksRaycasts = false;
-		Haptic.Vibrate(HapticIntensity.Light);
-		GameController.Instance.AddGold(WaveController.Instance.GoldCollected);
-		UpdateUI();
+		Haptic.Vibrate (HapticIntensity.Light);
+		GameController.Instance.AddGold (WaveController.Instance.GoldCollected);
+		UpdateUI ();
+	}
+
+	void Update ()
+	{
+		goldText.text = GameController.Instance.CurrentGold + "";
 	}
 }

@@ -12,6 +12,9 @@ public enum EventID
 	LEVEL_UP,
 	CHARACTER_UPG,
 	DEATH,
+	CHR_UPG_DAMAGE,
+	CHR_UPG_CRITHIT,
+
 }
 public class EventManager : MonoBehaviour {
 
@@ -21,6 +24,8 @@ public class EventManager : MonoBehaviour {
 	public delegate void ButtonClick(ButtonID id, SimpleButtonHandler handler);
 	public static ButtonClick OnButtonClick;
 	public static ButtonClick OnButtonEnter;
+	public static ButtonClick OnButtonDown;
+	public static ButtonClick OnButtonUp; 
 
 	public delegate void StateChange(State s);
 	public static StateChange OnStateChange;
@@ -28,6 +33,7 @@ public class EventManager : MonoBehaviour {
 	public delegate void CharacterModelEvent(CharacterModel c);
 	public static CharacterModelEvent OnCharacterModelHover;
 
+	//refers to old upgrade system, haven't remove yet. 
 	public delegate void UpgradeCharacterStat(UpgradeStat.Type type);
 	public static UpgradeCharacterStat OnUpgradeStat;
 

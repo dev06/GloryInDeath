@@ -33,14 +33,14 @@ public class UpgradeCard : MonoBehaviour
 
 	IEnumerator IShuffle()
 	{
-		int index = Random.Range(0, ingameUpgrade.characterUpgrades.Count);
+		int index = Random.Range(0, ingameUpgrade.activeUpgrades.Count);
 		int count = 0;
 		while (count < counter * multiplier)
 		{
-			CharacterUpgrade upg = ingameUpgrade.characterUpgrades[index];
+			CharacterUpgrade upg = ingameUpgrade.activeUpgrades[index];
 			Set(upg);
 			index++;
-			if (index > ingameUpgrade.characterUpgrades.Count - 1)
+			if (index > ingameUpgrade.activeUpgrades.Count - 1)
 			{
 				index = 0;
 			}

@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using RabaGames;
 using TMPro;
+using UnityEngine;
 public enum State
 {
 	CHARACTER_SELECT,
 	GAME,
 }
-public class GameController : MonoBehaviour {
-
+public class GameController : MonoBehaviour
+{
 
 	public static GameController Instance;
 	public static State state = State.CHARACTER_SELECT;
@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour {
 
 	private int currentGold = 999999999;
 
-	[Header("Debug")]
+	[Header ("Debug")]
 	public TextMeshProUGUI fpsText;
 	private float _deltatime;
 	private float _updateFPSTimer;
@@ -30,19 +30,19 @@ public class GameController : MonoBehaviour {
 	private float _secs;
 	private bool _startTimer;
 
-	void OnEnable()
+	void OnEnable ()
 	{
 		EventManager.OnGameEvent += OnGameEvent;
 		EventManager.OnButtonClick += OnButtonClick;
 	}
 
-	void OnDisable()
+	void OnDisable ()
 	{
 		EventManager.OnGameEvent -= OnGameEvent;
 		EventManager.OnButtonClick -= OnButtonClick;
 	}
 
-	void Awake()
+	void Awake ()
 	{
 		Application.targetFrameRate = 60;
 
@@ -52,28 +52,28 @@ public class GameController : MonoBehaviour {
 		}
 		else
 		{
-			Destroy(gameObject);
+			Destroy (gameObject);
 		}
-		Load();
-		SetState(State.CHARACTER_SELECT);
+		Load ();
+		SetState (State.CHARACTER_SELECT);
 
 		//Debug.Log("Hit");
 
 	}
 
-	void OnValidate()
+	void OnValidate ()
 	{
 		if (DeleteSave)
 		{
-			PlayerPrefs.DeleteAll();
+			PlayerPrefs.DeleteAll ();
 		}
 	}
 
-	void Start()
+	void Start ()
 	{
 		if (waveStarts > 0 && waveStarts % 5 == 0)
 		{
-			ShowRateDialog();
+			ShowRateDialog ();
 		}
 
 		gameOverStatsSO.timeSurvived = "0:00";
@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour {
 		gameOverStatsSO.damageTaken = 0;
 	}
 
-	void Update()
+	void Update ()
 	{
 		_deltatime += (Time.unscaledDeltaTime - _deltatime) * .1f;
 		_updateFPSTimer += Time.deltaTime;
@@ -90,10 +90,9 @@ public class GameController : MonoBehaviour {
 		float fps = 1f / _deltatime;
 		if (_updateFPSTimer > 1f)
 		{
-			fpsText.text = (int)fps + " fps";
+			fpsText.text = (int) fps + " fps";
 			_updateFPSTimer = 0f;
 		}
-
 
 		if (_startTimer)
 		{
@@ -106,7 +105,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	void OnGameEvent(EventID id)
+	void OnGameEvent (EventID id)
 	{
 		if (id == EventID.WAVE_START)
 		{
@@ -117,37 +116,37 @@ public class GameController : MonoBehaviour {
 		{
 			_startTimer = false;
 			gameOverStatsSO.timeSurvived = TimeSurvived;
-			gameOverUI.Display(gameOverStatsSO);
+			gameOverUI.Display (gameOverStatsSO);
 		}
 	}
 
-	void OnButtonClick(ButtonID id, SimpleButtonHandler handler)
+	void OnButtonClick (ButtonID id, SimpleButtonHandler handler)
 	{
 		if (id == ButtonID.MENU)
 		{
-			Reload();
+			Reload ();
 		}
 	}
 
-	public void ShowRateDialog()
+	public void ShowRateDialog ()
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
 		{
-			RateInsideAppiOS.DisplayReviewDialog();
+			RateInsideAppiOS.DisplayReviewDialog ();
 		}
 	}
 
-	public void SetState(State s)
+	public void SetState (State s)
 	{
 		state = s;
 
 		if (EventManager.OnStateChange != null)
 		{
-			EventManager.OnStateChange(state);
+			EventManager.OnStateChange (state);
 		}
 	}
 
-	public static Vector3 ClampMagnitude(Vector3 v, float min, float max)
+	public static Vector3 ClampMagnitude (Vector3 v, float min, float max)
 	{
 		float m = v.sqrMagnitude;
 
@@ -164,54 +163,52 @@ public class GameController : MonoBehaviour {
 		return v;
 	}
 
-
 	public int CurrentGold
 	{
 		get { return currentGold; }
 		set { this.currentGold = value; }
 	}
 
-	private void Save()
+	private void Save ()
 	{
-		PlayerPrefs.SetInt("WAVE_COMPLETED", WaveController.Instance.wave);
-		PlayerPrefs.SetInt("WAVESTARTS", waveStarts);
+		PlayerPrefs.SetInt ("WAVE_COMPLETED", WaveController.Instance.wave);
+		PlayerPrefs.SetInt ("WAVESTARTS", waveStarts);
 	}
 
-	private void Load()
+	private void Load ()
 	{
 		PAUSE = false;
-		WaveController.Instance.wave = PlayerPrefs.HasKey("WAVE_COMPLETED") ? PlayerPrefs.GetInt("WAVE_COMPLETED") : 1;
-		CurrentGold = PlayerPrefs.HasKey("GOLD") ? PlayerPrefs.GetInt("GOLD") : 100;
-		waveStarts = PlayerPrefs.HasKey("WAVESTARTS") ?  PlayerPrefs.GetInt("WAVESTARTS") : 0;
+		WaveController.Instance.wave = PlayerPrefs.HasKey ("WAVE_COMPLETED") ? PlayerPrefs.GetInt ("WAVE_COMPLETED") : 1;
+		CurrentGold = PlayerPrefs.HasKey ("GOLD") ? PlayerPrefs.GetInt ("GOLD") : 100;
+		waveStarts = PlayerPrefs.HasKey ("WAVESTARTS") ? PlayerPrefs.GetInt ("WAVESTARTS") : 0;
 
 		// WaveController.Instance.wave = 21;
 	}
 
-	public void Reload()
+	public void Reload ()
 	{
-		Save();
-		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+		Save ();
+		UnityEngine.SceneManagement.SceneManager.LoadScene (0);
 	}
 
-
-	public void AddGold(int gold)
+	public void AddGold (int gold)
 	{
 		CurrentGold += gold;
-		PlayerPrefs.SetInt("GOLD", CurrentGold);
+		PlayerPrefs.SetInt ("GOLD", CurrentGold);
 	}
 
-	public bool CanPurchase(float cost)
+	public bool CanPurchase (float cost)
 	{
-		return CurrentGold >= (int)cost;
+		return CurrentGold >= (int) cost;
 	}
 
-	private string convert(float num)
+	private string convert (float num)
 	{
-		return num < 10 ? "0" + num.ToString("F0") :  "" + num.ToString("F0");
+		return num < 10 ? "0" + num.ToString ("F0") : "" + num.ToString ("F0");
 	}
 
 	public string TimeSurvived
 	{
-		get { return convert(_mins) + ":" + convert(_secs); }
+		get { return convert (_mins) + ":" + convert (_secs); }
 	}
 }

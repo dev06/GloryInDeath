@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using TMPro;
 [System.Serializable]
 public struct EnemyWaveBuilder
 {
@@ -25,20 +25,20 @@ public class EnemyAttributes
 	public float damage;
 	public float maxHealth;
 
-	public EnemyAttributes()
+	public EnemyAttributes ()
 	{
 
 	}
 
-	public void SetAttributes(EnemyAttributes attributes)
+	public void SetAttributes (EnemyAttributes attributes)
 	{
 		this.type = attributes.type;
-		this.health = attributes.health ;
+		this.health = attributes.health;
 		this.maxHealth = attributes.maxHealth;
 		this.damage = attributes.damage;
 	}
 
-	public void SetAttributes(EnemyStats stats)
+	public void SetAttributes (EnemyStats stats)
 	{
 		this.maxHealth = stats.health;
 		this.health = stats.health;
@@ -47,7 +47,7 @@ public class EnemyAttributes
 	}
 }
 
-public class Enemy: MonoBehaviour
+public class Enemy : MonoBehaviour
 {
 	public EnemyType type;
 	public EnemyAttributes sessionAttributes;
@@ -72,52 +72,51 @@ public class Enemy: MonoBehaviour
 	private float attackTimer, _stunTimer;
 	private float _fireActiveTimer;
 
-
-	void OnEnable()
+	void OnEnable ()
 	{
 		EventManager.OnGameEvent += OnGameEvent;
 	}
-	void OnDisable()
+	void OnDisable ()
 	{
 		EventManager.OnGameEvent -= OnGameEvent;
 	}
 
-	void Start()
+	void Start ()
 	{
-		Init();
-		player = FindObjectOfType<PlayerController>();
-		_animator = GetComponent<Animator>();
-		agent = GetComponent<NavMeshAgent>();
+		Init ();
+		player = FindObjectOfType<PlayerController> ();
+		_animator = GetComponent<Animator> ();
+		agent = GetComponent<NavMeshAgent> ();
 		agent.updatePosition = false;
 	}
 
-	public virtual void Init()
+	public virtual void Init ()
 	{
-		hurtParticles = transform.GetChild(1).transform.GetComponent<ParticleSystem>();
-		goldParticles = transform.GetChild(2).transform.GetComponent<ParticleSystem>();
-		animator = GetComponent<Animator>();
-		rigidBody = GetComponent<Rigidbody>();
+		hurtParticles = transform.GetChild (1).transform.GetComponent<ParticleSystem> ();
+		goldParticles = transform.GetChild (2).transform.GetComponent<ParticleSystem> ();
+		animator = GetComponent<Animator> ();
+		rigidBody = GetComponent<Rigidbody> ();
 		// sessionAttributes = new EnemyAttributes();
 		// sessionAttributes.SetAttributes(enemyStats);
-		_healthContainer = transform.GetChild(0);
+		_healthContainer = transform.GetChild (0);
 		_cameraTransform = Camera.main.transform;
 	}
 
-	public void Move()
+	public void Move ()
 	{
-		ToggleSkin(true);
+		ToggleSkin (true);
 		gameObject.tag = "Entity/Enemy";
-		sessionAttributes = getAttributes();
+		sessionAttributes = getAttributes ();
 
-		attributes = new EnemyAttributes();
-		attributes.SetAttributes(sessionAttributes);
+		attributes = new EnemyAttributes ();
+		attributes.SetAttributes (sessionAttributes);
 
-		updateHealthDisplay();
-		healthHandler.Toggle(true);
+		updateHealthDisplay ();
+		healthHandler.Toggle (true);
 		move = true;
 	}
 
-	void Update()
+	void Update ()
 	{
 		if (GameController.state != State.GAME) { return; }
 		rigidBody.velocity = Vector3.zero;
@@ -125,34 +124,32 @@ public class Enemy: MonoBehaviour
 		{
 			if (animator != null)
 			{
-				animator.SetBool("Run", false);
-				animator.SetBool("Attack", false);
+				animator.SetBool ("Run", false);
+				animator.SetBool ("Attack", false);
 			}
 
 			return;
 		}
 
-
-		updateTimers();
-		updateAnimations();
-		updateRotations();
+		updateTimers ();
+		updateAnimations ();
+		updateRotations ();
 
 		dead = attributes.health <= 0;
 		agent.updatePosition = agent.updateRotation = !dead;
 	}
 
-	private void updateTimers()
+	private void updateTimers ()
 	{
 		if (Stun)
 		{
 			_stunTimer += Time.unscaledDeltaTime;
-			if (_stunTimer > 2f)
+			if (_stunTimer > 1f)
 			{
 				_stunTimer = 0f;
 				Stun = false;
 			}
 		}
-
 
 		if (_inFireArea)
 		{
@@ -161,73 +158,76 @@ public class Enemy: MonoBehaviour
 
 		if (_fireActive)
 		{
-			takeSimpleDamage(1f * Time.deltaTime);
+			takeSimpleDamage (1f * Time.deltaTime);
 			_fireActiveTimer += Time.deltaTime;
 			if (_fireActiveTimer > 2f)
 			{
-				toggleFire(false);
+				toggleFire (false);
 			}
 		}
 	}
 
-	private void toggleFire(bool b)
+	private void toggleFire (bool b)
 	{
 		if (fireFX == null) { return; }
 		if (b)
 		{
-			fireFX.Play();
+			fireFX.Play ();
 			_fireActive = true;
-		} else
+		}
+		else
 		{
-			fireFX.Stop();
+			fireFX.Stop ();
 			_fireActive = false;
 			_fireActiveTimer = 0f;
 
 		}
 	}
 
-	private void updateAnimations()
+	private void updateAnimations ()
 	{
-		_healthContainer.LookAt(_cameraTransform.position);
+		_healthContainer.LookAt (_cameraTransform.position);
 		Vector3 _deltaPos = player.GetBodypoint - transform.position;
 		float _distance = _deltaPos.magnitude;
 		bool _canAttack = _distance < 2f && !Stun;
 		if (PlayerController.Instance.IsDead)
 		{
-			animator.SetBool("Idle", true);
-		} else
+			animator.SetBool ("Idle", true);
+		}
+		else
 		{
-			animator.SetBool("Attack", _canAttack);
+			animator.SetBool ("Attack", _canAttack);
 			if (!Stun)
 			{
-				animator.SetBool(walk ? "Walk" : "Run", !_canAttack);
-			} else
+				animator.SetBool (walk ? "Walk" : "Run", !_canAttack);
+			}
+			else
 			{
-				animator.SetBool(walk ? "Walk" : "Run", false);
+				animator.SetBool (walk ? "Walk" : "Run", false);
 
 			}
 		}
 	}
 
-	private void updateRotations()
+	private void updateRotations ()
 	{
 		Vector3 lookrotation = player.GetBodypoint - transform.position;
 		if (lookrotation == Vector3.zero || dead) { return; }
-		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookrotation), 6f * Time.deltaTime);
+		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (lookrotation), 6f * Time.deltaTime);
 	}
 
-	void OnAnimatorMove()
+	void OnAnimatorMove ()
 	{
 		if (GameController.PAUSE || _animator == null || agent == null || dead) { return; }
 		Vector3 v = _animator.deltaPosition / Time.deltaTime;
 
-		if (!float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z))
+		if (!float.IsNaN (v.x) && !float.IsNaN (v.y) && !float.IsNaN (v.z))
 		{
 			agent.velocity = v;
 		}
 	}
 
-	public void OnGameEvent(EventID _id)
+	public void OnGameEvent (EventID _id)
 	{
 		if (_id == EventID.LEVEL_UP)
 		{
@@ -238,20 +238,20 @@ public class Enemy: MonoBehaviour
 		}
 	}
 
-	public void Attack()
+	public void Attack ()
 	{
-		PlayerController.Instance.TakeDamage(attributes.damage);
+		PlayerController.Instance.TakeDamage (attributes.damage);
 	}
 
-	void OnTriggerEnter(Collider col)
+	void OnTriggerEnter (Collider col)
 	{
 		if (col.gameObject.tag == "Env/Fire")
 		{
 			_inFireArea = true;
-			toggleFire(true);
+			toggleFire (true);
 		}
 	}
-	void OnTriggerExit(Collider col)
+	void OnTriggerExit (Collider col)
 	{
 		if (col.gameObject.tag == "Env/Fire")
 		{
@@ -259,118 +259,119 @@ public class Enemy: MonoBehaviour
 		}
 	}
 
-	private void takeSimpleDamage(float damage)
+	private void takeSimpleDamage (float damage)
 	{
 		attributes.health -= damage;
 		GameController.Instance.gameOverStatsSO.damageDealt += damage;
-		attributes.health = Mathf.Clamp(attributes.health, 0f , sessionAttributes.health);
-		updateHealthDisplay();
-		if (isDead())
+		attributes.health = Mathf.Clamp (attributes.health, 0f, sessionAttributes.health);
+		updateHealthDisplay ();
+		if (isDead ())
 		{
 
-			healthHandler.Toggle(false);
-			hurtParticles.Play();
+			healthHandler.Toggle (false);
+			hurtParticles.Play ();
 			if (gameObject.activeSelf)
 			{
-				StartCoroutine("IReset");
+				StartCoroutine ("IReset");
 			}
 			return;
 		}
 	}
 
-	public void TakeDamage(float damage, bool _shouldStun = true)
+	public void TakeDamage (float damage, bool _shouldStun = true)
 	{
 		if (dead) { return; }
 		Stun = _shouldStun;
-		animator.SetTrigger("Hit");
+		animator.SetTrigger ("Hit");
 		attributes.health -= damage;
 		GameController.Instance.gameOverStatsSO.damageDealt += damage;
-		attributes.health = Mathf.Clamp(attributes.health, 0f , sessionAttributes.health);
-		updateHealthDisplay();
-		if (isDead())
+		attributes.health = Mathf.Clamp (attributes.health, 0f, sessionAttributes.health);
+		updateHealthDisplay ();
+		if (isDead ())
 		{
 
-			healthHandler.Toggle(false);
-			hurtParticles.Play();
+			healthHandler.Toggle (false);
+			hurtParticles.Play ();
 			if (gameObject.activeSelf)
 			{
-				StartCoroutine("IReset");
+				StartCoroutine ("IReset");
 			}
 			return;
-		} else
+		}
+		else
 		{
-			goldParticles.Play();
-			hurtParticles.Play();
+			goldParticles.Play ();
+			hurtParticles.Play ();
 		}
 	}
 
-	private EnemyAttributes getAttributes()
+	private EnemyAttributes getAttributes ()
 	{
 		switch (type)
 		{
 			case EnemyType.GOBLIN:
-			{
-				return EnemyController.Instance.goblinAttributes;
-			}
+				{
+					return EnemyController.Instance.goblinAttributes;
+				}
 			case EnemyType.ORC:
-			{
-				return EnemyController.Instance.orcAttributes;
-			}
+				{
+					return EnemyController.Instance.orcAttributes;
+				}
 		}
 		return null;
 	}
 
-	private void updateHealthDisplay()
+	private void updateHealthDisplay ()
 	{
 		healthHandler.health = (Attributes.health / sessionAttributes.health);
-		healthHandler.healthString = ((int)Attributes.health + "/" + (int)sessionAttributes.health);
+		healthHandler.healthString = ((int) Attributes.health + "/" + (int) sessionAttributes.health);
 	}
 
-	private void ToggleSkin(bool b)
+	private void ToggleSkin (bool b)
 	{
-		GetComponentInChildren<MeshRenderer>().enabled = b;
-		GetComponent<BoxCollider>().enabled = b;
+		GetComponentInChildren<MeshRenderer> ().enabled = b;
+		GetComponent<BoxCollider> ().enabled = b;
 	}
 
-	public void Reset()
+	public void Reset ()
 	{
-		WaveController.Instance.ResetEnemyParent(this);
+		WaveController.Instance.ResetEnemyParent (this);
 	}
 
-	IEnumerator IReset()
+	IEnumerator IReset ()
 	{
 		if (animator != null)
 		{
 			move = false;
-			animator.SetTrigger("DeathTrigger");
+			animator.SetTrigger ("DeathTrigger");
 		}
 
-		yield return new WaitForSeconds(3f);
+		yield return new WaitForSeconds (3f);
 
-		Reset();
+		Reset ();
 	}
 
 	public EnemyAttributes Attributes
 	{
-		get {return attributes;}
+		get { return attributes; }
 	}
 
-	public bool isDead()
+	public bool isDead ()
 	{
-		attributes.health = Mathf.Clamp(attributes.health, 0f, attributes.health);
-		bool dead = (int)attributes.health <= 0;
+		attributes.health = Mathf.Clamp (attributes.health, 0f, attributes.health);
+		bool dead = (int) attributes.health <= 0;
 		if (dead)
 		{
 			if (Random.value < DropProbs.HEALTH_POTION)
 			{
-				DropHandler.Instance.Drop(transform.position + new Vector3(Random.Range(-1f, 1f), 3f, Random.Range(-1f, 1f) ));
+				DropHandler.Instance.Drop (transform.position + new Vector3 (Random.Range (-1f, 1f), 3f, Random.Range (-1f, 1f)));
 			}
-			GetComponent<BoxCollider>().enabled = false;
+			GetComponent<BoxCollider> ().enabled = false;
 			rigidBody.isKinematic = true;
 			GameController.Instance.gameOverStatsSO.kills++;
 			if (EventManager.OnGameEvent != null)
 			{
-				EventManager.OnGameEvent(EventID.ENEMY_KILLED);
+				EventManager.OnGameEvent (EventID.ENEMY_KILLED);
 			}
 		}
 		return dead;
@@ -378,7 +379,7 @@ public class Enemy: MonoBehaviour
 
 	public bool IsDead
 	{
-		get {return dead;}
+		get { return dead; }
 	}
 
 	public bool IsMoving
@@ -388,9 +389,8 @@ public class Enemy: MonoBehaviour
 
 	public bool Stun
 	{
-		get {return _stun; }
-		set {this._stun = value; }
+		get { return _stun; }
+		set { this._stun = value; }
 	}
-
 
 }

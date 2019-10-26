@@ -10,7 +10,7 @@ public struct WaveBuilder
 
 public class WaveController : MonoBehaviour {
 
-	public static int MAX_ENEMY_AT_TIME = 4;
+	public static int MAX_ENEMY_AT_TIME = 6;
 	public static WaveController Instance;
 	public List<WaveBuilder> waves = new List<WaveBuilder>();
 	public bool spawnEnemy;
@@ -99,14 +99,14 @@ public class WaveController : MonoBehaviour {
 
 		WaveBuilder currentWaveBuilder;
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			Enemy e = GetParentTransform(EnemyType.GOBLIN).GetChild(i).GetComponent<Enemy>();
 			e.Init();
 			e.transform.SetParent(enemyWaveTransform);
 		}
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i <3; i++)
 		{
 			Enemy e = GetParentTransform(EnemyType.ORC).GetChild(i).GetComponent<Enemy>();
 			e.Init();

@@ -2,46 +2,85 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour {
+public class SoundManager : MonoBehaviour
+{
 
     public AudioSource musicPlayer;
     private AudioClip menuMusic;
     private AudioClip gameplayMusic;
     private AudioClip deathSound;
     private State current;
-    // Use this for initialization
-    void Start () {
-        menuMusic = Resources.Load<AudioClip>("Music/Dark Dungeon AMBIENT LOOP");
-        gameplayMusic = Resources.Load<AudioClip>("Music/Barren Combat LOOP");
-        deathSound = Resources.Load<AudioClip>("Music/Death PIANO");
+
+    void OnEnable ()
+    {
+        SettingsContainer.OnToggleMusic += OnToggleMusic;
+    }
+    void OnDisable ()
+    {
+        SettingsContainer.OnToggleMusic -= OnToggleMusic;
+    }
+
+    void Start ()
+    {
+        menuMusic = Resources.Load<AudioClip> ("Music/Dark Dungeon AMBIENT LOOP");
+        gameplayMusic = Resources.Load<AudioClip> ("Music/Barren Combat LOOP");
+        deathSound = Resources.Load<AudioClip> ("Music/Death PIANO");
         musicPlayer.loop = true;
         current = State.GAME;
     }
 
-    private void Update()
+    void OnToggleMusic (bool b)
+    {
+        if (!b)
+        {
+            musicPlayer.Stop ();
+        }
+        else
+        {
+            musicPlayer.clip = getClip(); 
+            musicPlayer.time = Random.Range(0f, 25f); 
+            musicPlayer.Play ();
+        }
+    }
+
+    private void Update ()
     {
         if ((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
         {
-            EnterMenu();
+            EnterMenu ();
             current = GameController.state;
         }
         else if ((GameController.state == State.GAME) && current != State.GAME)
         {
-            EnterGameplay();
+            EnterGameplay ();
             current = GameController.state;
         }
+
     }
-    public void EnterMenu()
+    public void EnterMenu ()
     {
-        musicPlayer.Stop();
+        if (!SettingsContainer.EnableMusic) return;
+        musicPlayer.Stop ();
         musicPlayer.clip = menuMusic;
-        musicPlayer.Play();
+        musicPlayer.Play ();
     }
 
-    public void EnterGameplay()
+    public void EnterGameplay ()
     {
-        musicPlayer.Stop();
+        if (!SettingsContainer.EnableMusic) return;
+        musicPlayer.Stop ();
         musicPlayer.clip = gameplayMusic;
-        musicPlayer.Play();
+        musicPlayer.Play ();
     }
+
+    private AudioClip getClip()
+    {
+        if(GameController.state == State.CHARACTER_SELECT)
+        {
+            return menuMusic; 
+        }
+        return gameplayMusic; 
+    }
+
+
 }
