@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct DropProbs
 {
-	public static float HEALTH_POTION = .1f;
+	public static float HEALTH_POTION = .05f;
 }
 public class DropHandler : MonoBehaviour
 {

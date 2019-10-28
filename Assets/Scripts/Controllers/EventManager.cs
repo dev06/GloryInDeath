@@ -14,6 +14,7 @@ public enum EventID
 	DEATH,
 	CHR_UPG_DAMAGE,
 	CHR_UPG_CRITHIT,
+	CHR_UPG_HEALTH,
 
 }
 public class EventManager : MonoBehaviour {

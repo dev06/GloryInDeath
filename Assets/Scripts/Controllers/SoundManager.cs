@@ -5,7 +5,14 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
 
+    public static SoundManager Instance; 
+
+    public static AudioClip Hammer_Hit_Body_Gore;
+    public static AudioClip Hammer_Hit_Metal_Armor;
+
     public AudioSource musicPlayer;
+    public AudioSource sfxPlayer; 
+
     private AudioClip menuMusic;
     private AudioClip gameplayMusic;
     private AudioClip deathSound;
@@ -20,11 +27,22 @@ public class SoundManager : MonoBehaviour
         SettingsContainer.OnToggleMusic -= OnToggleMusic;
     }
 
+    void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this; 
+        }
+    }
+
     void Start ()
     {
         menuMusic = Resources.Load<AudioClip> ("Music/Dark Dungeon AMBIENT LOOP");
         gameplayMusic = Resources.Load<AudioClip> ("Music/Barren Combat LOOP");
         deathSound = Resources.Load<AudioClip> ("Music/Death PIANO");
+
+        Hammer_Hit_Body_Gore = Resources.Load<AudioClip> ("Music/HAMMER_Hit_Body_Gore_stereo");
+        Hammer_Hit_Metal_Armor = Resources.Load<AudioClip> ("Music/HAMMER_Hit_Metal_Armor_stereo"); 
         musicPlayer.loop = true;
         current = State.GAME;
     }
@@ -37,14 +55,15 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            musicPlayer.clip = getClip(); 
-            musicPlayer.time = Random.Range(0f, 25f); 
+            musicPlayer.clip = getClip ();
+            musicPlayer.time = Random.Range (0f, 25f);
             musicPlayer.Play ();
         }
     }
 
     private void Update ()
     {
+        musicPlayer.volume = GameController.PAUSE ? 0f : .6f;
         if ((GameController.state == State.CHARACTER_SELECT) && current != State.CHARACTER_SELECT)
         {
             EnterMenu ();
@@ -73,14 +92,20 @@ public class SoundManager : MonoBehaviour
         musicPlayer.Play ();
     }
 
-    private AudioClip getClip()
+    private AudioClip getClip ()
     {
-        if(GameController.state == State.CHARACTER_SELECT)
+        if (GameController.state == State.CHARACTER_SELECT)
         {
-            return menuMusic; 
+            return menuMusic;
         }
-        return gameplayMusic; 
+        return gameplayMusic;
     }
 
+    public void PlaySFX (AudioClip clip, float pitch)
+    {
+        // sfxPlayer.clip = clip; 
+        // sfxPlayer.pitch = pitch; 
+        // sfxPlayer.Play(); 
+    }
 
 }

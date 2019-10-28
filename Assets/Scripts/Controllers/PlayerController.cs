@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
 	private void UpdateAttackTimers ()
 	{
 		canSpecialAttack = Attributes.stamina >= StaminaCost.SPECIAL_ATK_COST;
-		Attributes.stamina += Time.deltaTime * _staminaRecoverRate;
+		Attributes.stamina += Time.deltaTime * _staminaRecoverRate * Attributes.staminaRegen;
 		Attributes.stamina = Mathf.Clamp (Attributes.stamina, 0f, sessionAttributes.stamina);
 
 		if (_abilityPressed)

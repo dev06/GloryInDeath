@@ -64,6 +64,19 @@ public class UpgradeContainer : MonoBehaviour
                     break;
                 }
 
+            case ButtonID.B_UPG_HEALTH:
+                {
+                    if (upgradeButtons[2].CanPurchase ())
+                    {
+                        EventManager.OnGameEvent (EventID.CHR_UPG_HEALTH);
+                        for (int i = 0; i < upgradeButtons.Length; i++)
+                        {
+                            upgradeButtons[i].Check ();
+                        }
+                    }
+                    break;
+                }
+
             case ButtonID.B_UPG_ACTIVATE:
                 {
                     StopCoroutine ("ITogglePanel");

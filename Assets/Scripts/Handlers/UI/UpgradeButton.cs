@@ -30,6 +30,12 @@ public class UpgradeButton : MonoBehaviour
             costText.text = PlayerPrefs.HasKey ("UPG_CRITHIT") ? "-" : cost.ToString ();
             _isPurchased = PlayerPrefs.HasKey ("UPG_CRITHIT");
         }
+
+        if (button.buttonID == ButtonID.B_UPG_HEALTH)
+        {
+            costText.text = PlayerPrefs.HasKey ("UPG_HEALTH") ? "-" : cost.ToString ();
+            _isPurchased = PlayerPrefs.HasKey ("UPG_HEALTH");
+        }
     }
 
     public bool CanPurchase ()

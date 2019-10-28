@@ -284,6 +284,15 @@ public class Enemy : MonoBehaviour
 		Stun = _shouldStun;
 		animator.SetTrigger ("Hit");
 		attributes.health -= damage;
+		if (Random.value < .5f)
+		{
+			SoundManager.Instance.PlaySFX (SoundManager.Hammer_Hit_Body_Gore, Random.Range (.8f, 1.2f));
+		}
+		else
+		{
+			SoundManager.Instance.PlaySFX (SoundManager.Hammer_Hit_Metal_Armor, Random.Range (.8f, 1.2f));
+
+		}
 		GameController.Instance.gameOverStatsSO.damageDealt += damage;
 		attributes.health = Mathf.Clamp (attributes.health, 0f, sessionAttributes.health);
 		updateHealthDisplay ();
@@ -366,6 +375,7 @@ public class Enemy : MonoBehaviour
 			{
 				DropHandler.Instance.Drop (transform.position + new Vector3 (Random.Range (-1f, 1f), 3f, Random.Range (-1f, 1f)));
 			}
+
 			GetComponent<BoxCollider> ().enabled = false;
 			rigidBody.isKinematic = true;
 			GameController.Instance.gameOverStatsSO.kills++;
