@@ -132,7 +132,9 @@ public class GameController : MonoBehaviour
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
 		{
+#if UNITY_IOS
 			RateInsideAppiOS.DisplayReviewDialog ();
+#endif
 		}
 	}
 
